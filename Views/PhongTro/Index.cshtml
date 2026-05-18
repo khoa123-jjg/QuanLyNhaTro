@@ -1,0 +1,234 @@
+@{
+    ViewData["Title"] = "Danh sách phòng trọ";
+    ViewData["ActiveNav"] = "rooms";
+}
+
+<!-- Banner đầu trang -->
+<section class="phong-banner" aria-labelledby="phongBannerTitle">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 id="phongBannerTitle" class="phong-banner__title">Danh sách phòng trọ</h1>
+                <p class="phong-banner__subtitle">
+                    Tìm kiếm và lựa chọn phòng trọ phù hợp tại Đà Nẵng
+                </p>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="phong-banner__art" aria-hidden="true"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nội dung chính -->
+<div class="container phong-list-page">
+    <div class="row g-4">
+        <!-- Bộ lọc -->
+        <aside class="col-lg-3">
+            <div class="phong-filter">
+                <h2 class="phong-filter__title">
+                    <i class="bi bi-sliders" aria-hidden="true"></i>
+                    BỘ LỌC TÌM KIẾM
+                </h2>
+
+                <form class="phong-filter__form" action="#" method="get" onsubmit="return false;">
+                    <div class="phong-filter__group">
+                        <label class="phong-filter__label" for="filterQuan">Khu vực / Quận</label>
+                        <select class="form-select phong-filter__select" id="filterQuan">
+                            <option value="" selected>Tất cả quận</option>
+                            <option>Liên Chiểu</option>
+                            <option>Thanh Khê</option>
+                            <option>Hải Châu</option>
+                            <option>Sơn Trà</option>
+                            <option>Ngũ Hành Sơn</option>
+                            <option>Cẩm Lệ</option>
+                        </select>
+                    </div>
+
+                    <div class="phong-filter__group">
+                        <label class="phong-filter__label" for="filterPhuong">Phường / Xã</label>
+                        <select class="form-select phong-filter__select" id="filterPhuong">
+                            <option value="" selected>Tất cả phường</option>
+                            <option>Hòa Minh</option>
+                            <option>An Hải Bắc</option>
+                            <option>Thanh Khê Đông</option>
+                            <option>Hòa Cường Bắc</option>
+                        </select>
+                    </div>
+
+                    <div class="phong-filter__group">
+                        <label class="phong-filter__label">Mức giá (đ/tháng)</label>
+                        <div class="phong-filter__range-labels">
+                            <span>0</span>
+                            <span>5.000.000+</span>
+                        </div>
+                        <input type="range" class="form-range phong-filter__range" min="0" max="100" value="100" disabled aria-label="Mức giá tối đa (tĩnh)" />
+                        <p class="phong-filter__range-hint">0 – 5.000.000+ đ/tháng</p>
+                    </div>
+
+                    <div class="phong-filter__group">
+                        <label class="phong-filter__label">Diện tích (m²)</label>
+                        <div class="phong-filter__range-labels">
+                            <span>10</span>
+                            <span>100+</span>
+                        </div>
+                        <input type="range" class="form-range phong-filter__range" min="10" max="100" value="100" disabled aria-label="Diện tích tối đa (tĩnh)" />
+                        <p class="phong-filter__range-hint">10 – 100+ m²</p>
+                    </div>
+
+                    <fieldset class="phong-filter__group phong-filter__amenities">
+                        <legend class="phong-filter__label mb-2">Tiện nghi</legend>
+                        <div class="form-check phong-filter__check">
+                            <input class="form-check-input" type="checkbox" id="tnMayLanh" />
+                            <label class="form-check-label" for="tnMayLanh">Máy lạnh</label>
+                        </div>
+                        <div class="form-check phong-filter__check">
+                            <input class="form-check-input" type="checkbox" id="tnWifi" checked />
+                            <label class="form-check-label" for="tnWifi">Wi-Fi</label>
+                        </div>
+                        <div class="form-check phong-filter__check">
+                            <input class="form-check-input" type="checkbox" id="tnGiat" />
+                            <label class="form-check-label" for="tnGiat">Máy giặt</label>
+                        </div>
+                        <div class="form-check phong-filter__check">
+                            <input class="form-check-input" type="checkbox" id="tnTuLanh" />
+                            <label class="form-check-label" for="tnTuLanh">Tủ lạnh</label>
+                        </div>
+                        <div class="form-check phong-filter__check">
+                            <input class="form-check-input" type="checkbox" id="tnGio" />
+                            <label class="form-check-label" for="tnGio">Giờ giấc tự do</label>
+                        </div>
+                        <div class="form-check phong-filter__check">
+                            <input class="form-check-input" type="checkbox" id="tnXe" />
+                            <label class="form-check-label" for="tnXe">Chỗ để xe</label>
+                        </div>
+                        <div class="form-check phong-filter__check">
+                            <input class="form-check-input" type="checkbox" id="tnBanCong" />
+                            <label class="form-check-label" for="tnBanCong">Ban công / Cửa sổ</label>
+                        </div>
+                        <div class="form-check phong-filter__check">
+                            <input class="form-check-input" type="checkbox" id="tnBep" />
+                            <label class="form-check-label" for="tnBep">Bếp nấu ăn</label>
+                        </div>
+                    </fieldset>
+
+                    <div class="phong-filter__actions">
+                        <button type="reset" class="btn btn-outline-secondary phong-filter__btn-clear">
+                            Xóa bộ lọc
+                        </button>
+                        <button type="button" class="btn btn-primary phong-filter__btn-apply">
+                            Áp dụng
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Danh sách phòng -->
+        <div class="col-lg-9">
+            <div class="phong-results__toolbar">
+                <h2 class="phong-results__title">Tất cả phòng <span class="phong-results__count">(128 kết quả)</span></h2>
+                <div class="phong-results__sort">
+                    <label class="phong-results__sort-label" for="sortOrder">Sắp xếp</label>
+                    <select class="form-select phong-results__sort-select" id="sortOrder">
+                        <option selected>Mới nhất</option>
+                        <option>Giá tăng dần</option>
+                        <option>Giá giảm dần</option>
+                        <option>Diện tích lớn nhất</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row g-4 phong-results__grid">
+                <div class="col-md-6 col-xl-4">
+                    @await Html.PartialAsync("_RoomCard", (
+                        ImageUrl: "https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=600&h=450&fit=crop",
+                        Title: "Phòng trọ đường Trần Cao Vân",
+                        District: "Thanh Khê",
+                        Price: "2.800.000 đ/tháng",
+                        Area: "25 m²",
+                        Bathroom: "WC riêng",
+                        DetailUrl: "/PhongTro/ChiTiet"
+                    ))
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    @await Html.PartialAsync("_RoomCard", (
+                        ImageUrl: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=450&fit=crop",
+                        Title: "Phòng mới gần ĐH Bách Khoa",
+                        District: "Thanh Khê",
+                        Price: "3.200.000 đ/tháng",
+                        Area: "22 m²",
+                        Bathroom: "WC riêng",
+                        DetailUrl: "/PhongTro/ChiTiet"
+                    ))
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    @await Html.PartialAsync("_RoomCard", (
+                        ImageUrl: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=450&fit=crop",
+                        Title: "Phòng full nội thất – An Hải Bắc",
+                        District: "Sơn Trà",
+                        Price: "4.500.000 đ/tháng",
+                        Area: "28 m²",
+                        Bathroom: "WC riêng",
+                        DetailUrl: "/PhongTro/ChiTiet"
+                    ))
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    @await Html.PartialAsync("_RoomCard", (
+                        ImageUrl: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600&h=450&fit=crop",
+                        Title: "Phòng gác lửng – Hòa Minh",
+                        District: "Liên Chiểu",
+                        Price: "2.000.000 đ/tháng",
+                        Area: "18 m²",
+                        Bathroom: "WC riêng",
+                        DetailUrl: "/PhongTro/ChiTiet"
+                    ))
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    @await Html.PartialAsync("_RoomCard", (
+                        ImageUrl: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&h=450&fit=crop",
+                        Title: "Phòng sạch sẽ – Nguyễn Văn Linh",
+                        District: "Hải Châu",
+                        Price: "3.500.000 đ/tháng",
+                        Area: "20 m²",
+                        Bathroom: "WC riêng",
+                        DetailUrl: "/PhongTro/ChiTiet"
+                    ))
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    @await Html.PartialAsync("_RoomCard", (
+                        ImageUrl: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&h=450&fit=crop",
+                        Title: "Phòng có ban công – Mỹ An",
+                        District: "Ngũ Hành Sơn",
+                        Price: "3.800.000 đ/tháng",
+                        Area: "24 m²",
+                        Bathroom: "WC riêng",
+                        DetailUrl: "/PhongTro/ChiTiet"
+                    ))
+                </div>
+            </div>
+
+            <nav class="phong-pagination" aria-label="Phân trang danh sách phòng">
+                <ul class="pagination justify-content-center mb-0">
+                    <li class="page-item disabled">
+                        <span class="page-link phong-pagination__arrow" aria-hidden="true">&lsaquo;</span>
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item phong-pagination__ellipsis disabled">
+                        <span class="page-link">…</span>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">13</a></li>
+                    <li class="page-item">
+                        <a class="page-link phong-pagination__arrow" href="#" aria-label="Trang sau">&rsaquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

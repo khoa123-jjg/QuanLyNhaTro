@@ -1,0 +1,75 @@
+@{
+    ViewData["Title"] = "Đăng nhập";
+    ViewData["ActiveNav"] = "login";
+}
+
+<section class="login-page">
+    <div class="login-hero">
+        <div class="login-hero__overlay">
+            <div class="container">
+                <div class="login-hero__content">
+                    <div class="login-hero__badge">
+                        <i class="bi bi-building" aria-hidden="true"></i>
+                        Phòng trọ Đà Nẵng
+                    </div>
+                    <h1 class="login-hero__title">Tìm phòng trọ dễ dàng hơn với không gian sống phù hợp</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container login-page__container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-6 col-xl-5">
+                <div class="login-card">
+                    <div class="login-card__icon-wrap">
+                        <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                    </div>
+
+                    <h2 class="login-card__title">ĐĂNG NHẬP</h2>
+                    <p class="login-card__subtitle">Chào mừng bạn quay trở lại!</p>
+
+                    <form method="post" class="login-form" autocomplete="off">
+                        <div class="mb-3">
+                            <label class="form-label login-form__label" for="Email">Email</label>
+                            <div class="login-input-wrap">
+                                <i class="bi bi-envelope" aria-hidden="true"></i>
+                                <input id="Email" name="Email" type="email" class="form-control login-form__input" placeholder="Nhập email của bạn" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label login-form__label" for="Password">Mật khẩu</label>
+                            <div class="login-input-wrap">
+                                <i class="bi bi-lock" aria-hidden="true"></i>
+                                <input id="Password" name="Password" type="password" class="form-control login-form__input login-form__input--password" placeholder="Nhập mật khẩu" />
+                                <button type="button" class="login-form__toggle" aria-label="Hiện hoặc ẩn mật khẩu">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="login-form__options">
+                            <div class="form-check login-form__remember">
+                                <input class="form-check-input" type="checkbox" id="RememberMe" name="RememberMe" />
+                                <label class="form-check-label" for="RememberMe">Ghi nhớ đăng nhập</label>
+                            </div>
+                            <a class="login-form__forgot" href="#">Quên mật khẩu?</a>
+                        </div>
+
+                        <button type="submit" class="btn login-form__submit">Đăng nhập</button>
+
+                        <div class="login-form__divider">
+                            <span>hoặc</span>
+                        </div>
+
+                        <p class="login-form__register-text">
+                            Chưa có tài khoản?
+                            <a href="/Account/Register">Đăng ký tại đây</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,49 @@
+@{
+    // Giá trị gợi ý: "home" | "rooms" | "login" | "register"
+    var activeNav = ViewData["ActiveNav"]?.ToString() ?? "";
+}
+
+<header class="public-header navbar navbar-expand-lg">
+    <div class="container public-header__inner">
+        <a class="public-brand navbar-brand" asp-controller="Home" asp-action="Index">
+            <svg class="public-brand__icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="24" cy="24" r="24" fill="#E8F2FF"/>
+                <path d="M14 22L24 14L34 22V34C34 35.1 33.1 36 32 36H16C14.9 36 14 35.1 14 34V22Z" fill="#0066D9"/>
+                <path d="M18 36V26H30V36" fill="#0052B3"/>
+                <path d="M12 28C12 28 16 24 24 28C32 24 36 28 36 28" stroke="#4DA3FF" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div>
+                <p class="public-brand__title mb-0">PHÒNG TRỌ ĐÀ NẴNG</p>
+                <p class="public-brand__slogan">Tìm phòng dễ dàng, ở trọ an tâm</p>
+            </div>
+        </a>
+
+        <button class="navbar-toggler public-header__toggle"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#publicNavCollapse"
+                aria-controls="publicNavCollapse"
+                aria-expanded="false"
+                aria-label="Mở menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse public-header__collapse" id="publicNavCollapse">
+            <nav class="public-nav ms-lg-auto align-items-lg-center" aria-label="Menu chính">
+                <a class="public-nav__link @(activeNav == "home" ? "is-active" : "")"
+                   asp-controller="Home" asp-action="Index">Trang chủ</a>
+                <a class="public-nav__link @(activeNav == "rooms" ? "is-active" : "")"
+                   asp-controller="PhongTro" asp-action="Index">Tìm phòng</a>
+                <a class="public-nav__link @(activeNav == "login" ? "is-active" : "")"
+                   asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                <div class="public-nav__register-wrap">
+                    <a class="btn-public-register"
+                       asp-controller="Account" asp-action="Register">
+                        <i class="bi bi-person-plus-fill" aria-hidden="true"></i>
+                        Đăng ký
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
