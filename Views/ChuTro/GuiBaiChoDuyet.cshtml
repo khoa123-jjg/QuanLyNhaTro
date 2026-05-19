@@ -1,0 +1,145 @@
+@{
+    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    ViewData["Title"] = "Gửi bài chờ duyệt";
+    ViewData["ActiveLandlordMenu"] = "BaiDang";
+}
+
+<section class="landlord-form-page landlord-submit-review-page">
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">Gửi bài chờ duyệt</h1>
+        <p class="landlord-page-subtitle mb-0">Kiểm tra lại thông tin trước khi gửi bài cho hệ thống.</p>
+    </header>
+
+    <div class="row g-3 g-xl-4 align-items-start">
+        <div class="col-lg-7">
+            <article class="landlord-card landlord-post-summary-card">
+                <h2 class="landlord-panel__title">
+                    <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+                    Thông tin bài đăng
+                </h2>
+                <div class="landlord-post-summary-card__media">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c45772?w=900&h=520&fit=crop" alt="Ảnh phòng P101" />
+                </div>
+                <h3 class="landlord-post-summary-card__title">Phòng trọ mới xây – Ngay Đại học Duy Tân</h3>
+                <p class="landlord-post-summary-card__price">3.500.000 đ/tháng</p>
+                <span class="landlord-badge landlord-badge--info landlord-post-summary-card__room">Phòng P101</span>
+
+                <div class="landlord-post-summary-card__tags mb-4">
+                    <span class="landlord-amenity-pill">Wi-Fi</span>
+                    <span class="landlord-amenity-pill">Máy lạnh</span>
+                    <span class="landlord-amenity-pill">Camera</span>
+                    <span class="landlord-amenity-pill landlord-amenity-pill--muted">+3 tiện nghi khác</span>
+                </div>
+
+                <ul class="landlord-post-summary-card__details list-unstyled mb-4">
+                    <li>
+                        <i class="bi bi-building" aria-hidden="true"></i>
+                        <span>Nhà trọ</span>
+                        <strong>Nhà trọ An Bình</strong>
+                    </li>
+                    <li>
+                        <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                        <span>Địa chỉ</span>
+                        <strong>67 Hòa Minh, Liên Chiểu, Đà Nẵng</strong>
+                    </li>
+                    <li>
+                        <i class="bi bi-aspect-ratio" aria-hidden="true"></i>
+                        <span>Diện tích</span>
+                        <strong>25 m²</strong>
+                    </li>
+                    <li>
+                        <i class="bi bi-people" aria-hidden="true"></i>
+                        <span>Số người tối đa</span>
+                        <strong>2 người</strong>
+                    </li>
+                </ul>
+
+                <div class="landlord-post-summary-card__desc">
+                    <h4 class="landlord-post-summary-card__desc-title">Mô tả</h4>
+                    <p class="mb-0">
+                        Phòng mới xây, sạch sẽ, thoáng mát, có ban công rộng. Gần Đại học Duy Tân, siêu thị và bến xe.
+                        Phù hợp sinh viên và người đi làm. Có wifi, máy lạnh và camera an ninh.
+                        <a href="#">Xem thêm</a>
+                    </p>
+                </div>
+            </article>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="landlord-card landlord-checklist-card mb-3">
+                <h2 class="landlord-panel__title">
+                    <i class="bi bi-clipboard-check" aria-hidden="true"></i>
+                    Danh sách kiểm tra
+                </h2>
+                <ul class="landlord-checklist list-unstyled mb-0">
+                    <li class="landlord-checklist__item landlord-checklist__item--done">
+                        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                        <div>
+                            <strong>Tiêu đề bài đăng</strong>
+                            <span>Đã hoàn tất</span>
+                        </div>
+                    </li>
+                    <li class="landlord-checklist__item landlord-checklist__item--done">
+                        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                        <div>
+                            <strong>Mô tả chi tiết</strong>
+                            <span>Đã hoàn tất</span>
+                        </div>
+                    </li>
+                    <li class="landlord-checklist__item landlord-checklist__item--done">
+                        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                        <div>
+                            <strong>Hình ảnh</strong>
+                            <span>Đã hoàn tất</span>
+                        </div>
+                    </li>
+                    <li class="landlord-checklist__item landlord-checklist__item--done">
+                        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                        <div>
+                            <strong>Giá thuê</strong>
+                            <span>Đã hoàn tất</span>
+                        </div>
+                    </li>
+                    <li class="landlord-checklist__item landlord-checklist__item--done">
+                        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                        <div>
+                            <strong>Thông tin nhà trọ</strong>
+                            <span>Đã hoàn tất</span>
+                        </div>
+                    </li>
+                    <li class="landlord-checklist__item landlord-checklist__item--done">
+                        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                        <div>
+                            <strong>Thông tin liên hệ</strong>
+                            <span>Đã hoàn tất</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="landlord-card landlord-approval-notice mb-3">
+                <div class="landlord-approval-notice__icon" aria-hidden="true">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+                <div>
+                    <h3 class="landlord-approval-notice__title">Thời gian duyệt dự kiến</h3>
+                    <p class="landlord-approval-notice__text mb-2">
+                        Bài đăng của bạn sẽ được hệ thống duyệt trong <strong>2 – 4 giờ</strong>.
+                    </p>
+                    <p class="landlord-approval-notice__hint mb-0">Bạn sẽ nhận thông báo khi bài đăng được duyệt.</p>
+                </div>
+            </div>
+
+            <div class="landlord-submit-review-actions">
+                <a class="btn btn-landlord-outline w-100 mb-2" asp-controller="ChuTro" asp-action="ThemSuaBaiDang">
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                    Quay lại chỉnh sửa
+                </a>
+                <button type="button" class="btn btn-landlord-accent w-100">
+                    <i class="bi bi-send" aria-hidden="true"></i>
+                    Gửi chờ duyệt
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

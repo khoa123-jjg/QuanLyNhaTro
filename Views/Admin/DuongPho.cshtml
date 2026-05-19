@@ -1,0 +1,208 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý đường phố";
+    ViewData["ActiveAdminMenu"] = "DuongPho";
+}
+
+<section class="admin-page admin-list-page admin-street-page">
+    <header class="admin-page-header">
+        <h1 class="admin-page-title">Quản lý đường phố</h1>
+        <p class="admin-page-subtitle mb-0">Thêm, sửa, ẩn đường phố</p>
+    </header>
+
+    <div class="admin-split-layout admin-split-layout--side-form">
+        <div class="admin-split-layout__main">
+            <div class="admin-card admin-filter-card mb-4">
+                <form class="admin-filter-bar admin-filter-bar--street" action="#" method="get" novalidate>
+                    <div class="admin-filter-bar__field admin-filter-bar__field--search">
+                        <label class="admin-form__label" for="searchDuongPho">Tìm kiếm</label>
+                        <div class="admin-input-icon">
+                            <i class="bi bi-search admin-input-icon__icon" aria-hidden="true"></i>
+                            <input class="form-control" id="searchDuongPho" type="search" placeholder="Tìm kiếm tên đường..." />
+                        </div>
+                    </div>
+                    <div class="admin-filter-bar__field">
+                        <label class="admin-form__label" for="donViDuongFilter">Đơn vị hành chính</label>
+                        <select class="form-select admin-filter-select" id="donViDuongFilter">
+                            <option selected>Đơn vị hành chính: Tất cả</option>
+                            <option>Quận Hải Châu</option>
+                            <option>Quận Thanh Khê</option>
+                            <option>Quận Sơn Trà</option>
+                            <option>Quận Ngũ Hành Sơn</option>
+                        </select>
+                    </div>
+                    <div class="admin-filter-bar__action">
+                        <span class="admin-form__label admin-filter-bar__action-label" aria-hidden="true">&nbsp;</span>
+                        <button type="button" class="btn btn-admin-primary">
+                            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                            Thêm đường phố
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <article class="admin-card admin-table-card">
+                <div class="admin-table-wrap">
+                    <table class="table admin-data-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="admin-data-table__col-stt">STT</th>
+                                <th scope="col">Tên đường</th>
+                                <th scope="col">Thuộc đơn vị</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col" class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Đường Nguyễn Văn Linh</td>
+                                <td>Quận Hải Châu</td>
+                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                                <td class="text-end">
+                                    <div class="admin-table-actions">
+                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Đường Điện Biên Phủ</td>
+                                <td>Quận Thanh Khê</td>
+                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                                <td class="text-end">
+                                    <div class="admin-table-actions">
+                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Đường Lê Duẩn</td>
+                                <td>Quận Hải Châu</td>
+                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                                <td class="text-end">
+                                    <div class="admin-table-actions">
+                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Đường Hoàng Sa</td>
+                                <td>Quận Sơn Trà</td>
+                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                                <td class="text-end">
+                                    <div class="admin-table-actions">
+                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Đường Mỹ Khê</td>
+                                <td>Quận Sơn Trà</td>
+                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                                <td class="text-end">
+                                    <div class="admin-table-actions">
+                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Đường Tôn Đức Thắng</td>
+                                <td>Quận Ngũ Hành Sơn</td>
+                                <td><span class="admin-badge admin-badge--warning">Ẩn</span></td>
+                                <td class="text-end">
+                                    <div class="admin-table-actions">
+                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-off" aria-hidden="true"></i></button>
+                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="admin-pagination-bar admin-pagination-bar--bordered" aria-label="Phân trang đường phố">
+                    <p class="admin-pagination-bar__summary mb-0">Hiển thị 1 - 6 của 842 đường</p>
+                    <ul class="admin-pagination mb-0">
+                        <li><span class="admin-pagination__link" aria-hidden="true">&lsaquo;</span></li>
+                        <li><span class="admin-pagination__link is-active">1</span></li>
+                        <li><a class="admin-pagination__link" href="#">2</a></li>
+                        <li><a class="admin-pagination__link" href="#">3</a></li>
+                        <li><span class="admin-pagination__link">…</span></li>
+                        <li><a class="admin-pagination__link" href="#">8</a></li>
+                        <li><a class="admin-pagination__link" href="#" aria-label="Trang sau">&rsaquo;</a></li>
+                    </ul>
+                    <select class="form-select form-select-sm admin-pagination__size" aria-label="Số dòng mỗi trang">
+                        <option selected>10 / trang</option>
+                        <option>20 / trang</option>
+                    </select>
+                </nav>
+            </article>
+        </div>
+
+        <aside class="admin-card admin-side-form-card">
+            <div class="admin-card__header">
+                <h2 class="admin-card__title mb-0">Thêm / Sửa đường phố</h2>
+            </div>
+            <div class="admin-card__body">
+                <form class="admin-form admin-side-form" action="#" method="post" novalidate>
+                    <div class="mb-3">
+                        <label class="admin-form__label" for="tenDuong">
+                            Tên đường <span class="admin-required">*</span>
+                        </label>
+                        <input class="form-control" id="tenDuong" type="text" value="Đường Nguyễn Văn Linh" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="admin-form__label" for="donViDuong">
+                            Thuộc đơn vị <span class="admin-required">*</span>
+                        </label>
+                        <select class="form-select" id="donViDuong">
+                            <option selected>Quận Hải Châu</option>
+                            <option>Quận Thanh Khê</option>
+                            <option>Quận Sơn Trà</option>
+                            <option>Quận Ngũ Hành Sơn</option>
+                            <option>Huyện Hòa Vang</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="admin-form__label" for="trangThaiDuong">
+                            Trạng thái <span class="admin-required">*</span>
+                        </label>
+                        <select class="form-select" id="trangThaiDuong">
+                            <option selected>Hiển thị</option>
+                            <option>Ẩn</option>
+                        </select>
+                    </div>
+                    <div class="admin-side-form-card__actions">
+                        <button type="button" class="btn btn-admin-primary w-100">
+                            <i class="bi bi-save" aria-hidden="true"></i>
+                            Lưu
+                        </button>
+                        <button type="button" class="btn btn-admin-outline w-100">Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>

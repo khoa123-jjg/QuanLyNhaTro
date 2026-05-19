@@ -1,0 +1,196 @@
+@{
+    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    ViewData["Title"] = "Dashboard chủ trọ";
+    ViewData["ActiveLandlordMenu"] = "TongQuan";
+}
+
+<section class="landlord-dashboard">
+    <header class="landlord-dashboard__header">
+        <h1 class="landlord-page-title">Dashboard chủ trọ</h1>
+        <p class="landlord-page-subtitle mb-0">
+            Theo dõi tổng quan nhà trọ, phòng, bài đăng và yêu cầu thuê.
+        </p>
+    </header>
+
+    <div class="row g-3 g-xl-4 landlord-dashboard__stats">
+        <div class="col-sm-6 col-xl-3">
+            <div class="landlord-stat-card">
+                <span class="landlord-stat-card__icon landlord-stat-card__icon--blue" aria-hidden="true">
+                    <i class="bi bi-house-door-fill"></i>
+                </span>
+                <div>
+                    <p class="landlord-stat-card__label">Số nhà trọ</p>
+                    <p class="landlord-stat-card__value">12</p>
+                    <p class="landlord-stat-card__trend landlord-stat-card__trend--up">
+                        <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+                        2 so với tháng trước
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="landlord-stat-card">
+                <span class="landlord-stat-card__icon landlord-stat-card__icon--green" aria-hidden="true">
+                    <i class="bi bi-door-open-fill"></i>
+                </span>
+                <div>
+                    <p class="landlord-stat-card__label">Số phòng</p>
+                    <p class="landlord-stat-card__value">86</p>
+                    <p class="landlord-stat-card__trend landlord-stat-card__trend--up">
+                        <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+                        8 so với tháng trước
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="landlord-stat-card">
+                <span class="landlord-stat-card__icon landlord-stat-card__icon--purple" aria-hidden="true">
+                    <i class="bi bi-megaphone-fill"></i>
+                </span>
+                <div>
+                    <p class="landlord-stat-card__label">Bài đăng</p>
+                    <p class="landlord-stat-card__value">24</p>
+                    <p class="landlord-stat-card__trend landlord-stat-card__trend--up">
+                        <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+                        5 so với tháng trước
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="landlord-stat-card">
+                <span class="landlord-stat-card__icon landlord-stat-card__icon--orange" aria-hidden="true">
+                    <i class="bi bi-people-fill"></i>
+                </span>
+                <div>
+                    <p class="landlord-stat-card__label">Yêu cầu thuê</p>
+                    <p class="landlord-stat-card__value">18</p>
+                    <p class="landlord-stat-card__trend landlord-stat-card__trend--down">
+                        <i class="bi bi-arrow-down-short" aria-hidden="true"></i>
+                        3 so với tháng trước
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 g-xl-4 landlord-dashboard__panels">
+        <div class="col-lg-7">
+            <div class="landlord-card landlord-activity-card h-100">
+                <h2 class="landlord-panel__title">Hoạt động gần đây</h2>
+                <ul class="landlord-activity-list list-unstyled mb-0">
+                    <li class="landlord-activity-list__item">
+                        <span class="landlord-activity-list__icon landlord-activity-list__icon--success" aria-hidden="true">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </span>
+                        <div class="landlord-activity-list__content">
+                            <p class="landlord-activity-list__title mb-0">Yêu cầu thuê mới</p>
+                            <p class="landlord-activity-list__desc mb-0">
+                                Trần Thị B muốn thuê phòng P101 tại nhà trọ An Bình
+                            </p>
+                        </div>
+                        <time class="landlord-activity-list__time">15/05/2025 10:25</time>
+                    </li>
+                    <li class="landlord-activity-list__item">
+                        <span class="landlord-activity-list__icon landlord-activity-list__icon--warning" aria-hidden="true">
+                            <i class="bi bi-eye-fill"></i>
+                        </span>
+                        <div class="landlord-activity-list__content">
+                            <p class="landlord-activity-list__title mb-0">Bài đăng đã được duyệt</p>
+                            <p class="landlord-activity-list__desc mb-0">
+                                Phòng trọ gần ĐH Duy Tân đã được phê duyệt
+                            </p>
+                        </div>
+                        <time class="landlord-activity-list__time">13/05/2025 09:40</time>
+                    </li>
+                    <li class="landlord-activity-list__item">
+                        <span class="landlord-activity-list__icon landlord-activity-list__icon--info" aria-hidden="true">
+                            <i class="bi bi-plus-circle-fill"></i>
+                        </span>
+                        <div class="landlord-activity-list__content">
+                            <p class="landlord-activity-list__title mb-0">Thêm phòng mới</p>
+                            <p class="landlord-activity-list__desc mb-0">
+                                Đã thêm phòng P203 vào nhà trọ Bình Minh
+                            </p>
+                        </div>
+                        <time class="landlord-activity-list__time">12/05/2025 16:15</time>
+                    </li>
+                    <li class="landlord-activity-list__item">
+                        <span class="landlord-activity-list__icon landlord-activity-list__icon--danger" aria-hidden="true">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </span>
+                        <div class="landlord-activity-list__content">
+                            <p class="landlord-activity-list__title mb-0">Yêu cầu thuê bị từ chối</p>
+                            <p class="landlord-activity-list__desc mb-0">
+                                Lê Văn C — yêu cầu thuê phòng P105 bị từ chối
+                            </p>
+                        </div>
+                        <time class="landlord-activity-list__time">11/05/2025 14:30</time>
+                    </li>
+                    <li class="landlord-activity-list__item">
+                        <span class="landlord-activity-list__icon landlord-activity-list__icon--success" aria-hidden="true">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </span>
+                        <div class="landlord-activity-list__content">
+                            <p class="landlord-activity-list__title mb-0">Yêu cầu thuê đã duyệt</p>
+                            <p class="landlord-activity-list__desc mb-0">
+                                Nguyễn Thị D — yêu cầu thuê phòng P102 đã được chấp nhận
+                            </p>
+                        </div>
+                        <time class="landlord-activity-list__time">10/05/2025 11:20</time>
+                    </li>
+                </ul>
+                <a class="landlord-activity-card__more" href="#">Xem tất cả hoạt động <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="landlord-card landlord-quick-card h-100">
+                <h2 class="landlord-panel__title">Thao tác nhanh</h2>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <a class="landlord-quick-action landlord-quick-action--blue" asp-controller="ChuTro" asp-action="ThemSuaNhaTro">
+                            <span class="landlord-quick-action__icon" aria-hidden="true">
+                                <i class="bi bi-house-door"></i>
+                            </span>
+                            <span class="landlord-quick-action__title">Quản lý nhà trọ</span>
+                            <span class="landlord-quick-action__desc">Thêm, sửa, quản lý thông tin nhà trọ của bạn</span>
+                            <i class="bi bi-chevron-right landlord-quick-action__arrow" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a class="landlord-quick-action landlord-quick-action--green" asp-controller="ChuTro" asp-action="LoaiPhong">
+                            <span class="landlord-quick-action__icon" aria-hidden="true">
+                                <i class="bi bi-layout-text-window"></i>
+                            </span>
+                            <span class="landlord-quick-action__title">Quản lý loại phòng</span>
+                            <span class="landlord-quick-action__desc">Quản lý các loại phòng và giá thuê</span>
+                            <i class="bi bi-chevron-right landlord-quick-action__arrow" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a class="landlord-quick-action landlord-quick-action--orange" asp-controller="ChuTro" asp-action="BaiDang">
+                            <span class="landlord-quick-action__icon" aria-hidden="true">
+                                <i class="bi bi-file-earmark-plus"></i>
+                            </span>
+                            <span class="landlord-quick-action__title">Đăng tin</span>
+                            <span class="landlord-quick-action__desc">Tạo bài đăng mới để cho thuê phòng</span>
+                            <i class="bi bi-chevron-right landlord-quick-action__arrow" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a class="landlord-quick-action landlord-quick-action--purple" asp-controller="ChuTro" asp-action="YeuCauThue">
+                            <span class="landlord-quick-action__icon" aria-hidden="true">
+                                <i class="bi bi-people"></i>
+                            </span>
+                            <span class="landlord-quick-action__title">Xem yêu cầu thuê</span>
+                            <span class="landlord-quick-action__desc">Xem và xử lý các yêu cầu thuê từ khách</span>
+                            <i class="bi bi-chevron-right landlord-quick-action__arrow" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

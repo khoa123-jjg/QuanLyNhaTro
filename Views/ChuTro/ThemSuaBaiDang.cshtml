@@ -1,0 +1,204 @@
+@{
+    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    ViewData["Title"] = "Tạo / Sửa bài đăng";
+    ViewData["ActiveLandlordMenu"] = "BaiDang";
+}
+
+<section class="landlord-form-page landlord-post-form-page">
+    <nav class="landlord-breadcrumb mb-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb landlord-breadcrumb__list mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="ChuTro" asp-action="BaiDang">Tin đăng</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tạo / Sửa bài đăng</li>
+        </ol>
+    </nav>
+
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">Tạo / Sửa bài đăng</h1>
+        <p class="landlord-page-subtitle mb-0">Nhập tiêu đề, nội dung và chọn loại phòng.</p>
+    </header>
+
+    <div class="row g-3 g-xl-4 align-items-start">
+        <div class="col-lg-8">
+            <div class="landlord-card landlord-form-card">
+                <form class="landlord-form" action="#" method="post" novalidate>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="landlord-form__label mb-0" for="tieuDeBaiDang">Tiêu đề bài đăng <span class="text-danger">*</span></label>
+                            <span class="landlord-char-counter">0/120</span>
+                        </div>
+                        <input class="form-control" id="tieuDeBaiDang" type="text" placeholder="VD: Phòng trọ mới xây – Ngay Đại học Duy Tân" value="Phòng trọ mới xây – Ngay Đại học Duy Tân" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="landlord-form__label" for="nhaTroBaiDang">Nhà trọ <span class="text-danger">*</span></label>
+                        <select class="form-select" id="nhaTroBaiDang">
+                            <option selected>Nhà trọ An Bình – Đường số 7, Hòa Minh, Liên Chiểu, Đà Nẵng</option>
+                            <option>Nhà trọ Minh Khang – 12 Trần Thánh Tông, Sơn Trà</option>
+                            <option>Nhà trọ Hòa Phú – 8 Võ Nguyên Giáp, Sơn Trà</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="landlord-form__label mb-0" for="noiDungChiTiet">Nội dung chi tiết <span class="text-danger">*</span></label>
+                            <span class="landlord-char-counter">0 từ</span>
+                        </div>
+                        <div class="landlord-rich-editor">
+                            <div class="landlord-rich-editor__toolbar" role="toolbar" aria-label="Định dạng nội dung">
+                                <select class="form-select form-select-sm landlord-rich-editor__format" aria-label="Kiểu đoạn">
+                                    <option>Normal</option>
+                                    <option>Heading</option>
+                                </select>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="In đậm"><i class="bi bi-type-bold" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="In nghiêng"><i class="bi bi-type-italic" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Gạch chân"><i class="bi bi-type-underline" aria-hidden="true"></i></button>
+                                <span class="landlord-rich-editor__divider" aria-hidden="true"></span>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Danh sách"><i class="bi bi-list-ul" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Danh sách đánh số"><i class="bi bi-list-ol" aria-hidden="true"></i></button>
+                                <span class="landlord-rich-editor__divider" aria-hidden="true"></span>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Căn trái"><i class="bi bi-text-left" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Căn giữa"><i class="bi bi-text-center" aria-hidden="true"></i></button>
+                                <span class="landlord-rich-editor__divider" aria-hidden="true"></span>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Chèn liên kết"><i class="bi bi-link-45deg" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Chèn ảnh"><i class="bi bi-image" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Chèn bảng"><i class="bi bi-table" aria-hidden="true"></i></button>
+                                <span class="landlord-rich-editor__divider" aria-hidden="true"></span>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Hoàn tác"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" aria-label="Làm lại"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i></button>
+                            </div>
+                            <textarea class="form-control landlord-rich-editor__area" id="noiDungChiTiet" rows="8" placeholder="Mô tả chi tiết phòng, tiện ích, quy định...">Phòng mới xây, sạch sẽ, thoáng mát, có ban công rộng. Gần Đại học Duy Tân, siêu thị và bến xe. Phù hợp sinh viên và người đi làm.</textarea>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="landlord-form__label d-block mb-2">Gắn thẻ</span>
+                        <div class="landlord-tag-list">
+                            <button type="button" class="landlord-tag landlord-tag--active">Gần trường ĐH</button>
+                            <button type="button" class="landlord-tag landlord-tag--active">Gần chợ</button>
+                            <button type="button" class="landlord-tag">Khu dân cư an ninh</button>
+                            <button type="button" class="landlord-tag">Gần biển</button>
+                            <button type="button" class="landlord-tag">Có thang máy</button>
+                            <button type="button" class="landlord-tag landlord-tag--add">
+                                <i class="bi bi-plus-lg" aria-hidden="true"></i> Thêm thẻ
+                            </button>
+                        </div>
+                    </div>
+
+                    <fieldset class="mb-0">
+                        <legend class="landlord-form__label mb-3">Điểm nổi bật</legend>
+                        <div class="row g-2 landlord-highlight-grid">
+                            <div class="col-sm-6 col-md-4">
+                                <label class="landlord-highlight-option">
+                                    <input type="checkbox" checked />
+                                    <span><i class="bi bi-building" aria-hidden="true"></i> Phòng mới xây</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <label class="landlord-highlight-option">
+                                    <input type="checkbox" checked />
+                                    <span><i class="bi bi-lamp" aria-hidden="true"></i> Nội thất đầy đủ</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <label class="landlord-highlight-option">
+                                    <input type="checkbox" />
+                                    <span><i class="bi bi-bicycle" aria-hidden="true"></i> Có chỗ để xe</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <label class="landlord-highlight-option">
+                                    <input type="checkbox" checked />
+                                    <span><i class="bi bi-wifi" aria-hidden="true"></i> Wifi miễn phí</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <label class="landlord-highlight-option">
+                                    <input type="checkbox" />
+                                    <span><i class="bi bi-camera-video" aria-hidden="true"></i> Có camera</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <label class="landlord-highlight-option">
+                                    <input type="checkbox" />
+                                    <span><i class="bi bi-droplet" aria-hidden="true"></i> Nóng lạnh 24/7</span>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="landlord-form-actions">
+                <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="BaiDang">Hủy</a>
+                <button type="button" class="btn btn-landlord-outline">
+                    <i class="bi bi-save" aria-hidden="true"></i>
+                    Lưu nháp
+                </button>
+                <a class="btn btn-landlord-accent" asp-controller="ChuTro" asp-action="GuiBaiChoDuyet">
+                    <i class="bi bi-send" aria-hidden="true"></i>
+                    Gửi chờ duyệt
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="landlord-card landlord-room-picker-card mb-3 sticky-lg-top">
+                <h2 class="landlord-panel__title">Chọn loại phòng</h2>
+                <div class="landlord-room-picker">
+                    <label class="landlord-room-picker__item landlord-room-picker__item--selected">
+                        <input type="radio" name="loaiPhongBaiDang" checked />
+                        <span class="landlord-room-picker__icon landlord-room-picker__icon--blue" aria-hidden="true"><i class="bi bi-door-closed"></i></span>
+                        <span class="landlord-room-picker__body">
+                            <strong>Phòng P101</strong>
+                            <small>Phòng khép kín, diện tích từ 15–20 m²</small>
+                        </span>
+                    </label>
+                    <label class="landlord-room-picker__item">
+                        <input type="radio" name="loaiPhongBaiDang" />
+                        <span class="landlord-room-picker__icon landlord-room-picker__icon--green" aria-hidden="true"><i class="bi bi-house"></i></span>
+                        <span class="landlord-room-picker__body">
+                            <strong>Phòng P102</strong>
+                            <small>Phòng rộng, có ban công nhỏ</small>
+                        </span>
+                    </label>
+                    <label class="landlord-room-picker__item">
+                        <input type="radio" name="loaiPhongBaiDang" />
+                        <span class="landlord-room-picker__icon landlord-room-picker__icon--orange" aria-hidden="true"><i class="bi bi-layers"></i></span>
+                        <span class="landlord-room-picker__body">
+                            <strong>Phòng P103</strong>
+                            <small>Phòng góc, ánh sáng tự nhiên tốt</small>
+                        </span>
+                    </label>
+                    <label class="landlord-room-picker__item">
+                        <input type="radio" name="loaiPhongBaiDang" />
+                        <span class="landlord-room-picker__icon landlord-room-picker__icon--purple" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span>
+                        <span class="landlord-room-picker__body">
+                            <strong>Phòng gác lửng</strong>
+                            <small>Tầng lửng riêng, phù hợp 2 người</small>
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="landlord-card landlord-post-preview-card sticky-lg-top">
+                <h2 class="landlord-panel__title">Xem trước bài đăng</h2>
+                <div class="landlord-post-preview-card__media">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c45772?w=640&h=400&fit=crop" alt="Xem trước phòng P101" />
+                    <span class="landlord-post-preview-card__photos">6 ảnh</span>
+                </div>
+                <p class="landlord-post-preview-card__hostel mb-1">Nhà trọ An Bình</p>
+                <h3 class="landlord-post-preview-card__room mb-2">Phòng P101</h3>
+                <p class="landlord-post-preview-card__price mb-3">2.800.000 đ/tháng</p>
+                <p class="landlord-post-preview-card__area mb-3"><i class="bi bi-aspect-ratio" aria-hidden="true"></i> 18 m²</p>
+                <div class="landlord-post-preview-card__amenities" aria-label="Tiện nghi">
+                    <span><i class="bi bi-wifi" aria-hidden="true"></i></span>
+                    <span><i class="bi bi-bicycle" aria-hidden="true"></i></span>
+                    <span><i class="bi bi-droplet" aria-hidden="true"></i></span>
+                    <span><i class="bi bi-snow" aria-hidden="true"></i></span>
+                    <span class="landlord-post-preview-card__amenities-more">+2</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,119 @@
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+    ViewData["ActiveTenantMenu"] = "HoSo";
+}
+
+<section class="tenant-profile-page">
+    <div class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb" class="tenant-breadcrumb mb-3">
+            <ol class="breadcrumb mb-0 tenant-breadcrumb__list">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index" aria-label="Trang chủ">
+                        <i class="bi bi-house-door-fill tenant-breadcrumb__home-icon" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Hồ sơ cá nhân</li>
+            </ol>
+        </nav>
+
+        <header class="tenant-page-header mb-3">
+            <h1 class="tenant-page-header__title">Hồ sơ cá nhân</h1>
+            <p class="tenant-page-header__subtitle">Cập nhật thông tin cá nhân và nhu cầu thuê.</p>
+        </header>
+
+        <div class="tenant-profile-alert" role="status">
+            <i class="bi bi-info-circle-fill tenant-profile-alert__icon" aria-hidden="true"></i>
+            <p class="tenant-profile-alert__text mb-0">
+                Thông tin của bạn được bảo mật và chỉ dùng để hỗ trợ tìm phòng phù hợp.
+            </p>
+        </div>
+
+        <div class="tenant-page-layout tenant-page-layout--profile">
+            <div class="tenant-page-layout__main">
+                <div class="tenant-card tenant-profile-card">
+                    <h2 class="tenant-profile-card__title">Thông tin cá nhân</h2>
+
+                    <div class="tenant-profile-avatar">
+                        <img class="tenant-profile-avatar__image"
+                             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+                             alt="Ảnh đại diện Nguyễn Văn A" />
+                        <div class="tenant-profile-avatar__actions">
+                            <button type="button" class="btn-tenant-change-photo">
+                                <i class="bi bi-camera" aria-hidden="true"></i>
+                                Đổi ảnh
+                            </button>
+                            <p class="tenant-profile-avatar__hint mb-0">JPG, PNG tối đa 2MB</p>
+                        </div>
+                    </div>
+
+                    <form class="tenant-profile-form" action="#" method="post" novalidate>
+                        <div class="row g-3 g-md-4">
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" for="hoTen">Họ tên</label>
+                                <input class="form-control tenant-profile-form__input" id="hoTen" type="text" value="Nguyễn Văn A" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" for="email">Email</label>
+                                <input class="form-control tenant-profile-form__input" id="email" type="email" value="nguyenvana@gmail.com" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" for="soDienThoai">Số điện thoại</label>
+                                <input class="form-control tenant-profile-form__input" id="soDienThoai" type="text" value="0901 234 567" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" for="ngheNghiep">Nghề nghiệp</label>
+                                <select class="form-select tenant-profile-form__input" id="ngheNghiep">
+                                    <option selected>Nhân viên văn phòng</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" for="cccd">CCCD/CMND</label>
+                                <input class="form-control tenant-profile-form__input" id="cccd" type="text" value="201234567890" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" for="nhuCauThue">Nhu cầu thuê</label>
+                                <select class="form-select tenant-profile-form__input" id="nhuCauThue">
+                                    <option selected>Phòng để ở lâu dài</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" for="khuVuc">Khu vực mong muốn</label>
+                                <input class="form-control tenant-profile-form__input" id="khuVuc" type="text" value="Liên Chiểu, Thanh Khê, Hải Châu" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" for="mucGia">Mức giá mong muốn</label>
+                                <input class="form-control tenant-profile-form__input" id="mucGia" type="text" value="2.000.000 đ - 3.000.000 đ/tháng" />
+                            </div>
+                            <div class="col-12">
+                                <label class="tenant-profile-form__label" for="ghiChu">Ghi chú</label>
+                                <div class="tenant-profile-form__textarea-wrap">
+                                    <textarea class="form-control tenant-profile-form__textarea" id="ghiChu" rows="4" maxlength="200">Ưu tiên phòng có cửa sổ, giờ giấc tự do, chỗ để xe thuận tiện.</textarea>
+                                    <span class="tenant-profile-form__counter">67/200</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tenant-profile-form__actions">
+                            <button type="button" class="btn-tenant-save">
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                Lưu cập nhật
+                            </button>
+                            <button type="button" class="btn-tenant-password">
+                                <i class="bi bi-lock" aria-hidden="true"></i>
+                                Đổi mật khẩu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tenant-aside-stack">
+                @await Html.PartialAsync("_TenantSidebar")
+                @await Html.PartialAsync("_TenantSupport")
+            </div>
+        </div>
+    </div>
+</section>

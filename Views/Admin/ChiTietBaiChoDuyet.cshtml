@@ -1,0 +1,148 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chi tiết bài chờ duyệt";
+    ViewData["ActiveAdminMenu"] = "BaiChoDuyet";
+}
+
+<section class="admin-page admin-detail-page admin-post-detail">
+    <header class="admin-page-header admin-page-header--with-back">
+        <a class="admin-back-btn" asp-controller="Admin" asp-action="BaiChoDuyet" aria-label="Quay lại">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        </a>
+        <div>
+            <h1 class="admin-page-title">Chi tiết bài chờ duyệt</h1>
+            <a class="admin-back-link" asp-controller="Admin" asp-action="BaiChoDuyet">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Quay lại danh sách bài chờ duyệt
+            </a>
+        </div>
+    </header>
+
+    <div class="row g-4 admin-post-detail__grid">
+        <div class="col-lg-7">
+            <article class="admin-card h-100">
+                <div class="admin-card__header">
+                    <h2 class="admin-card__title mb-0">Thông tin bài đăng</h2>
+                </div>
+                <div class="admin-card__body">
+                    <div class="admin-info-grid">
+                        <div class="admin-info-row">
+                            <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-card-text"></i></span>
+                            <div>
+                                <p class="admin-info-row__label mb-0">Tiêu đề</p>
+                                <p class="admin-info-row__value mb-0">Phòng trọ mới đường Lê Duẩn</p>
+                            </div>
+                        </div>
+                        <div class="admin-info-row">
+                            <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-person"></i></span>
+                            <div>
+                                <p class="admin-info-row__label mb-0">Chủ trọ</p>
+                                <p class="admin-info-row__value mb-0">Nguyễn Văn A</p>
+                            </div>
+                        </div>
+                        <div class="admin-info-row">
+                            <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-building"></i></span>
+                            <div>
+                                <p class="admin-info-row__label mb-0">Nhà trọ</p>
+                                <p class="admin-info-row__value mb-0">Nhà trọ An Bình</p>
+                            </div>
+                        </div>
+                        <div class="admin-info-row">
+                            <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span>
+                            <div>
+                                <p class="admin-info-row__label mb-0">Ngày gửi</p>
+                                <p class="admin-info-row__value mb-0">12/05/2025 10:20</p>
+                            </div>
+                        </div>
+                        <div class="admin-info-row">
+                            <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-hourglass-split"></i></span>
+                            <div>
+                                <p class="admin-info-row__label mb-0">Trạng thái hiện tại</p>
+                                <p class="admin-info-row__value mb-0">
+                                    <span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="admin-post-detail__section-label">Nội dung mô tả</h3>
+                    <p class="admin-post-detail__description mb-0">
+                        Phòng trọ mới, sạch sẽ, đầy đủ tiện nghi cơ bản. Vị trí thuận tiện đi lại,
+                        gần trường học và khu vực ăn uống. Phù hợp sinh viên, người đi làm.
+                        Giá thuê ưu đãi cho khách thuê dài hạn. Liên hệ xem phòng trực tiếp.
+                    </p>
+                </div>
+            </article>
+        </div>
+
+        <div class="col-lg-5">
+            <article class="admin-card mb-4">
+                <div class="admin-card__header">
+                    <h2 class="admin-card__title mb-0">Hình ảnh</h2>
+                </div>
+                <div class="admin-card__body">
+                    <div class="admin-post-gallery">
+                        <img class="admin-post-gallery__main"
+                             src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=500&fit=crop"
+                             alt="Ảnh phòng trọ" />
+                        <div class="admin-post-gallery__thumbs">
+                            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=200&h=140&fit=crop" alt="" />
+                            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=140&fit=crop" alt="" />
+                            <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=200&h=140&fit=crop" alt="" />
+                            <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200&h=140&fit=crop" alt="" />
+                            <img src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=200&h=140&fit=crop" alt="" />
+                            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&h=140&fit=crop" alt="" />
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-admin-outline btn-sm w-100 mt-3">
+                        Xem tất cả 9 ảnh
+                    </button>
+                </div>
+            </article>
+
+            <article class="admin-card">
+                <div class="admin-card__header">
+                    <h2 class="admin-card__title mb-0">Loại phòng / Tiện ích</h2>
+                </div>
+                <div class="admin-card__body">
+                    <dl class="admin-post-meta-list">
+                        <div class="admin-post-meta-list__item">
+                            <dt>Loại phòng</dt>
+                            <dd>Phòng đơn có ban công</dd>
+                        </div>
+                        <div class="admin-post-meta-list__item">
+                            <dt>Diện tích</dt>
+                            <dd>22 m²</dd>
+                        </div>
+                        <div class="admin-post-meta-list__item">
+                            <dt>Số người tối đa</dt>
+                            <dd>2 người</dd>
+                        </div>
+                        <div class="admin-post-meta-list__item">
+                            <dt>Nội thất</dt>
+                            <dd>Giường, tủ, bàn học, điều hòa</dd>
+                        </div>
+                    </dl>
+                    <p class="admin-post-detail__section-label mb-2">Tiện ích</p>
+                    <div class="admin-tags">
+                        <span class="admin-tag"><i class="bi bi-droplet" aria-hidden="true"></i> WC riêng</span>
+                        <span class="admin-tag"><i class="bi bi-wifi" aria-hidden="true"></i> Internet</span>
+                        <span class="admin-tag"><i class="bi bi-camera-video" aria-hidden="true"></i> Camera</span>
+                        <span class="admin-tag"><i class="bi bi-bicycle" aria-hidden="true"></i> Chỗ để xe</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <div class="admin-page-actions admin-post-detail__actions">
+        <a class="btn btn-admin-outline" asp-controller="Admin" asp-action="BaiChoDuyet">Quay lại</a>
+        <a class="btn btn-admin-primary" asp-controller="Admin" asp-action="DuyetBai">
+            <i class="bi bi-check-lg" aria-hidden="true"></i>
+            Duyệt
+        </a>
+        <a class="btn btn-admin-danger-outline" asp-controller="Admin" asp-action="TuChoiBai">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+            Từ chối
+        </a>
+    </div>
+</section>

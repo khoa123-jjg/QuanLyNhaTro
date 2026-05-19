@@ -1,0 +1,278 @@
+@{
+    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    ViewData["Title"] = "Danh sách bài đăng";
+    ViewData["ActiveLandlordMenu"] = "BaiDang";
+}
+
+<section class="landlord-list-page landlord-post-list">
+    <header class="landlord-list-page__header">
+        <div class="landlord-list-page__intro">
+            <h1 class="landlord-page-title">Danh sách bài đăng</h1>
+            <p class="landlord-page-subtitle mb-0">Quản lý bài đăng cho thuê của bạn.</p>
+        </div>
+    </header>
+
+    <div class="landlord-card landlord-filter-card mb-4">
+        <form class="landlord-filter-bar" action="#" method="get" novalidate>
+            <div class="landlord-filter-bar__field landlord-filter-bar__field--search">
+                <label class="landlord-form__label" for="searchBaiDang">Tìm kiếm</label>
+                <div class="landlord-input-icon">
+                    <i class="bi bi-search landlord-input-icon__icon" aria-hidden="true"></i>
+                    <input class="form-control" id="searchBaiDang" type="search" placeholder="Tìm kiếm bài đăng theo tiêu đề..." />
+                </div>
+            </div>
+            <div class="landlord-filter-bar__field">
+                <label class="landlord-form__label" for="nhaTroFilter">Nhà trọ</label>
+                <select class="form-select" id="nhaTroFilter">
+                    <option selected>Tất cả nhà trọ</option>
+                    <option>Nhà trọ An Bình</option>
+                    <option>Nhà trọ Minh Khang</option>
+                    <option>Nhà trọ Hòa Phú</option>
+                </select>
+            </div>
+            <div class="landlord-filter-bar__field">
+                <label class="landlord-form__label" for="trangThaiDuyetFilter">Trạng thái duyệt</label>
+                <select class="form-select" id="trangThaiDuyetFilter">
+                    <option selected>Tất cả trạng thái</option>
+                    <option>Đã duyệt</option>
+                    <option>Chờ duyệt</option>
+                    <option>Nháp</option>
+                    <option>Bị từ chối</option>
+                </select>
+            </div>
+            <div class="landlord-filter-bar__action">
+                <span class="landlord-form__label landlord-filter-bar__action-label" aria-hidden="true">&nbsp;</span>
+                <a class="btn btn-landlord-accent" asp-controller="ChuTro" asp-action="ThemSuaBaiDang">
+                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                    Tạo bài đăng mới
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="landlord-card landlord-table-card">
+        <div class="landlord-table-wrap">
+            <table class="table landlord-data-table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" class="landlord-data-table__col-stt">#</th>
+                        <th scope="col">Bài đăng</th>
+                        <th scope="col">Nhà trọ</th>
+                        <th scope="col">Trạng thái duyệt</th>
+                        <th scope="col">Ngày tạo</th>
+                        <th scope="col" class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="landlord-post-cell">
+                                <img class="landlord-post-cell__thumb" src="https://images.unsplash.com/photo-1560448204-e02f11c45772?w=120&h=90&fit=crop" alt="" />
+                                <div>
+                                    <p class="landlord-post-cell__title mb-1">Phòng trọ mới xây – Ngay Đại học Duy Tân</p>
+                                    <p class="landlord-post-cell__meta mb-0">25 m² · Phòng có ban công · 2–3 người</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="landlord-post-hostel__name mb-1">Nhà trọ An Bình</p>
+                            <p class="landlord-post-hostel__addr mb-0"><i class="bi bi-geo-alt" aria-hidden="true"></i> 67 Hòa Minh, Liên Chiểu</p>
+                        </td>
+                        <td><span class="landlord-badge landlord-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Đã duyệt</span></td>
+                        <td class="landlord-data-table__date">15/05/2025 10:25</td>
+                        <td class="text-end">
+                            <div class="landlord-table-actions">
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--view" href="#" aria-label="Xem bài đăng"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaBaiDang" aria-label="Sửa bài đăng"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--copy" aria-label="Sao chép bài đăng"><i class="bi bi-copy" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa bài đăng"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <div class="landlord-post-cell">
+                                <img class="landlord-post-cell__thumb" src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=120&h=90&fit=crop" alt="" />
+                                <div>
+                                    <p class="landlord-post-cell__title mb-1">Phòng rộng có ban công – Gần cầu Rồng</p>
+                                    <p class="landlord-post-cell__meta mb-0">22 m² · Phòng rộng · 2 người</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="landlord-post-hostel__name mb-1">Nhà trọ Minh Khang</p>
+                            <p class="landlord-post-hostel__addr mb-0"><i class="bi bi-geo-alt" aria-hidden="true"></i> 12 Trần Thánh Tông, Sơn Trà</p>
+                        </td>
+                        <td><span class="landlord-badge landlord-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
+                        <td class="landlord-data-table__date">14/05/2025 16:40</td>
+                        <td class="text-end">
+                            <div class="landlord-table-actions">
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--view" href="#" aria-label="Xem bài đăng"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaBaiDang" aria-label="Sửa bài đăng"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--copy" aria-label="Sao chép bài đăng"><i class="bi bi-copy" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa bài đăng"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            <div class="landlord-post-cell">
+                                <img class="landlord-post-cell__thumb" src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=120&h=90&fit=crop" alt="" />
+                                <div>
+                                    <p class="landlord-post-cell__title mb-1">Phòng mini giá sinh viên – Khu An Hải</p>
+                                    <p class="landlord-post-cell__meta mb-0">14 m² · Phòng mini · 1 người</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="landlord-post-hostel__name mb-1">Nhà trọ Hòa Phú</p>
+                            <p class="landlord-post-hostel__addr mb-0"><i class="bi bi-geo-alt" aria-hidden="true"></i> 8 Võ Nguyên Giáp, Sơn Trà</p>
+                        </td>
+                        <td><span class="landlord-badge landlord-badge--info"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Nháp</span></td>
+                        <td class="landlord-data-table__date">13/05/2025 09:15</td>
+                        <td class="text-end">
+                            <div class="landlord-table-actions">
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--view" href="#" aria-label="Xem bài đăng"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaBaiDang" aria-label="Sửa bài đăng"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--copy" aria-label="Sao chép bài đăng"><i class="bi bi-copy" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa bài đăng"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>
+                            <div class="landlord-post-cell">
+                                <img class="landlord-post-cell__thumb" src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=120&h=90&fit=crop" alt="" />
+                                <div>
+                                    <p class="landlord-post-cell__title mb-1">Phòng gác lửng view đẹp – Gần biển Mỹ Khê</p>
+                                    <p class="landlord-post-cell__meta mb-0">24 m² · Phòng gác lửng · 2 người</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="landlord-post-hostel__name mb-1">Nhà trọ An Bình</p>
+                            <p class="landlord-post-hostel__addr mb-0"><i class="bi bi-geo-alt" aria-hidden="true"></i> 67 Hòa Minh, Liên Chiểu</p>
+                        </td>
+                        <td><span class="landlord-badge landlord-badge--danger"><i class="bi bi-x-circle-fill" aria-hidden="true"></i> Bị từ chối</span></td>
+                        <td class="landlord-data-table__date">12/05/2025 14:02</td>
+                        <td class="text-end">
+                            <div class="landlord-table-actions">
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--view" href="#" aria-label="Xem bài đăng"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaBaiDang" aria-label="Sửa bài đăng"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--copy" aria-label="Sao chép bài đăng"><i class="bi bi-copy" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa bài đăng"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>
+                            <div class="landlord-post-cell">
+                                <img class="landlord-post-cell__thumb" src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=120&h=90&fit=crop" alt="" />
+                                <div>
+                                    <p class="landlord-post-cell__title mb-1">Phòng cao cấp full nội thất – Khuê Trung</p>
+                                    <p class="landlord-post-cell__meta mb-0">25 m² · Phòng cao cấp · 2 người</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="landlord-post-hostel__name mb-1">Nhà trọ Minh Khang</p>
+                            <p class="landlord-post-hostel__addr mb-0"><i class="bi bi-geo-alt" aria-hidden="true"></i> 12 Trần Thánh Tông, Sơn Trà</p>
+                        </td>
+                        <td><span class="landlord-badge landlord-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Đã duyệt</span></td>
+                        <td class="landlord-data-table__date">11/05/2025 08:50</td>
+                        <td class="text-end">
+                            <div class="landlord-table-actions">
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--view" href="#" aria-label="Xem bài đăng"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaBaiDang" aria-label="Sửa bài đăng"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--copy" aria-label="Sao chép bài đăng"><i class="bi bi-copy" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa bài đăng"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>
+                            <div class="landlord-post-cell">
+                                <img class="landlord-post-cell__thumb" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=120&h=90&fit=crop" alt="" />
+                                <div>
+                                    <p class="landlord-post-cell__title mb-1">Phòng tiêu chuẩn gần chợ Hòa Khánh</p>
+                                    <p class="landlord-post-cell__meta mb-0">18 m² · Phòng tiêu chuẩn · 2 người</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="landlord-post-hostel__name mb-1">Nhà trọ Hòa Phú</p>
+                            <p class="landlord-post-hostel__addr mb-0"><i class="bi bi-geo-alt" aria-hidden="true"></i> 8 Võ Nguyên Giáp, Sơn Trà</p>
+                        </td>
+                        <td><span class="landlord-badge landlord-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
+                        <td class="landlord-data-table__date">10/05/2025 19:30</td>
+                        <td class="text-end">
+                            <div class="landlord-table-actions">
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--view" href="#" aria-label="Xem bài đăng"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaBaiDang" aria-label="Sửa bài đăng"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--copy" aria-label="Sao chép bài đăng"><i class="bi bi-copy" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa bài đăng"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>
+                            <div class="landlord-post-cell">
+                                <img class="landlord-post-cell__thumb" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=120&h=90&fit=crop" alt="" />
+                                <div>
+                                    <p class="landlord-post-cell__title mb-1">Phòng sạch có máy lạnh – Gần ĐH Kinh tế</p>
+                                    <p class="landlord-post-cell__meta mb-0">20 m² · Phòng có ban công · 2 người</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="landlord-post-hostel__name mb-1">Nhà trọ An Bình</p>
+                            <p class="landlord-post-hostel__addr mb-0"><i class="bi bi-geo-alt" aria-hidden="true"></i> 67 Hòa Minh, Liên Chiểu</p>
+                        </td>
+                        <td><span class="landlord-badge landlord-badge--info"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Nháp</span></td>
+                        <td class="landlord-data-table__date">09/05/2025 11:05</td>
+                        <td class="text-end">
+                            <div class="landlord-table-actions">
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--view" href="#" aria-label="Xem bài đăng"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaBaiDang" aria-label="Sửa bài đăng"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--copy" aria-label="Sao chép bài đăng"><i class="bi bi-copy" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa bài đăng"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <nav class="landlord-pagination landlord-pagination--extended" aria-label="Phân trang danh sách bài đăng">
+            <p class="landlord-pagination__summary mb-0">Hiển thị 1 đến 7 của 7 bài đăng</p>
+            <div class="landlord-pagination__controls">
+                <ul class="pagination mb-0">
+                    <li class="page-item disabled">
+                        <span class="page-link landlord-pagination__arrow" aria-hidden="true">&lsaquo;</span>
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link landlord-pagination__arrow" aria-hidden="true">&rsaquo;</span>
+                    </li>
+                </ul>
+                <label class="landlord-pagination__per-page mb-0">
+                    <span class="visually-hidden">Số dòng mỗi trang</span>
+                    <select class="form-select form-select-sm">
+                        <option selected>10 / trang</option>
+                        <option>20 / trang</option>
+                        <option>50 / trang</option>
+                    </select>
+                </label>
+            </div>
+        </nav>
+    </div>
+</section>

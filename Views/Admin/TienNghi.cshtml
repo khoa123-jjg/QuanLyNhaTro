@@ -1,0 +1,183 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý tiện nghi";
+    ViewData["ActiveAdminMenu"] = "TienNghi";
+}
+
+<section class="admin-page admin-list-page admin-amenity-page">
+    <header class="admin-page-header admin-page-header--toolbar">
+        <div>
+            <h1 class="admin-page-title">Quản lý tiện nghi</h1>
+            <p class="admin-page-subtitle mb-0">Thêm, sửa, ẩn tiện nghi</p>
+        </div>
+        <button type="button" class="btn btn-admin-primary">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Thêm tiện nghi
+        </button>
+    </header>
+
+    <div class="admin-split-layout admin-split-layout--amenity">
+        <article class="admin-card admin-table-card admin-amenity-table-card">
+            <div class="admin-table-wrap">
+                <table class="table admin-data-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="admin-data-table__col-stt">STT</th>
+                            <th scope="col">Tên tiện nghi</th>
+                            <th scope="col">Biểu tượng</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col" class="text-end">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Wi-Fi</td>
+                            <td>
+                                <span class="admin-amenity-icon" aria-hidden="true">
+                                    <i class="bi bi-wifi"></i>
+                                </span>
+                            </td>
+                            <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                            <td class="text-end">
+                                <div class="admin-table-actions">
+                                    <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Điều hòa</td>
+                            <td>
+                                <span class="admin-amenity-icon" aria-hidden="true">
+                                    <i class="bi bi-snow2"></i>
+                                </span>
+                            </td>
+                            <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                            <td class="text-end">
+                                <div class="admin-table-actions">
+                                    <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Máy giặt</td>
+                            <td>
+                                <span class="admin-amenity-icon" aria-hidden="true">
+                                    <i class="bi bi-droplet-half"></i>
+                                </span>
+                            </td>
+                            <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                            <td class="text-end">
+                                <div class="admin-table-actions">
+                                    <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Bình nóng lạnh</td>
+                            <td>
+                                <span class="admin-amenity-icon" aria-hidden="true">
+                                    <i class="bi bi-thermometer-half"></i>
+                                </span>
+                            </td>
+                            <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
+                            <td class="text-end">
+                                <div class="admin-table-actions">
+                                    <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Bãi xe</td>
+                            <td>
+                                <span class="admin-amenity-icon" aria-hidden="true">
+                                    <i class="bi bi-bicycle"></i>
+                                </span>
+                            </td>
+                            <td><span class="admin-badge admin-badge--warning">Ẩn</span></td>
+                            <td class="text-end">
+                                <div class="admin-table-actions">
+                                    <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-off" aria-hidden="true"></i></button>
+                                    <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <nav class="admin-pagination-bar admin-pagination-bar--bordered" aria-label="Phân trang tiện nghi">
+                <p class="admin-pagination-bar__summary mb-0">Hiển thị 1 - 5 của 5 tiện nghi</p>
+                <ul class="admin-pagination mb-0">
+                    <li><span class="admin-pagination__link is-active">1</span></li>
+                </ul>
+            </nav>
+        </article>
+
+        <aside class="admin-card admin-side-form-card">
+            <div class="admin-card__header">
+                <h2 class="admin-card__title mb-0">Thêm / Sửa tiện nghi</h2>
+            </div>
+            <div class="admin-card__body">
+                <form class="admin-form admin-amenity-form" action="#" method="post" novalidate>
+                    <div class="mb-3">
+                        <label class="admin-form__label" for="tenTienNghi">
+                            Tên tiện nghi <span class="admin-required">*</span>
+                        </label>
+                        <input class="form-control" id="tenTienNghi" type="text" value="Wi-Fi" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="admin-form__label" for="bieuTuongTienNghi">
+                            Biểu tượng <span class="admin-required">*</span>
+                        </label>
+                        <div class="admin-icon-picker">
+                            <span class="admin-amenity-icon admin-amenity-icon--lg" id="bieuTuongPreview" aria-hidden="true">
+                                <i class="bi bi-wifi"></i>
+                            </span>
+                            <button type="button" class="btn btn-admin-outline btn-sm">
+                                Chọn biểu tượng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="admin-form__label" for="trangThaiTienNghi">
+                            Trạng thái <span class="admin-required">*</span>
+                        </label>
+                        <select class="form-select" id="trangThaiTienNghi">
+                            <option selected>Hiển thị</option>
+                            <option>Ẩn</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-side-form-card__actions">
+                        <button type="button" class="btn btn-admin-primary w-100">
+                            <i class="bi bi-save" aria-hidden="true"></i>
+                            Lưu
+                        </button>
+                        <button type="button" class="btn btn-admin-outline w-100">Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>

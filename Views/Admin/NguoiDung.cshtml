@@ -1,0 +1,227 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý người dùng";
+    ViewData["ActiveAdminMenu"] = "NguoiDung";
+}
+
+<section class="admin-page admin-list-page admin-user-list">
+    <header class="admin-page-header">
+        <h1 class="admin-page-title">Quản lý người dùng</h1>
+        <p class="admin-page-subtitle mb-0">Xem danh sách, tìm kiếm người dùng</p>
+    </header>
+
+    <div class="admin-card admin-filter-card mb-4">
+        <form class="admin-filter-bar" action="#" method="get" novalidate>
+            <div class="admin-filter-bar__field admin-filter-bar__field--search">
+                <label class="admin-form__label" for="searchNguoiDung">Tìm kiếm</label>
+                <div class="admin-input-icon">
+                    <i class="bi bi-search admin-input-icon__icon" aria-hidden="true"></i>
+                    <input class="form-control" id="searchNguoiDung" type="search" placeholder="Tìm kiếm theo tên, email, SĐT..." />
+                </div>
+            </div>
+            <div class="admin-filter-bar__field">
+                <label class="admin-form__label" for="vaiTroFilter">Vai trò</label>
+                <select class="form-select admin-filter-select" id="vaiTroFilter">
+                    <option selected>Vai trò: Tất cả</option>
+                    <option>Admin</option>
+                    <option>Chủ trọ</option>
+                    <option>Người thuê</option>
+                </select>
+            </div>
+            <div class="admin-filter-bar__field">
+                <label class="admin-form__label" for="trangThaiFilter">Trạng thái</label>
+                <select class="form-select admin-filter-select" id="trangThaiFilter">
+                    <option selected>Trạng thái: Tất cả</option>
+                    <option>Hoạt động</option>
+                    <option>Bị khóa</option>
+                </select>
+            </div>
+            <div class="admin-filter-bar__action">
+                <span class="admin-form__label admin-filter-bar__action-label" aria-hidden="true">&nbsp;</span>
+                <button type="button" class="btn btn-admin-primary">
+                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                    Thêm người dùng
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <article class="admin-card admin-table-card">
+        <div class="admin-table-wrap">
+            <table class="table admin-data-table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" class="admin-data-table__col-stt">STT</th>
+                        <th scope="col">Họ tên</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Vai trò</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col" class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="admin-table-user">
+                                <img class="admin-table-user__avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="" />
+                                <span>Nguyễn Văn An</span>
+                            </div>
+                        </td>
+                        <td>admin.an@phongtrodannang.vn</td>
+                        <td><span class="admin-badge admin-badge--role-admin">Admin</span></td>
+                        <td><span class="admin-badge admin-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Hoạt động</span></td>
+                        <td class="text-end">
+                            <div class="admin-table-actions">
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietNguoiDung" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="KhoaMoKhoaTaiKhoan" aria-label="Khóa/Mở khóa"><i class="bi bi-lock" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <div class="admin-table-user">
+                                <img class="admin-table-user__avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" alt="" />
+                                <span>Trần Thị B</span>
+                            </div>
+                        </td>
+                        <td>chutro.b@gmail.com</td>
+                        <td><span class="admin-badge admin-badge--role-landlord">Chủ trọ</span></td>
+                        <td><span class="admin-badge admin-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Hoạt động</span></td>
+                        <td class="text-end">
+                            <div class="admin-table-actions">
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietNguoiDung" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="KhoaMoKhoaTaiKhoan" aria-label="Khóa/Mở khóa"><i class="bi bi-lock" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            <div class="admin-table-user">
+                                <img class="admin-table-user__avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="" />
+                                <span>Lê Văn C</span>
+                            </div>
+                        </td>
+                        <td>chutro.c@gmail.com</td>
+                        <td><span class="admin-badge admin-badge--role-landlord">Chủ trọ</span></td>
+                        <td><span class="admin-badge admin-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Hoạt động</span></td>
+                        <td class="text-end">
+                            <div class="admin-table-actions">
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietNguoiDung" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="KhoaMoKhoaTaiKhoan" aria-label="Khóa/Mở khóa"><i class="bi bi-lock" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>
+                            <div class="admin-table-user">
+                                <img class="admin-table-user__avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" alt="" />
+                                <span>Phạm Thị D</span>
+                            </div>
+                        </td>
+                        <td>nguoithue.d@gmail.com</td>
+                        <td><span class="admin-badge admin-badge--role-tenant">Người thuê</span></td>
+                        <td><span class="admin-badge admin-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Hoạt động</span></td>
+                        <td class="text-end">
+                            <div class="admin-table-actions">
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietNguoiDung" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="KhoaMoKhoaTaiKhoan" aria-label="Khóa/Mở khóa"><i class="bi bi-lock" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>
+                            <div class="admin-table-user">
+                                <img class="admin-table-user__avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face" alt="" />
+                                <span>Hoàng Văn E</span>
+                            </div>
+                        </td>
+                        <td>nguoithue.e@gmail.com</td>
+                        <td><span class="admin-badge admin-badge--role-tenant">Người thuê</span></td>
+                        <td><span class="admin-badge admin-badge--danger"><i class="bi bi-lock-fill" aria-hidden="true"></i> Bị khóa</span></td>
+                        <td class="text-end">
+                            <div class="admin-table-actions">
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietNguoiDung" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="KhoaMoKhoaTaiKhoan" aria-label="Khóa/Mở khóa"><i class="bi bi-unlock" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>
+                            <div class="admin-table-user">
+                                <img class="admin-table-user__avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face" alt="" />
+                                <span>Đặng Thị F</span>
+                            </div>
+                        </td>
+                        <td>chutro.f@gmail.com</td>
+                        <td><span class="admin-badge admin-badge--role-landlord">Chủ trọ</span></td>
+                        <td><span class="admin-badge admin-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Hoạt động</span></td>
+                        <td class="text-end">
+                            <div class="admin-table-actions">
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietNguoiDung" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="KhoaMoKhoaTaiKhoan" aria-label="Khóa/Mở khóa"><i class="bi bi-lock" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>
+                            <div class="admin-table-user">
+                                <img class="admin-table-user__avatar" src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=80&h=80&fit=crop&crop=face" alt="" />
+                                <span>Nguyễn Văn G</span>
+                            </div>
+                        </td>
+                        <td>nguoithue.g@gmail.com</td>
+                        <td><span class="admin-badge admin-badge--role-tenant">Người thuê</span></td>
+                        <td><span class="admin-badge admin-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Hoạt động</span></td>
+                        <td class="text-end">
+                            <div class="admin-table-actions">
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietNguoiDung" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
+                                <a class="admin-action-btn" asp-controller="Admin" asp-action="KhoaMoKhoaTaiKhoan" aria-label="Khóa/Mở khóa"><i class="bi bi-lock" aria-hidden="true"></i></a>
+                                <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="admin-pagination-bar admin-pagination-bar--bordered">
+            <p class="admin-pagination-bar__summary mb-0">Hiển thị 1 - 7 của 178 người dùng</p>
+            <nav aria-label="Phân trang danh sách người dùng">
+                <ul class="admin-pagination">
+                    <li><span class="admin-pagination__link" aria-hidden="true">&lsaquo;</span></li>
+                    <li><span class="admin-pagination__link is-active">1</span></li>
+                    <li><a class="admin-pagination__link" href="#">2</a></li>
+                    <li><a class="admin-pagination__link" href="#">3</a></li>
+                    <li><span class="admin-pagination__link">…</span></li>
+                    <li><a class="admin-pagination__link" href="#">18</a></li>
+                    <li><a class="admin-pagination__link" href="#" aria-label="Trang sau">&rsaquo;</a></li>
+                </ul>
+            </nav>
+            <select class="form-select form-select-sm admin-pagination__size" aria-label="Số dòng mỗi trang">
+                <option selected>10 / trang</option>
+                <option>20 / trang</option>
+                <option>50 / trang</option>
+            </select>
+        </div>
+    </article>
+</section>

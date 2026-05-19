@@ -1,0 +1,118 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Hồ sơ admin";
+    ViewData["ActiveAdminMenu"] = "HoSo";
+}
+
+<section class="admin-page admin-profile-page">
+    <header class="admin-page-header">
+        <h1 class="admin-page-title">Hồ sơ admin</h1>
+        <p class="admin-page-subtitle mb-0">Xem/cập nhật thông tin cá nhân</p>
+    </header>
+
+    <form class="admin-profile-form" action="#" method="post" novalidate>
+        <div class="admin-profile-layout">
+            <article class="admin-card admin-profile-card">
+                <div class="admin-profile-card__header">
+                    <span class="admin-profile-card__header-icon" aria-hidden="true">
+                        <i class="bi bi-person-fill"></i>
+                    </span>
+                    <h2 class="admin-profile-card__title mb-0">Thông tin cá nhân</h2>
+                </div>
+                <div class="admin-card__body">
+                    <div class="admin-profile-card__content">
+                        <div class="admin-profile-card__avatar-wrap">
+                            <img class="admin-profile-card__avatar"
+                                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=240&h=240&fit=crop&crop=face"
+                                 alt="Ảnh đại diện Admin System" />
+                            <button type="button" class="btn btn-admin-outline btn-sm">
+                                <i class="bi bi-camera" aria-hidden="true"></i>
+                                Đổi ảnh
+                            </button>
+                        </div>
+                        <dl class="admin-profile-card__info">
+                            <div class="admin-profile-card__row">
+                                <dt>Họ tên</dt>
+                                <dd>Admin System</dd>
+                            </div>
+                            <div class="admin-profile-card__row">
+                                <dt>Email</dt>
+                                <dd>admin@phongtrodannang.vn</dd>
+                            </div>
+                            <div class="admin-profile-card__row">
+                                <dt>Số điện thoại</dt>
+                                <dd>0901 234 567</dd>
+                            </div>
+                            <div class="admin-profile-card__row">
+                                <dt>Vai trò</dt>
+                                <dd>Quản trị viên</dd>
+                            </div>
+                            <div class="admin-profile-card__row">
+                                <dt>Ngày tạo</dt>
+                                <dd>10/04/2025 14:30</dd>
+                            </div>
+                            <div class="admin-profile-card__row admin-profile-card__row--note">
+                                <dt>Ghi chú</dt>
+                                <dd>Quản lý hệ thống Phòng Trọ Đà Nẵng.</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </article>
+
+            <article class="admin-card admin-profile-card">
+                <div class="admin-profile-card__header">
+                    <span class="admin-profile-card__header-icon" aria-hidden="true">
+                        <i class="bi bi-lock-fill"></i>
+                    </span>
+                    <h2 class="admin-profile-card__title mb-0">Đổi mật khẩu</h2>
+                </div>
+                <div class="admin-card__body">
+                    <div class="admin-form admin-profile-password-form">
+                        <div class="mb-3">
+                            <label class="admin-form__label" for="matKhauHienTai">
+                                Mật khẩu hiện tại <span class="admin-required">*</span>
+                            </label>
+                            <div class="admin-input-password">
+                                <input class="form-control" id="matKhauHienTai" type="password" value="********" autocomplete="current-password" />
+                                <button type="button" class="admin-input-password__toggle" aria-label="Hiện mật khẩu hiện tại">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="admin-form__label" for="matKhauMoi">
+                                Mật khẩu mới <span class="admin-required">*</span>
+                            </label>
+                            <div class="admin-input-password">
+                                <input class="form-control" id="matKhauMoi" type="password" placeholder="Nhập mật khẩu mới" autocomplete="new-password" />
+                                <button type="button" class="admin-input-password__toggle" aria-label="Hiện mật khẩu mới">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-0">
+                            <label class="admin-form__label" for="xacNhanMatKhauMoi">
+                                Xác nhận mật khẩu mới <span class="admin-required">*</span>
+                            </label>
+                            <div class="admin-input-password">
+                                <input class="form-control" id="xacNhanMatKhauMoi" type="password" placeholder="Nhập lại mật khẩu mới" autocomplete="new-password" />
+                                <button type="button" class="admin-input-password__toggle" aria-label="Hiện xác nhận mật khẩu">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="admin-page-actions admin-profile-page__actions">
+            <button type="button" class="btn btn-admin-primary">
+                <i class="bi bi-save" aria-hidden="true"></i>
+                Lưu thay đổi
+            </button>
+            <button type="button" class="btn btn-admin-outline">Hủy</button>
+        </div>
+    </form>
+</section>

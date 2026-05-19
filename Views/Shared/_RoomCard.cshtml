@@ -1,0 +1,56 @@
+@*
+    Partial card phòng — dùng lại trang chủ & danh sách phòng.
+
+    Cách gọi (truyền tuple, không cần class riêng):
+    @await Html.PartialAsync("_RoomCard", (
+        ImageUrl: "/images/phong-mau.jpg",
+        Title: "Phòng trọ đường Trần Cao Vân",
+        District: "Thanh Khê",
+        Price: "2.800.000 đ/tháng",
+        Area: "25 m²",
+        Bathroom: "WC riêng",
+        DetailUrl: "/PhongTro/Details/1"
+    ))
+*@
+@model (string ImageUrl, string Title, string District, string Price, string Area, string Bathroom, string DetailUrl)?
+
+@{
+    var card = Model ?? (
+        ImageUrl: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=450&fit=crop",
+        Title: "Phòng trọ mẫu",
+        District: "Liên Chiểu",
+        Price: "2.000.000 đ/tháng",
+        Area: "18 m²",
+        Bathroom: "WC riêng",
+        DetailUrl: "#"
+    );
+    var detailUrl = string.IsNullOrWhiteSpace(card.DetailUrl) ? "#" : card.DetailUrl;
+}
+
+<article class="room-card h-100">
+    <a class="room-card__link d-flex flex-column h-100 text-decoration-none" href="@detailUrl">
+        <div class="room-card__media">
+            <img class="room-card__img"
+                 src="@card.ImageUrl"
+                 alt="@card.Title"
+                 loading="lazy" />
+            <button type="button"
+                    class="room-card__favorite"
+                    aria-label="Thêm vào yêu thích"
+                    onclick="event.preventDefault(); event.stopPropagation();">
+                <i class="bi bi-heart" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="room-card__body">
+            <h3 class="room-card__title">@card.Title</h3>
+            <p class="room-card__location mb-0">
+                <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                @card.District
+            </p>
+            <p class="room-card__meta mb-0">
+                @card.Area<span class="room-card__meta-dot">•</span>@card.Bathroom
+            </p>
+            <p class="room-card__price mb-0">@card.Price</p>
+        </div>
+    </a>
+</article>

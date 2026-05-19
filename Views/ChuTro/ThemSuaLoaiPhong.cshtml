@@ -1,0 +1,101 @@
+@{
+    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    ViewData["Title"] = "Thêm / sửa loại phòng";
+    ViewData["ActiveLandlordMenu"] = "LoaiPhong";
+}
+
+<section class="landlord-form-page landlord-roomtype-form">
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">Thêm / sửa loại phòng</h1>
+        <p class="landlord-page-subtitle mb-0">
+            Thiết lập thông tin loại phòng để áp dụng cho các phòng cụ thể trong nhà trọ.
+        </p>
+    </header>
+
+    <div class="row g-3 g-xl-4 align-items-start">
+        <div class="col-lg-8">
+            <div class="landlord-card landlord-form-card">
+                <form class="landlord-form" action="#" method="post" novalidate>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="landlord-form__label" for="tenLoaiPhong">Tên loại phòng <span class="text-danger">*</span></label>
+                            <input class="form-control" id="tenLoaiPhong" type="text" value="Phòng tiêu chuẩn" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="landlord-form__label" for="dienTich">Diện tích (m²) <span class="text-danger">*</span></label>
+                            <input class="form-control" id="dienTich" type="text" value="18" inputmode="decimal" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="landlord-form__label" for="giaThue">Giá thuê (đ/tháng) <span class="text-danger">*</span></label>
+                            <input class="form-control" id="giaThue" type="text" value="2500000" inputmode="numeric" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="landlord-form__label" for="tienCoc">Tiền cọc (đ) <span class="text-danger">*</span></label>
+                            <input class="form-control" id="tienCoc" type="text" value="2500000" inputmode="numeric" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="landlord-form__label" for="soNguoiToiDa">Số người tối đa</label>
+                            <input class="form-control" id="soNguoiToiDa" type="number" value="2" min="1" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="landlord-form__label" for="trangThaiLoaiPhong">Trạng thái</label>
+                            <select class="form-select" id="trangThaiLoaiPhong">
+                                <option selected>Đang hoạt động</option>
+                                <option>Tạm ẩn</option>
+                                <option>Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="landlord-form__label" for="moTaLoaiPhong">Mô tả</label>
+                            <textarea class="form-control landlord-form__textarea" id="moTaLoaiPhong" rows="4">Phòng tiêu chuẩn phù hợp sinh viên và người đi làm. Có cửa sổ thoáng, WC riêng, wifi và nóng lạnh.</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="landlord-form-actions">
+                <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="LoaiPhong">
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                    Quay lại
+                </a>
+                <button type="button" class="btn btn-landlord-outline">Hủy</button>
+                <button type="button" class="btn btn-landlord-primary">
+                    <i class="bi bi-check-lg" aria-hidden="true"></i>
+                    Lưu loại phòng
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="landlord-card landlord-roomtype-preview sticky-lg-top">
+                <h2 class="landlord-roomtype-preview__title">Xem trước loại phòng</h2>
+                <div class="landlord-roomtype-preview__icon" aria-hidden="true">
+                    <i class="bi bi-layout-text-window"></i>
+                </div>
+                <h3 class="landlord-roomtype-preview__name">Phòng tiêu chuẩn</h3>
+                <span class="landlord-badge landlord-badge--success mb-3">Đang hoạt động</span>
+                <ul class="landlord-roomtype-preview__list list-unstyled mb-3">
+                    <li>
+                        <span>Diện tích</span>
+                        <strong>18 m²</strong>
+                    </li>
+                    <li>
+                        <span>Giá thuê</span>
+                        <strong class="landlord-roomtype-preview__price">2.500.000 đ/tháng</strong>
+                    </li>
+                    <li>
+                        <span>Tiền cọc</span>
+                        <strong>2.500.000 đ</strong>
+                    </li>
+                    <li>
+                        <span>Số người tối đa</span>
+                        <strong>2 người</strong>
+                    </li>
+                </ul>
+                <p class="landlord-roomtype-preview__desc mb-0">
+                    Phòng tiêu chuẩn phù hợp sinh viên và người đi làm. Có cửa sổ thoáng, WC riêng, wifi và nóng lạnh.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

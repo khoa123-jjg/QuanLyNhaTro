@@ -1,0 +1,191 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Dashboard Admin";
+    ViewData["ActiveAdminMenu"] = "Dashboard";
+}
+
+<section class="admin-page admin-dashboard">
+    <header class="admin-page-header">
+        <h1 class="admin-page-title">Dashboard Admin</h1>
+        <p class="admin-page-subtitle mb-0">
+            Thống kê tổng quan người dùng, bài chờ duyệt, nhà trọ
+        </p>
+    </header>
+
+    <div class="admin-stats-row">
+        <article class="admin-card admin-stat-card">
+            <span class="admin-stat-card__icon admin-stat-card__icon--blue" aria-hidden="true">
+                <i class="bi bi-people-fill"></i>
+            </span>
+            <div>
+                <p class="admin-stat-card__label mb-0">Tổng người dùng</p>
+                <p class="admin-stat-card__value mb-0">1.248</p>
+                <p class="admin-stat-card__delta mb-0">+38 trong 7 ngày</p>
+            </div>
+        </article>
+        <article class="admin-card admin-stat-card">
+            <span class="admin-stat-card__icon admin-stat-card__icon--orange" aria-hidden="true">
+                <i class="bi bi-file-earmark-check-fill"></i>
+            </span>
+            <div>
+                <p class="admin-stat-card__label mb-0">Bài chờ duyệt</p>
+                <p class="admin-stat-card__value mb-0">24</p>
+                <p class="admin-stat-card__delta mb-0">+6 trong 7 ngày</p>
+            </div>
+        </article>
+        <article class="admin-card admin-stat-card">
+            <span class="admin-stat-card__icon admin-stat-card__icon--green" aria-hidden="true">
+                <i class="bi bi-building-fill"></i>
+            </span>
+            <div>
+                <p class="admin-stat-card__label mb-0">Nhà trọ</p>
+                <p class="admin-stat-card__value mb-0">532</p>
+                <p class="admin-stat-card__delta mb-0">+12 trong 7 ngày</p>
+            </div>
+        </article>
+        <article class="admin-card admin-stat-card">
+            <span class="admin-stat-card__icon admin-stat-card__icon--purple" aria-hidden="true">
+                <i class="bi bi-stars"></i>
+            </span>
+            <div>
+                <p class="admin-stat-card__label mb-0">Tiện nghi</p>
+                <p class="admin-stat-card__value mb-0">156</p>
+                <p class="admin-stat-card__delta mb-0">+5 trong 7 ngày</p>
+            </div>
+        </article>
+    </div>
+
+    <article class="admin-card admin-dashboard__table-card mb-4">
+        <div class="admin-panel__head">
+            <h2 class="admin-panel__title mb-0">Bài đăng chờ duyệt gần đây</h2>
+            <a class="btn btn-sm btn-admin-outline" asp-controller="Admin" asp-action="BaiChoDuyet">Xem tất cả</a>
+        </div>
+        <div class="admin-card__body pt-0">
+            <div class="admin-table-wrap">
+                <table class="table admin-data-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Tiêu đề</th>
+                            <th scope="col">Người đăng</th>
+                            <th scope="col">Loại</th>
+                            <th scope="col">Ngày tạo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <div class="admin-table-post">
+                                    <img class="admin-table-post__thumb"
+                                         src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=80&h=80&fit=crop"
+                                         alt="" />
+                                    <span>Phòng trọ mới đường Lê Duẩn</span>
+                                </div>
+                            </td>
+                            <td>Nguyễn Văn A</td>
+                            <td><span class="admin-badge admin-badge--primary">Phòng trọ</span></td>
+                            <td>15/05/2025 09:15</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>
+                                <div class="admin-table-post">
+                                    <img class="admin-table-post__thumb"
+                                         src="https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=80&h=80&fit=crop"
+                                         alt="" />
+                                    <span>Phòng full nội thất quận Hải Châu</span>
+                                </div>
+                            </td>
+                            <td>Trần Thị B</td>
+                            <td><span class="admin-badge admin-badge--primary">Phòng trọ</span></td>
+                            <td>14/05/2025 16:40</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>
+                                <div class="admin-table-post">
+                                    <img class="admin-table-post__thumb"
+                                         src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=80&h=80&fit=crop"
+                                         alt="" />
+                                    <span>Phòng gần Đại học Duy Tân</span>
+                                </div>
+                            </td>
+                            <td>Lê Văn C</td>
+                            <td><span class="admin-badge admin-badge--info">Phòng đơn</span></td>
+                            <td>13/05/2025 11:20</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>
+                                <div class="admin-table-post">
+                                    <img class="admin-table-post__thumb"
+                                         src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=80&h=80&fit=crop"
+                                         alt="" />
+                                    <span>Căn hộ mini mới xây</span>
+                                </div>
+                            </td>
+                            <td>Phạm Thị D</td>
+                            <td><span class="admin-badge admin-badge--purple">Căn hộ mini</span></td>
+                            <td>12/05/2025 08:55</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>
+                                <div class="admin-table-post">
+                                    <img class="admin-table-post__thumb"
+                                         src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=80&h=80&fit=crop"
+                                         alt="" />
+                                    <span>Phòng trọ giá rẻ quận Liên Chiểu</span>
+                                </div>
+                            </td>
+                            <td>Hoàng Văn E</td>
+                            <td><span class="admin-badge admin-badge--primary">Phòng trọ</span></td>
+                            <td>11/05/2025 14:30</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+
+    <h2 class="admin-section-title">Thao tác nhanh</h2>
+    <div class="admin-quick-actions">
+        <a class="admin-card admin-quick-action" asp-controller="Admin" asp-action="BaiChoDuyet">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--orange" aria-hidden="true">
+                    <i class="bi bi-file-earmark-check"></i>
+                </span>
+                <span class="admin-quick-action__text">Xem bài chờ duyệt</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a class="admin-card admin-quick-action" asp-controller="Admin" asp-action="NguoiDung">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--blue" aria-hidden="true">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span class="admin-quick-action__text">Quản lý người dùng</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a class="admin-card admin-quick-action" href="#">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--green" aria-hidden="true">
+                    <i class="bi bi-building"></i>
+                </span>
+                <span class="admin-quick-action__text">Quản lý nhà trọ</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a class="admin-card admin-quick-action" asp-controller="Admin" asp-action="TienNghi">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--purple" aria-hidden="true">
+                    <i class="bi bi-stars"></i>
+                </span>
+                <span class="admin-quick-action__text">Thêm tiện nghi</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>

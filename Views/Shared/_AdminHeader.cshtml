@@ -1,0 +1,49 @@
+<header class="admin-header">
+    <div class="container-fluid admin-header__inner">
+        <div class="admin-header__left">
+            <button class="admin-header__menu-btn d-lg-none"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#adminSidebarCollapse"
+                    aria-controls="adminSidebarCollapse"
+                    aria-expanded="false"
+                    aria-label="Mở menu">
+                <i class="bi bi-list" aria-hidden="true"></i>
+            </button>
+
+            <a class="admin-brand" asp-controller="Admin" asp-action="Dashboard">
+                <svg class="admin-brand__icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="24" cy="24" r="24" fill="#E8F2FF"/>
+                    <path d="M14 22L24 14L34 22V34C34 35.1 33.1 36 32 36H16C14.9 36 14 35.1 14 34V22Z" fill="#0066D9"/>
+                    <path d="M18 36V26H30V36" fill="#0052B3"/>
+                    <path d="M12 28C12 28 16 24 24 28C32 24 36 28 36 28" stroke="#4DA3FF" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <div>
+                    <p class="admin-brand__title mb-0">PHÒNG TRỌ ĐÀ NẴNG</p>
+                    <p class="admin-brand__slogan mb-0">Tìm phòng dễ dàng, ở trọn an tâm</p>
+                </div>
+            </a>
+        </div>
+
+        <nav class="admin-header__nav d-none d-xl-flex" aria-label="Điều hướng chính">
+            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+            <a asp-controller="PhongTro" asp-action="Index">Tìm phòng</a>
+            <a href="#">Yêu cầu của tôi</a>
+        </nav>
+
+        <div class="admin-header__right">
+            <button type="button" class="admin-header__notify" aria-label="Thông báo (3)">
+                <i class="bi bi-bell" aria-hidden="true"></i>
+                <span class="admin-header__notify-badge">3</span>
+            </button>
+
+            <button type="button" class="admin-header__user" aria-label="Tài khoản admin">
+                <img class="admin-header__avatar"
+                     src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
+                     alt="" />
+                <span class="admin-header__user-name">Admin System</span>
+                <i class="bi bi-chevron-down admin-header__user-chevron" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</header>

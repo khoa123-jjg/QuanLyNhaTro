@@ -1,0 +1,124 @@
+@{
+    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    ViewData["Title"] = "Thêm / Sửa phòng cụ thể";
+    ViewData["ActiveLandlordMenu"] = "PhongCuThe";
+}
+
+<nav class="landlord-breadcrumb mb-4" aria-label="Breadcrumb">
+    <ol class="breadcrumb landlord-breadcrumb__list mb-0">
+        <li class="breadcrumb-item"><a asp-controller="ChuTro" asp-action="PhongCuThe">Phòng/Phòng trọ</a></li>
+        <li class="breadcrumb-item"><a asp-controller="ChuTro" asp-action="PhongCuThe">Quản lý phòng cụ thể</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Thêm / Sửa phòng cụ thể</li>
+    </ol>
+</nav>
+
+<section class="landlord-page landlord-room-form-page">
+    <div class="landlord-page__header mb-4">
+        <h1 class="landlord-page-title mb-2">Thêm / Sửa phòng cụ thể</h1>
+        <p class="landlord-page-subtitle mb-0">Thiết lập thông tin cho từng phòng cụ thể trong hệ thống quản lý nhà trọ.</p>
+    </div>
+
+    <div class="row g-3 g-xl-4 align-items-start">
+        <div class="col-lg-8">
+            <div class="card landlord-card mb-3">
+                <div class="card-body">
+                    <form class="landlord-form" action="#" method="post" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label landlord-form__label" for="maPhong">Mã phòng</label>
+                                <input class="form-control" id="maPhong" type="text" value="P101" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label landlord-form__label" for="nhaTro">Nhà trọ</label>
+                                <select class="form-select" id="nhaTro">
+                                    <option selected>Nhà trọ An Phú</option>
+                                    <option>Nhà trọ Hòa Khánh</option>
+                                    <option>Nhà trọ Sơn Trà</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label landlord-form__label" for="tang">Tầng</label>
+                                <select class="form-select" id="tang">
+                                    <option selected>Tầng 1</option>
+                                    <option>Tầng 2</option>
+                                    <option>Tầng 3</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label landlord-form__label" for="loaiPhong">Loại phòng</label>
+                                <select class="form-select" id="loaiPhong">
+                                    <option selected>Phòng tiêu chuẩn</option>
+                                    <option>Phòng rộng</option>
+                                    <option>Phòng cao cấp</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label landlord-form__label" for="trangThaiPhong">Trạng thái</label>
+                                <select class="form-select" id="trangThaiPhong">
+                                    <option selected>Trống</option>
+                                    <option>Đã thuê</option>
+                                    <option>Đang sửa</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label landlord-form__label" for="ghiChuPhong">Ghi chú</label>
+                                <textarea class="form-control landlord-form__textarea" id="ghiChuPhong" rows="5">Phòng sạch sẽ, có ban công và gần khu bếp chung.</textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="PhongCuThe">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    Hủy bỏ
+                </a>
+                <button type="button" class="btn btn-landlord-primary">
+                    <i class="bi bi-check-lg" aria-hidden="true"></i>
+                    Lưu thông tin
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card landlord-card mb-3 sticky-lg-top">
+                <div class="card-body">
+                    <h2 class="landlord-room-status-card__title">Giải thích trạng thái phòng</h2>
+                    <div class="landlord-room-status-card__item">
+                        <span class="landlord-badge landlord-badge--success">Trống</span>
+                        <p class="mb-0">Phòng sẵn sàng cho khách thuê mới.</p>
+                    </div>
+                    <div class="landlord-room-status-card__item">
+                        <span class="landlord-badge landlord-badge--info">Đã thuê</span>
+                        <p class="mb-0">Phòng đang có người thuê và phát sinh hợp đồng.</p>
+                    </div>
+                    <div class="landlord-room-status-card__item mb-0">
+                        <span class="landlord-badge landlord-badge--warning">Đang sửa</span>
+                        <p class="mb-0">Phòng tạm ngưng sử dụng để bảo trì hoặc nâng cấp.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card landlord-card sticky-lg-top">
+                <div class="card-body">
+                    <h2 class="landlord-room-preview-card__title">Card xem trước phòng</h2>
+                    <div class="landlord-room-preview-card__hero" aria-hidden="true"><i class="bi bi-house-gear"></i></div>
+                    <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
+                        <div>
+                            <h3 class="landlord-room-preview-card__name mb-1">P101</h3>
+                            <p class="landlord-room-preview-card__meta mb-0">Nhà trọ An Phú · Tầng 1</p>
+                        </div>
+                        <span class="landlord-badge landlord-badge--success">Trống</span>
+                    </div>
+                    <ul class="landlord-room-preview-card__list list-unstyled mb-3">
+                        <li><span>Loại phòng</span><strong>Phòng tiêu chuẩn</strong></li>
+                        <li><span>Trạng thái</span><strong>Trống</strong></li>
+                        <li><span>Ghi chú</span><strong>Phòng sạch sẽ, có ban công.</strong></li>
+                    </ul>
+                    <p class="landlord-room-preview-card__desc mb-0">Đây là khu vực xem trước tĩnh giúp bạn kiểm tra nhanh thông tin phòng trước khi lưu.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

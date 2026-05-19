@@ -1,0 +1,72 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chi tiết người dùng";
+    ViewData["ActiveAdminMenu"] = "NguoiDung";
+}
+
+<section class="admin-page admin-detail-page admin-user-detail">
+    <header class="admin-page-header admin-page-header--with-back">
+        <a class="admin-back-btn" asp-controller="Admin" asp-action="NguoiDung" aria-label="Quay lại">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        </a>
+        <div>
+            <h1 class="admin-page-title">Chi tiết người dùng</h1>
+            <a class="admin-back-link" asp-controller="Admin" asp-action="NguoiDung">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Quay lại danh sách người dùng
+            </a>
+        </div>
+    </header>
+
+    <article class="admin-card admin-user-detail-card">
+        <div class="admin-user-detail-card__layout">
+            <div class="admin-user-detail-card__profile">
+                <img class="admin-user-detail-card__avatar"
+                     src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&h=240&fit=crop&crop=face"
+                     alt="Ảnh đại diện Hoàng Văn E" />
+                <button type="button" class="btn btn-admin-outline btn-sm">
+                    <i class="bi bi-camera" aria-hidden="true"></i>
+                    Đổi ảnh
+                </button>
+            </div>
+
+            <dl class="admin-user-detail-card__info">
+                <div class="admin-user-detail-card__row">
+                    <dt>Họ tên</dt>
+                    <dd>Hoàng Văn E</dd>
+                </div>
+                <div class="admin-user-detail-card__row">
+                    <dt>Email</dt>
+                    <dd>nguoithue.e@gmail.com</dd>
+                </div>
+                <div class="admin-user-detail-card__row">
+                    <dt>Số điện thoại</dt>
+                    <dd>0901 234 567</dd>
+                </div>
+                <div class="admin-user-detail-card__row">
+                    <dt>Vai trò</dt>
+                    <dd><span class="admin-badge admin-badge--role-tenant">Người thuê</span></dd>
+                </div>
+                <div class="admin-user-detail-card__row">
+                    <dt>Trạng thái</dt>
+                    <dd><span class="admin-badge admin-badge--danger"><i class="bi bi-lock-fill" aria-hidden="true"></i> Bị khóa</span></dd>
+                </div>
+                <div class="admin-user-detail-card__row">
+                    <dt>Ngày tạo</dt>
+                    <dd>10/04/2025 14:30</dd>
+                </div>
+                <div class="admin-user-detail-card__row admin-user-detail-card__row--note">
+                    <dt>Ghi chú</dt>
+                    <dd>Người dùng vi phạm chính sách đăng tin. Khóa tạm thời.</dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="admin-page-actions admin-page-actions--end admin-user-detail-card__actions">
+            <a class="btn btn-admin-outline" asp-controller="Admin" asp-action="NguoiDung">Quay lại</a>
+            <button type="button" class="btn btn-admin-primary">
+                <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                Chỉnh sửa
+            </button>
+        </div>
+    </article>
+</section>

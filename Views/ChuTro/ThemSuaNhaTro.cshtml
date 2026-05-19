@@ -1,0 +1,129 @@
+@{
+    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    ViewData["Title"] = "Thêm / sửa nhà trọ";
+    ViewData["ActiveLandlordMenu"] = "PhongCuThe";
+}
+
+<section class="landlord-form-page">
+    <nav aria-label="breadcrumb" class="landlord-breadcrumb mb-3">
+        <ol class="breadcrumb mb-0 landlord-breadcrumb__list">
+            <li class="breadcrumb-item">
+                <a asp-controller="ChuTro" asp-action="PhongCuThe">Phòng/Phòng trọ</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Thêm / sửa nhà trọ</li>
+        </ol>
+    </nav>
+
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">Thêm / sửa nhà trọ</h1>
+        <p class="landlord-page-subtitle mb-0">
+            Cập nhật thông tin nhà trọ, địa chỉ và quy định chung cho toàn bộ phòng.
+        </p>
+    </header>
+
+    <div class="row g-3 g-xl-4 align-items-start">
+        <div class="col-lg-8">
+            <div class="landlord-card landlord-form-card">
+                <form class="landlord-form" action="#" method="post" novalidate>
+                    <div class="mb-4">
+                        <label class="landlord-form__label" for="tenNhaTro">Tên nhà trọ <span class="text-danger">*</span></label>
+                        <input class="form-control" id="tenNhaTro" type="text" value="Nhà trọ An Bình" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="landlord-form__label" for="moTaNhaTro">Mô tả</label>
+                        <textarea class="form-control landlord-form__textarea" id="moTaNhaTro" rows="4">Nhà trọ sạch sẽ, an ninh, gần trường học và siêu thị. Phù hợp sinh viên và người đi làm. Có camera, wifi ổn định và chỗ để xe miễn phí.</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="landlord-form__label d-block mb-2">Ảnh đại diện</span>
+                        <div class="landlord-upload">
+                            <img class="landlord-upload__preview"
+                                 src="https://images.unsplash.com/photo-1560448204-e02f11c45772?w=800&h=500&fit=crop"
+                                 alt="Ảnh đại diện nhà trọ An Bình" />
+                            <div class="landlord-upload__body">
+                                <p class="landlord-upload__hint mb-2">JPG, PNG — tối đa 5MB. Ảnh sẽ hiển thị trên bài đăng và trang chi tiết.</p>
+                                <button type="button" class="btn btn-landlord-outline btn-sm">
+                                    <i class="bi bi-upload" aria-hidden="true"></i>
+                                    Tải ảnh lên
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="landlord-form__label" for="diaChiDaChon">Địa chỉ đã chọn</label>
+                        <div class="landlord-address-field">
+                            <input class="form-control landlord-address-field__input"
+                                   id="diaChiDaChon"
+                                   type="text"
+                                   value="45 Nguyễn Tất Thành, Phường Hòa Hải, Quận Ngũ Hành Sơn, TP. Đà Nẵng"
+                                   readonly />
+                            <a class="btn btn-landlord-primary landlord-address-field__btn"
+                               asp-controller="ChuTro"
+                               asp-action="QuanLyDiaChi">
+                                <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                                Chọn địa chỉ
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="landlord-form__label" for="quyDinhChung">Quy định / tiện ích chung</label>
+                        <textarea class="form-control landlord-form__textarea" id="quyDinhChung" rows="4">Không nuôi thú cưng. Giờ giấc sau 22h cần giữ yên lặng. Điện, nước tính theo đồng hồ. Tiện ích chung: wifi, camera, bãi xe, giặt sấy.</textarea>
+                    </div>
+
+                    <fieldset class="landlord-status-group mb-0">
+                        <legend class="landlord-form__label mb-2">Trạng thái</legend>
+                        <div class="landlord-status-group__options">
+                            <label class="landlord-status-option">
+                                <input type="radio" name="trangThaiNhaTro" value="active" checked />
+                                <span class="landlord-status-option__pill landlord-status-option__pill--success">Đang hoạt động</span>
+                            </label>
+                            <label class="landlord-status-option">
+                                <input type="radio" name="trangThaiNhaTro" value="hidden" />
+                                <span class="landlord-status-option__pill landlord-status-option__pill--warning">Tạm ẩn</span>
+                            </label>
+                            <label class="landlord-status-option">
+                                <input type="radio" name="trangThaiNhaTro" value="stopped" />
+                                <span class="landlord-status-option__pill landlord-status-option__pill--muted">Ngừng hoạt động</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="landlord-form-actions">
+                <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="PhongCuThe">Hủy</a>
+                <button type="button" class="btn btn-landlord-primary">
+                    <i class="bi bi-check-lg" aria-hidden="true"></i>
+                    Lưu nhà trọ
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="landlord-card landlord-preview-card sticky-lg-top">
+                <h2 class="landlord-preview-card__title">Xem trước nhà trọ</h2>
+                <div class="landlord-preview-card__media">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c45772?w=800&h=500&fit=crop"
+                         alt="Nhà trọ An Bình" />
+                    <span class="landlord-badge landlord-badge--success landlord-preview-card__badge">Đang hoạt động</span>
+                </div>
+                <h3 class="landlord-preview-card__name">Nhà trọ An Bình</h3>
+                <p class="landlord-preview-card__address mb-3">
+                    <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                    45 Nguyễn Tất Thành, Phường Hòa Hải, Quận Ngũ Hành Sơn, TP. Đà Nẵng
+                </p>
+                <p class="landlord-preview-card__desc mb-3">
+                    Nhà trọ sạch sẽ, an ninh, gần trường học và siêu thị. Phù hợp sinh viên và người đi làm.
+                </p>
+                <ul class="landlord-preview-card__meta list-unstyled mb-0">
+                    <li><i class="bi bi-door-open" aria-hidden="true"></i> 12 phòng</li>
+                    <li><i class="bi bi-wifi" aria-hidden="true"></i> Wifi, camera, bãi xe</li>
+                    <li><i class="bi bi-calendar3" aria-hidden="true"></i> Cập nhật: 15/05/2025</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
