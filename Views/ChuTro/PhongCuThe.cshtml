@@ -1,14 +1,16 @@
+@model QLNhaTro.Models.PhongTro.PhongTroListPageViewModel
 @{
     Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
     ViewData["Title"] = "Danh sách phòng cụ thể";
     ViewData["ActiveLandlordMenu"] = "PhongCuThe";
+    var tongSo = Model.DanhSachPhong.Count;
 }
 
 <section class="landlord-page landlord-room-list-page">
     <div class="landlord-page__header d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
         <div>
             <h1 class="landlord-page-title mb-2">Danh sách phòng cụ thể</h1>
-            <p class="landlord-page-subtitle mb-0">Quản lý các phòng P101, P102, P103... của nhà trọ.</p>
+            <p class="landlord-page-subtitle mb-0">Quản lý các phòng thuộc nhà trọ của bạn.</p>
         </div>
         <a class="btn btn-landlord-primary" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe">
             <i class="bi bi-plus-lg" aria-hidden="true"></i>
@@ -16,140 +18,148 @@
         </a>
     </div>
 
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success mb-4" role="status">@successMessage</div>
+    }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger mb-4" role="alert">@errorMessage</div>
+    }
+
     <div class="card landlord-card mb-4">
         <div class="card-body">
-            <div class="row g-3 align-items-end">
+            <form method="get" asp-controller="ChuTro" asp-action="PhongCuThe" class="row g-3 align-items-end" id="phongCuTheFilterForm">
                 <div class="col-xl-4 col-lg-6">
-                    <label class="form-label landlord-form__label" for="searchPhong">Tìm kiếm</label>
-                    <input class="form-control" id="searchPhong" type="text" placeholder="Tìm theo mã phòng, ghi chú..." />
+                    <label class="form-label landlord-form__label" for="tuKhoa">Tìm kiếm</label>
+                    <input class="form-control"
+                           type="text"
+                           id="tuKhoa"
+                           name="tuKhoa"
+                           value="@Model.TuKhoa"
+                           placeholder="Mã phòng, tên phòng, ghi chú..." />
                 </div>
                 <div class="col-xl-2 col-lg-3 col-md-6">
-                    <label class="form-label landlord-form__label" for="nhaTroFilter">Nhà trọ</label>
-                    <select class="form-select" id="nhaTroFilter">
-                        <option selected>Tất cả nhà trọ</option>
-                        <option>Nhà trọ An Phú</option>
-                        <option>Nhà trọ Hòa Khánh</option>
-                        <option>Nhà trọ Sơn Trà</option>
+                    <label class="form-label landlord-form__label" for="nhaTroId">Nhà trọ</label>
+                    <select class="form-select" id="nhaTroId" name="nhaTroId" asp-for="NhaTroId" asp-items="Model.DanhSachNhaTro" onchange="this.form.submit()">
+                        <option value="">Tất cả nhà trọ</option>
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-3 col-md-6">
-                    <label class="form-label landlord-form__label" for="tangFilter">Tầng</label>
-                    <select class="form-select" id="tangFilter">
-                        <option selected>Tất cả tầng</option>
-                        <option>Tầng 1</option>
-                        <option>Tầng 2</option>
-                        <option>Tầng 3</option>
+                    <label class="form-label landlord-form__label" for="tang">Tầng</label>
+                    <select class="form-select" id="tang" name="tang" asp-for="Tang" asp-items="Model.DanhSachTang" onchange="this.form.submit()">
+                        <option value="">Tất cả tầng</option>
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-4 col-md-6">
-                    <label class="form-label landlord-form__label" for="loaiPhongFilter">Loại phòng</label>
-                    <select class="form-select" id="loaiPhongFilter">
-                        <option selected>Tất cả loại phòng</option>
-                        <option>Phòng tiêu chuẩn</option>
-                        <option>Phòng rộng</option>
-                        <option>Phòng cao cấp</option>
+                    <label class="form-label landlord-form__label" for="trangThai">Trạng thái</label>
+                    <select class="form-select" id="trangThai" name="trangThai" asp-for="TrangThai" asp-items="Model.DanhSachTrangThai" onchange="this.form.submit()">
+                        <option value="">Tất cả trạng thái</option>
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-4 col-md-6">
-                    <label class="form-label landlord-form__label" for="trangThaiFilter">Trạng thái</label>
-                    <select class="form-select" id="trangThaiFilter">
-                        <option selected>Tất cả trạng thái</option>
-                        <option>Trống</option>
-                        <option>Đã thuê</option>
-                        <option>Đang sửa</option>
-                    </select>
+                    <button type="submit" class="btn btn-landlord-primary w-100">
+                        <i class="bi bi-funnel" aria-hidden="true"></i>
+                        Lọc
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
-    <div class="card landlord-card">
-        <div class="table-responsive">
-            <table class="table align-middle mb-0 landlord-data-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Ảnh</th>
-                        <th scope="col">Mã phòng</th>
-                        <th scope="col">Nhà trọ</th>
-                        <th scope="col">Tầng</th>
-                        <th scope="col">Loại phòng</th>
-                        <th scope="col">Trạng thái</th>
-                        <th scope="col">Ghi chú</th>
-                        <th scope="col" class="text-end">Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><div class="landlord-room-thumb landlord-room-thumb--blue" aria-hidden="true"><i class="bi bi-house-door"></i></div></td>
-                        <td class="landlord-data-table__name">P101</td>
-                        <td>Nhà trọ An Phú</td>
-                        <td>Tầng 1</td>
-                        <td>Phòng tiêu chuẩn</td>
-                        <td><span class="landlord-badge landlord-badge--success">Trống</span></td>
-                        <td>Phòng gần cầu thang, có cửa sổ lớn.</td>
-                        <td class="text-end"><div class="landlord-table-actions"><a class="landlord-table-actions__btn landlord-table-actions__btn--view" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Xem phòng P101"><i class="bi bi-eye" aria-hidden="true"></i></a><a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Sửa phòng P101"><i class="bi bi-pencil-square" aria-hidden="true"></i></a><button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa phòng P101"><i class="bi bi-trash3" aria-hidden="true"></i></button></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="landlord-room-thumb landlord-room-thumb--orange" aria-hidden="true"><i class="bi bi-door-open"></i></div></td>
-                        <td class="landlord-data-table__name">P102</td>
-                        <td>Nhà trọ An Phú</td>
-                        <td>Tầng 1</td>
-                        <td>Phòng tiêu chuẩn</td>
-                        <td><span class="landlord-badge landlord-badge--info">Đã thuê</span></td>
-                        <td>Đang có hợp đồng 12 tháng.</td>
-                        <td class="text-end"><div class="landlord-table-actions"><a class="landlord-table-actions__btn landlord-table-actions__btn--view" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Xem phòng P102"><i class="bi bi-eye" aria-hidden="true"></i></a><a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Sửa phòng P102"><i class="bi bi-pencil-square" aria-hidden="true"></i></a><button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa phòng P102"><i class="bi bi-trash3" aria-hidden="true"></i></button></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="landlord-room-thumb landlord-room-thumb--red" aria-hidden="true"><i class="bi bi-tools"></i></div></td>
-                        <td class="landlord-data-table__name">P103</td>
-                        <td>Nhà trọ An Phú</td>
-                        <td>Tầng 1</td>
-                        <td>Phòng cao cấp</td>
-                        <td><span class="landlord-badge landlord-badge--warning">Đang sửa</span></td>
-                        <td>Đang thay sơn và kiểm tra điện.</td>
-                        <td class="text-end"><div class="landlord-table-actions"><a class="landlord-table-actions__btn landlord-table-actions__btn--view" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Xem phòng P103"><i class="bi bi-eye" aria-hidden="true"></i></a><a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Sửa phòng P103"><i class="bi bi-pencil-square" aria-hidden="true"></i></a><button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa phòng P103"><i class="bi bi-trash3" aria-hidden="true"></i></button></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="landlord-room-thumb landlord-room-thumb--blue" aria-hidden="true"><i class="bi bi-house-heart"></i></div></td>
-                        <td class="landlord-data-table__name">P201</td>
-                        <td>Nhà trọ Hòa Khánh</td>
-                        <td>Tầng 2</td>
-                        <td>Phòng rộng</td>
-                        <td><span class="landlord-badge landlord-badge--success">Trống</span></td>
-                        <td>Ban công thoáng, view hướng đường lớn.</td>
-                        <td class="text-end"><div class="landlord-table-actions"><a class="landlord-table-actions__btn landlord-table-actions__btn--view" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Xem phòng P201"><i class="bi bi-eye" aria-hidden="true"></i></a><a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Sửa phòng P201"><i class="bi bi-pencil-square" aria-hidden="true"></i></a><button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa phòng P201"><i class="bi bi-trash3" aria-hidden="true"></i></button></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="landlord-room-thumb landlord-room-thumb--orange" aria-hidden="true"><i class="bi bi-person-workspace"></i></div></td>
-                        <td class="landlord-data-table__name">P202</td>
-                        <td>Nhà trọ Hòa Khánh</td>
-                        <td>Tầng 2</td>
-                        <td>Phòng rộng</td>
-                        <td><span class="landlord-badge landlord-badge--info">Đã thuê</span></td>
-                        <td>Khách thuê mới dọn vào đầu tháng.</td>
-                        <td class="text-end"><div class="landlord-table-actions"><a class="landlord-table-actions__btn landlord-table-actions__btn--view" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Xem phòng P202"><i class="bi bi-eye" aria-hidden="true"></i></a><a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Sửa phòng P202"><i class="bi bi-pencil-square" aria-hidden="true"></i></a><button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa phòng P202"><i class="bi bi-trash3" aria-hidden="true"></i></button></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="landlord-room-thumb landlord-room-thumb--red" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></div></td>
-                        <td class="landlord-data-table__name">P203</td>
-                        <td>Nhà trọ Sơn Trà</td>
-                        <td>Tầng 2</td>
-                        <td>Phòng cao cấp</td>
-                        <td><span class="landlord-badge landlord-badge--warning">Đang sửa</span></td>
-                        <td>Chờ hoàn thiện hệ thống điều hòa.</td>
-                        <td class="text-end"><div class="landlord-table-actions"><a class="landlord-table-actions__btn landlord-table-actions__btn--view" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Xem phòng P203"><i class="bi bi-eye" aria-hidden="true"></i></a><a class="landlord-table-actions__btn landlord-table-actions__btn--edit" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe" aria-label="Sửa phòng P203"><i class="bi bi-pencil-square" aria-hidden="true"></i></a><button type="button" class="landlord-table-actions__btn landlord-table-actions__btn--delete" aria-label="Xóa phòng P203"><i class="bi bi-trash3" aria-hidden="true"></i></button></div></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="card landlord-card landlord-room-list-card">
+        @if (tongSo == 0)
+        {
+            <div class="landlord-empty-state p-4">
+                <p class="landlord-empty-state__text mb-0">Chưa có phòng cụ thể nào.</p>
+                <a class="btn btn-landlord-primary btn-sm mt-3" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe">
+                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                    Thêm phòng mới
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle mb-0 landlord-data-table landlord-room-list-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Ảnh</th>
+                            <th scope="col">Mã phòng</th>
+                            <th scope="col">Tên phòng</th>
+                            <th scope="col">Nhà trọ</th>
+                            <th scope="col">Tầng</th>
+                            <th scope="col" class="text-end">Diện tích</th>
+                            <th scope="col" class="text-end">Giá thuê</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col">Ghi chú</th>
+                            <th scope="col" class="text-end">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.DanhSachPhong)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="landlord-room-thumb @CssThumbPhong(item.TrangThai)" aria-hidden="true">
+                                        <i class="bi @IconPhong(item.TrangThai)" aria-hidden="true"></i>
+                                    </div>
+                                </td>
+                                <td class="landlord-data-table__name">@item.MaPhong</td>
+                                <td>@item.TenPhong</td>
+                                <td>@item.TenNhaTro</td>
+                                <td>@(item.Tang.HasValue ? $"Tầng {item.Tang}" : "—")</td>
+                                <td class="text-end landlord-data-table__money">@FormatHelper.FormatDienTich(item.DienTich)</td>
+                                <td class="text-end landlord-data-table__money">@FormatHelper.FormatGiaThue(item.GiaThueThang)</td>
+                                <td>@Html.Raw(HienThiTrangThaiPhong(item.TrangThai))</td>
+                                <td class="landlord-room-list-table__note">@(string.IsNullOrWhiteSpace(item.GhiChu) ? "—" : item.GhiChu)</td>
+                                <td class="text-end">
+                                    <a class="landlord-table-actions__btn landlord-table-actions__btn--edit"
+                                       asp-controller="ChuTro"
+                                       asp-action="ThemSuaPhongCuThe"
+                                       asp-route-id="@item.Id"
+                                       aria-label="Sửa phòng @item.MaPhong"
+                                       title="Sửa phòng">
+                                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-3 border-top landlord-pagination">
-            <p class="mb-0 landlord-pagination__summary">Hiển thị 1–6 / 6 phòng cụ thể</p>
-            <ul class="pagination mb-0">
-                <li class="page-item disabled"><span class="page-link landlord-pagination__arrow" aria-hidden="true">&lsaquo;</span></li>
-                <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-                <li class="page-item disabled"><span class="page-link landlord-pagination__arrow" aria-hidden="true">&rsaquo;</span></li>
-            </ul>
-        </div>
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-3 border-top landlord-pagination">
+                <p class="mb-0 landlord-pagination__summary">Hiển thị @tongSo phòng cụ thể</p>
+            </div>
+        }
     </div>
 </section>
+
+@functions
+{
+    private static string HienThiTrangThaiPhong(string trangThai) => trangThai switch
+    {
+        "TRONG" => """<span class="landlord-badge landlord-badge--success">Trống</span>""",
+        "DANG_THUE" => """<span class="landlord-badge landlord-badge--info">Đã thuê</span>""",
+        "DANG_SUA" => """<span class="landlord-badge landlord-badge--warning">Đang sửa</span>""",
+        "TAM_AN" => """<span class="landlord-badge landlord-badge--secondary">Tạm ẩn</span>""",
+        _ => $"""<span class="landlord-badge landlord-badge--secondary">{trangThai}</span>"""
+    };
+
+    private static string CssThumbPhong(string trangThai) => trangThai switch
+    {
+        "DANG_THUE" => "landlord-room-thumb--orange",
+        "DANG_SUA" => "landlord-room-thumb--red",
+        "TAM_AN" => "landlord-room-thumb--red",
+        _ => "landlord-room-thumb--blue"
+    };
+
+    private static string IconPhong(string trangThai) => trangThai switch
+    {
+        "DANG_THUE" => "bi-door-open",
+        "DANG_SUA" => "bi-tools",
+        "TAM_AN" => "bi-eye-slash",
+        _ => "bi-house-door"
+    };
+}

@@ -7,7 +7,7 @@ public class PhongTroCreateUpdateViewModel
 {
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "Vui lòng chọn nhà trọ.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Vui lòng chọn nhà trọ.")]
     [Display(Name = "Nhà trọ")]
     public int NhaTroId { get; set; }
 

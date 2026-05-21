@@ -59,30 +59,16 @@
                                 <td>@HienThiKhuVuc(item)</td>
                                 <td>@item.SoPhong</td>
                                 <td>@Html.Raw(HienThiTrangThai(item.TrangThai))</td>
-                                <td class="landlord-data-table__date">@item.NgayTao.ToString("dd/MM/yyyy")</td>
+                                <td class="landlord-data-table__date">@FormatHelper.FormatNgay(item.NgayTao)</td>
                                 <td class="text-end">
-                                    <div class="landlord-table-actions">
-                                        <a class="landlord-table-actions__btn landlord-table-actions__btn--view"
-                                           href="#"
-                                           aria-label="Xem chi tiết @item.TenNhaTro"
-                                           title="Xem chi tiết (sắp có)">
-                                            <i class="bi bi-eye" aria-hidden="true"></i>
-                                        </a>
-                                        <a class="landlord-table-actions__btn landlord-table-actions__btn--edit"
-                                           asp-controller="ChuTro"
-                                           asp-action="ThemSuaNhaTro"
-                                           asp-route-id="@item.Id"
-                                           aria-label="Sửa @item.TenNhaTro">
-                                            <i class="bi bi-pencil-square" aria-hidden="true"></i>
-                                        </a>
-                                        <button type="button"
-                                                class="landlord-table-actions__btn landlord-table-actions__btn--delete"
-                                                disabled
-                                                aria-label="Xóa @item.TenNhaTro"
-                                                title="Chức năng xóa sắp có">
-                                            <i class="bi bi-trash3" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
+                                    <a class="landlord-table-actions__btn landlord-table-actions__btn--edit"
+                                       asp-controller="ChuTro"
+                                       asp-action="ThemSuaNhaTro"
+                                       asp-route-id="@item.Id"
+                                       aria-label="Sửa @item.TenNhaTro"
+                                       title="Sửa nhà trọ">
+                                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
                         }
