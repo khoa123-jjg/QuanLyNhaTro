@@ -1,7 +1,7 @@
-using QuanLyNhaTro.Domain;
-using QuanLyNhaTro.Models.Auth;
+﻿using QLNhaTro.Domain;
+using QLNhaTro.Models.Auth;
 
-namespace QuanLyNhaTro.Repositories.Auth;
+namespace QLNhaTro.Repositories.Auth;
 
 public class AuthResult
 {
@@ -16,7 +16,7 @@ public class AuthResult
 
 public interface IAuthRepository
 {
-    Task<AuthResult> RegisterAsync(RegisterViewModel model);
+    Task<AuthResult> Register(RegisterViewModel model);
 
-    Task<AuthResult> LoginAsync(LoginViewModel model);
+    Task<AuthResult> Login(LoginViewModel model);
 }

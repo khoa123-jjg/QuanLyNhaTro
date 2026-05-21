@@ -1,12 +1,12 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QuanLyNhaTro.Models.Auth;
-using QuanLyNhaTro.Repositories.Auth;
+using QLNhaTro.Models.Auth;
+using QLNhaTro.Repositories.Auth;
 
-namespace QuanLyNhaTro.Controllers;
+namespace QLNhaTro.Controllers;
 
 public class AccountController : Controller
 {
@@ -43,7 +43,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var result = await _authRepository.LoginAsync(model);
+        var result = await _authRepository.Login(model);
 
         if (!result.Success || result.NguoiDung is null)
         {
@@ -55,7 +55,7 @@ public class AccountController : Controller
         {
             new(ClaimTypes.NameIdentifier, result.NguoiDung.Id.ToString()),
             new(ClaimTypes.Name, result.NguoiDung.HoTen),
-            new(ClaimTypes.Email, result.NguoiDung.Email)
+            new(ClaimTypes.Email, result.NguoiDung.Email),
         };
 
         foreach (var role in result.Roles)
@@ -107,7 +107,7 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Register()
     {
-        return View(new RegisterViewModel());
+        return View();
     }
 
     [HttpPost]
@@ -118,7 +118,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var result = await _authRepository.RegisterAsync(model);
+        var result = await _authRepository.Register(model);
 
         if (!result.Success)
         {

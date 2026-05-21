@@ -1,4 +1,5 @@
-﻿@{
+@model QLNhaTro.Models.Home.HomeIndexViewModel
+@{
     ViewData["Title"] = "Trang chủ";
     ViewData["ActiveNav"] = "home";
 }
@@ -27,11 +28,11 @@
                     </select>
                 </div>
                 <div class="home-search__field">
-                    <label class="home-search__label" for="searchGia">
+                    <label class="home-search__label" for="searchMucGia">
                         <i class="bi bi-cash-stack" aria-hidden="true"></i>
                         Mức giá
                     </label>
-                    <select class="home-search__select form-select" id="searchGia" name="gia">
+                    <select class="home-search__select form-select" id="searchMucGia" name="mucGia">
                         <option value="" selected>Mọi mức giá</option>
                         <option value="0-2000000">Dưới 2 triệu</option>
                         <option value="2000000-3000000">2 – 3 triệu</option>
@@ -74,50 +75,21 @@
         </div>
 
         <div class="row g-4">
-            <div class="col-sm-6 col-lg-3">
-                @await Html.PartialAsync("_RoomCard", (
-                    ImageUrl: "https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=600&h=450&fit=crop",
-                    Title: "Phòng trọ đường Trần Cao Vân",
-                    District: "Thanh Khê",
-                    Price: "2.800.000 đ/tháng",
-                    Area: "25 m²",
-                    Bathroom: "WC riêng",
-                    DetailUrl: "/PhongTro/ChiTiet"
-                ))
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                @await Html.PartialAsync("_RoomCard", (
-                    ImageUrl: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=450&fit=crop",
-                    Title: "Phòng mới gần ĐH Bách Khoa",
-                    District: "Thanh Khê",
-                    Price: "3.200.000 đ/tháng",
-                    Area: "22 m²",
-                    Bathroom: "WC riêng",
-                    DetailUrl: "/PhongTro/ChiTiet"
-                ))
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                @await Html.PartialAsync("_RoomCard", (
-                    ImageUrl: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=450&fit=crop",
-                    Title: "Phòng full nội thất – An Hải Bắc",
-                    District: "Sơn Trà",
-                    Price: "4.500.000 đ/tháng",
-                    Area: "28 m²",
-                    Bathroom: "WC riêng",
-                    DetailUrl: "/PhongTro/ChiTiet"
-                ))
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                @await Html.PartialAsync("_RoomCard", (
-                    ImageUrl: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600&h=450&fit=crop",
-                    Title: "Phòng gác lửng – Hòa Minh",
-                    District: "Liên Chiểu",
-                    Price: "2.000.000 đ/tháng",
-                    Area: "18 m²",
-                    Bathroom: "WC riêng",
-                    DetailUrl: "/PhongTro/ChiTiet"
-                ))
-            </div>
+            @if (Model.PhongNoiBat.Count == 0)
+            {
+                <div class="col-12">
+                    <p class="home-featured__empty text-center text-muted mb-0">Hiện chưa có phòng nổi bật.</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var phong in Model.PhongNoiBat)
+                {
+                    <div class="col-sm-6 col-lg-3">
+                        @await Html.PartialAsync("_RoomCard", phong)
+                    </div>
+                }
+            }
         </div>
     </div>
 </section>

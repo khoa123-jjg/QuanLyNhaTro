@@ -1,129 +1,342 @@
+@model QLNhaTro.Models.NhaTro.NhaTroCreateUpdateViewModel
 @{
-    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
-    ViewData["Title"] = "Thêm / sửa nhà trọ";
-    ViewData["ActiveLandlordMenu"] = "PhongCuThe";
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Thêm / Sửa nhà trọ";
+    ViewData["ActiveLandlordMenu"] = "NhaTro";
+    var isEdit = Model.Id > 0;
+    var hasToaDo = Model.ViDo.HasValue && Model.KinhDo.HasValue;
+    var mapLat = Model.ViDo ?? 16.0544m;
+    var mapLng = Model.KinhDo ?? 108.2022m;
 }
 
-<section class="landlord-form-page">
-    <nav aria-label="breadcrumb" class="landlord-breadcrumb mb-3">
-        <ol class="breadcrumb mb-0 landlord-breadcrumb__list">
-            <li class="breadcrumb-item">
-                <a asp-controller="ChuTro" asp-action="PhongCuThe">Phòng/Phòng trọ</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Thêm / sửa nhà trọ</li>
-        </ol>
-    </nav>
+<nav class="landlord-breadcrumb mb-4" aria-label="Breadcrumb">
+    <ol class="breadcrumb landlord-breadcrumb__list mb-0">
+        <li class="breadcrumb-item"><a asp-controller="ChuTro" asp-action="NhaTro">Nhà trọ</a></li>
+        <li class="breadcrumb-item"><a asp-controller="ChuTro" asp-action="NhaTro">Danh sách nhà trọ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Thêm / Sửa nhà trọ</li>
+    </ol>
+</nav>
 
+<section class="landlord-form-page landlord-nhatro-form-page">
     <header class="landlord-form-page__header mb-4">
-        <h1 class="landlord-page-title">Thêm / sửa nhà trọ</h1>
+        <h1 class="landlord-page-title">Thêm / Sửa nhà trọ</h1>
         <p class="landlord-page-subtitle mb-0">
-            Cập nhật thông tin nhà trọ, địa chỉ và quy định chung cho toàn bộ phòng.
+            Cập nhật thông tin nhà trọ, địa chỉ và trạng thái hiển thị.
         </p>
     </header>
 
     <div class="row g-3 g-xl-4 align-items-start">
         <div class="col-lg-8">
             <div class="landlord-card landlord-form-card">
-                <form class="landlord-form" action="#" method="post" novalidate>
-                    <div class="mb-4">
-                        <label class="landlord-form__label" for="tenNhaTro">Tên nhà trọ <span class="text-danger">*</span></label>
-                        <input class="form-control" id="tenNhaTro" type="text" value="Nhà trọ An Bình" />
-                    </div>
+                <form class="landlord-form"
+                      asp-controller="ChuTro"
+                      asp-action="ThemSuaNhaTro"
+                      method="post"
+                      novalidate
+                      id="nhaTroForm">
+                    <input type="hidden" asp-for="Id" />
 
-                    <div class="mb-4">
-                        <label class="landlord-form__label" for="moTaNhaTro">Mô tả</label>
-                        <textarea class="form-control landlord-form__textarea" id="moTaNhaTro" rows="4">Nhà trọ sạch sẽ, an ninh, gần trường học và siêu thị. Phù hợp sinh viên và người đi làm. Có camera, wifi ổn định và chỗ để xe miễn phí.</textarea>
-                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                    <div class="mb-4">
-                        <span class="landlord-form__label d-block mb-2">Ảnh đại diện</span>
-                        <div class="landlord-upload">
-                            <img class="landlord-upload__preview"
-                                 src="https://images.unsplash.com/photo-1560448204-e02f11c45772?w=800&h=500&fit=crop"
-                                 alt="Ảnh đại diện nhà trọ An Bình" />
-                            <div class="landlord-upload__body">
-                                <p class="landlord-upload__hint mb-2">JPG, PNG — tối đa 5MB. Ảnh sẽ hiển thị trên bài đăng và trang chi tiết.</p>
-                                <button type="button" class="btn btn-landlord-outline btn-sm">
-                                    <i class="bi bi-upload" aria-hidden="true"></i>
-                                    Tải ảnh lên
-                                </button>
+                    <fieldset class="landlord-form-section">
+                        <legend class="landlord-form-section__title">Thông tin nhà trọ</legend>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label landlord-form__label" asp-for="TenNhaTro"></label>
+                                <input class="form-control" asp-for="TenNhaTro" placeholder="VD: Nhà trọ An Bình" />
+                                <span class="text-danger small" asp-validation-for="TenNhaTro"></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label landlord-form__label" asp-for="MoTa"></label>
+                                <textarea class="form-control landlord-form__textarea" asp-for="MoTa" rows="4" placeholder="Mô tả nhà trọ, tiện ích chung, quy định..."></textarea>
+                                <span class="text-danger small" asp-validation-for="MoTa"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label landlord-form__label" asp-for="TrangThai"></label>
+                                <select class="form-select" asp-for="TrangThai" asp-items="Model.DanhSachTrangThai"></select>
+                                <span class="text-danger small" asp-validation-for="TrangThai"></span>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div class="mb-4">
-                        <label class="landlord-form__label" for="diaChiDaChon">Địa chỉ đã chọn</label>
-                        <div class="landlord-address-field">
-                            <input class="form-control landlord-address-field__input"
-                                   id="diaChiDaChon"
-                                   type="text"
-                                   value="45 Nguyễn Tất Thành, Phường Hòa Hải, Quận Ngũ Hành Sơn, TP. Đà Nẵng"
-                                   readonly />
-                            <a class="btn btn-landlord-primary landlord-address-field__btn"
-                               asp-controller="ChuTro"
-                               asp-action="QuanLyDiaChi">
-                                <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
-                                Chọn địa chỉ
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="landlord-form__label" for="quyDinhChung">Quy định / tiện ích chung</label>
-                        <textarea class="form-control landlord-form__textarea" id="quyDinhChung" rows="4">Không nuôi thú cưng. Giờ giấc sau 22h cần giữ yên lặng. Điện, nước tính theo đồng hồ. Tiện ích chung: wifi, camera, bãi xe, giặt sấy.</textarea>
-                    </div>
-
-                    <fieldset class="landlord-status-group mb-0">
-                        <legend class="landlord-form__label mb-2">Trạng thái</legend>
-                        <div class="landlord-status-group__options">
-                            <label class="landlord-status-option">
-                                <input type="radio" name="trangThaiNhaTro" value="active" checked />
-                                <span class="landlord-status-option__pill landlord-status-option__pill--success">Đang hoạt động</span>
-                            </label>
-                            <label class="landlord-status-option">
-                                <input type="radio" name="trangThaiNhaTro" value="hidden" />
-                                <span class="landlord-status-option__pill landlord-status-option__pill--warning">Tạm ẩn</span>
-                            </label>
-                            <label class="landlord-status-option">
-                                <input type="radio" name="trangThaiNhaTro" value="stopped" />
-                                <span class="landlord-status-option__pill landlord-status-option__pill--muted">Ngừng hoạt động</span>
-                            </label>
+                    <fieldset class="landlord-form-section">
+                        <legend class="landlord-form-section__title">Địa chỉ</legend>
+                        <p class="landlord-form__hint text-muted small mb-3">
+                            Chọn quận/huyện, phường/xã và đường/phố từ danh mục hệ thống (nếu có). Bạn vẫn có thể lưu khi chỉ nhập địa chỉ chi tiết.
+                        </p>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label landlord-form__label" asp-for="QuanHuyenId"></label>
+                                <select class="form-select" asp-for="QuanHuyenId" asp-items="Model.DanhSachQuanHuyen" id="QuanHuyenId">
+                                    <option value="">-- Chọn quận/huyện --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label landlord-form__label" asp-for="XaId"></label>
+                                <select class="form-select" asp-for="XaId" asp-items="Model.DanhSachXa" id="XaId">
+                                    <option value="">-- Chọn phường/xã --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label landlord-form__label" asp-for="DuongPhoId"></label>
+                                <select class="form-select" asp-for="DuongPhoId" asp-items="Model.DanhSachDuongPho" id="DuongPhoId">
+                                    <option value="">-- Chọn đường/phố --</option>
+                                </select>
+                                <span class="text-danger small" asp-validation-for="DuongPhoId"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label landlord-form__label" asp-for="SoNha"></label>
+                                <input class="form-control" asp-for="SoNha" placeholder="VD: 45" />
+                                <span class="text-danger small" asp-validation-for="SoNha"></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label landlord-form__label" asp-for="DiaChiChiTiet"></label>
+                                <textarea class="form-control landlord-form__textarea" asp-for="DiaChiChiTiet" rows="2" placeholder="Địa chỉ chi tiết hiển thị trên bài đăng"></textarea>
+                                <span class="text-danger small" asp-validation-for="DiaChiChiTiet"></span>
+                            </div>
                         </div>
                     </fieldset>
-                </form>
-            </div>
 
-            <div class="landlord-form-actions">
-                <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="PhongCuThe">Hủy</a>
-                <button type="button" class="btn btn-landlord-primary">
-                    <i class="bi bi-check-lg" aria-hidden="true"></i>
-                    Lưu nhà trọ
-                </button>
+                    <fieldset class="landlord-form-section mb-0">
+                        <legend class="landlord-form-section__title">Tọa độ</legend>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label landlord-form__label" asp-for="ViDo"></label>
+                                <input class="form-control" asp-for="ViDo" type="number" step="any" placeholder="VD: 16.0544" />
+                                <span class="text-danger small" asp-validation-for="ViDo"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label landlord-form__label" asp-for="KinhDo"></label>
+                                <input class="form-control" asp-for="KinhDo" type="number" step="any" placeholder="VD: 108.2022" />
+                                <span class="text-danger small" asp-validation-for="KinhDo"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="landlord-form-actions d-flex flex-wrap gap-2 mt-4 pt-3 border-top">
+                        <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="NhaTro">
+                            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                            Quay lại
+                        </a>
+                        <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="NhaTro">Hủy</a>
+                        <button type="submit" class="btn btn-landlord-primary">
+                            <i class="bi bi-check-lg" aria-hidden="true"></i>
+                            Lưu nhà trọ
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
         <div class="col-lg-4">
-            <div class="landlord-card landlord-preview-card sticky-lg-top">
+            <div class="landlord-card landlord-map-card mb-3">
+                <h2 class="landlord-map-card__title">
+                    <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                    Bản đồ vị trí
+                </h2>
+                <p class="landlord-map-card__hint text-muted small mb-2">
+                    Nhấp vào bản đồ để chọn vị trí. Tọa độ sẽ tự điền vào ô Vĩ độ / Kinh độ.
+                </p>
+                <div id="map" class="landlord-map-card__map" role="application" aria-label="Bản đồ chọn vị trí nhà trọ"></div>
+            </div>
+
+            <div class="landlord-card landlord-preview-card landlord-nhatro-preview sticky-lg-top">
                 <h2 class="landlord-preview-card__title">Xem trước nhà trọ</h2>
-                <div class="landlord-preview-card__media">
-                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c45772?w=800&h=500&fit=crop"
-                         alt="Nhà trọ An Bình" />
-                    <span class="landlord-badge landlord-badge--success landlord-preview-card__badge">Đang hoạt động</span>
+                <div class="landlord-nhatro-preview__icon" aria-hidden="true">
+                    <i class="bi bi-buildings"></i>
                 </div>
-                <h3 class="landlord-preview-card__name">Nhà trọ An Bình</h3>
-                <p class="landlord-preview-card__address mb-3">
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                    <h3 class="landlord-preview-card__name mb-0" id="previewTenNhaTro">@(string.IsNullOrWhiteSpace(Model.TenNhaTro) ? "—" : Model.TenNhaTro)</h3>
+                    <span class="landlord-badge landlord-badge--success" id="previewBadge">Hoạt động</span>
+                </div>
+                <p class="landlord-preview-card__address mb-3" id="previewDiaChi">
                     <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
-                    45 Nguyễn Tất Thành, Phường Hòa Hải, Quận Ngũ Hành Sơn, TP. Đà Nẵng
+                    <span id="previewDiaChiText">—</span>
                 </p>
-                <p class="landlord-preview-card__desc mb-3">
-                    Nhà trọ sạch sẽ, an ninh, gần trường học và siêu thị. Phù hợp sinh viên và người đi làm.
-                </p>
-                <ul class="landlord-preview-card__meta list-unstyled mb-0">
-                    <li><i class="bi bi-door-open" aria-hidden="true"></i> 12 phòng</li>
-                    <li><i class="bi bi-wifi" aria-hidden="true"></i> Wifi, camera, bãi xe</li>
-                    <li><i class="bi bi-calendar3" aria-hidden="true"></i> Cập nhật: 15/05/2025</li>
-                </ul>
+                <p class="landlord-preview-card__desc mb-3" id="previewMoTa">@(string.IsNullOrWhiteSpace(Model.MoTa) ? "Mô tả nhà trọ sẽ hiển thị tại đây." : Model.MoTa)</p>
+                <p class="landlord-nhatro-preview__coords mb-0" id="previewToaDo">—</p>
             </div>
         </div>
     </div>
 </section>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+    <style>
+        .landlord-map-card__title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .landlord-map-card__map {
+            height: 280px;
+            width: 100%;
+            border-radius: 0.75rem;
+            border: 1px solid var(--landlord-border, #e6eaf2);
+            z-index: 0;
+        }
+
+        .landlord-map-card .leaflet-container {
+            font-family: inherit;
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script>
+        (function () {
+            const defaultLat = 16.0544;
+            const defaultLng = 108.2022;
+            const initialLat = @(mapLat.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            const initialLng = @(mapLng.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            const hasInitialCoords = @(hasToaDo ? "true" : "false");
+
+            let mapInstance = null;
+            let mapMarker = null;
+
+            const statusLabels = {
+                HOAT_DONG: { text: 'Hoạt động', badge: 'landlord-badge--success' },
+                TAM_AN: { text: 'Tạm ẩn', badge: 'landlord-badge--warning' },
+                NGUNG_HOAT_DONG: { text: 'Ngừng hoạt động', badge: 'landlord-badge--danger' }
+            };
+
+            const form = document.getElementById('nhaTroForm');
+            if (!form) return;
+
+            const fields = {
+                tenNhaTro: form.querySelector('[name="TenNhaTro"]'),
+                moTa: form.querySelector('[name="MoTa"]'),
+                trangThai: form.querySelector('[name="TrangThai"]'),
+                quanHuyen: form.querySelector('[name="QuanHuyenId"]'),
+                xa: form.querySelector('[name="XaId"]'),
+                duongPho: form.querySelector('[name="DuongPhoId"]'),
+                soNha: form.querySelector('[name="SoNha"]'),
+                diaChiChiTiet: form.querySelector('[name="DiaChiChiTiet"]'),
+                viDo: form.querySelector('[name="ViDo"]'),
+                kinhDo: form.querySelector('[name="KinhDo"]')
+            };
+
+            const preview = {
+                tenNhaTro: document.getElementById('previewTenNhaTro'),
+                badge: document.getElementById('previewBadge'),
+                diaChiText: document.getElementById('previewDiaChiText'),
+                moTa: document.getElementById('previewMoTa'),
+                toaDo: document.getElementById('previewToaDo')
+            };
+
+            function selectedText(select) {
+                if (!select || !select.selectedOptions.length) return '';
+                const text = select.selectedOptions[0].text.trim();
+                return text.startsWith('--') ? '' : text;
+            }
+
+            function buildDiaChi() {
+                const parts = [];
+                const soNha = (fields.soNha?.value || '').trim();
+                const duong = selectedText(fields.duongPho);
+                const xa = selectedText(fields.xa);
+                const quan = selectedText(fields.quanHuyen);
+                const chiTiet = (fields.diaChiChiTiet?.value || '').trim();
+
+                if (soNha) parts.push(soNha);
+                if (duong) parts.push(duong);
+                if (xa) parts.push(xa);
+                if (quan) parts.push(quan);
+                if (parts.length) parts.push('Đà Nẵng');
+
+                if (parts.length) return parts.join(', ');
+                return chiTiet || '—';
+            }
+
+            function updatePreview() {
+                const ten = (fields.tenNhaTro?.value || '').trim();
+                preview.tenNhaTro.textContent = ten || '—';
+
+                const code = fields.trangThai?.value || 'HOAT_DONG';
+                const status = statusLabels[code] || { text: code, badge: 'landlord-badge--secondary' };
+                preview.badge.textContent = status.text;
+                preview.badge.className = 'landlord-badge ' + status.badge;
+
+                preview.diaChiText.textContent = buildDiaChi();
+
+                const moTa = (fields.moTa?.value || '').trim();
+                preview.moTa.textContent = moTa || 'Mô tả nhà trọ sẽ hiển thị tại đây.';
+
+                const vi = (fields.viDo?.value || '').trim();
+                const kinh = (fields.kinhDo?.value || '').trim();
+                if (vi && kinh) {
+                    preview.toaDo.textContent = 'Tọa độ: ' + vi + ', ' + kinh;
+                } else {
+                    preview.toaDo.textContent = '—';
+                }
+            }
+
+            function initMap() {
+                const mapEl = document.getElementById('map');
+                if (!mapEl || typeof L === 'undefined') return;
+
+                const startLat = hasInitialCoords ? initialLat : defaultLat;
+                const startLng = hasInitialCoords ? initialLng : defaultLng;
+                const startZoom = hasInitialCoords ? 16 : 13;
+
+                mapInstance = L.map('map').setView([startLat, startLng], startZoom);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(mapInstance);
+
+                if (hasInitialCoords) {
+                    mapMarker = L.marker([startLat, startLng]).addTo(mapInstance);
+                }
+
+                mapInstance.on('click', function (e) {
+                    setMapPosition(e.latlng.lat, e.latlng.lng, true);
+                });
+
+                setTimeout(function () {
+                    mapInstance.invalidateSize();
+                }, 150);
+            }
+
+            function setMapPosition(lat, lng, panMap) {
+                if (!fields.viDo || !fields.kinhDo) return;
+
+                const latFixed = Number(lat.toFixed(7));
+                const lngFixed = Number(lng.toFixed(7));
+
+                fields.viDo.value = latFixed;
+                fields.kinhDo.value = lngFixed;
+                updatePreview();
+
+                if (!mapInstance) return;
+
+                if (mapMarker) {
+                    mapMarker.setLatLng([latFixed, lngFixed]);
+                } else {
+                    mapMarker = L.marker([latFixed, lngFixed]).addTo(mapInstance);
+                }
+
+                if (panMap) {
+                    mapInstance.panTo([latFixed, lngFixed]);
+                }
+            }
+
+            form.addEventListener('input', updatePreview);
+            form.addEventListener('change', updatePreview);
+            updatePreview();
+            initMap();
+        })();
+    </script>
+}

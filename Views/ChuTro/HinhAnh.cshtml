@@ -1,5 +1,5 @@
 @{
-    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
     ViewData["Title"] = "Quản lý hình ảnh";
     ViewData["ActiveLandlordMenu"] = "HinhAnh";
 
@@ -36,7 +36,7 @@
                 <li><i class="bi bi-people" aria-hidden="true"></i> Sức chứa 2 người</li>
             </ul>
         </div>
-        <a class="btn btn-landlord-outline btn-sm landlord-selected-roomtype__change" asp-controller="ChuTro" asp-action="LoaiPhong">
+        <a class="btn btn-landlord-outline btn-sm landlord-selected-roomtype__change" asp-controller="ChuTro" asp-action="NhaTro">
             <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
             Đổi loại phòng
         </a>
@@ -115,7 +115,7 @@
     </div>
 
     <div class="landlord-form-actions mt-4">
-        <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="LoaiPhong">
+        <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="NhaTro">
             <i class="bi bi-arrow-left" aria-hidden="true"></i>
             Quay lại
         </a>
