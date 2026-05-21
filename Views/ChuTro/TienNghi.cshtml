@@ -1,237 +1,129 @@
+@model QuanLyNhaTro.Models.TienNghi.TienNghiPhongPageViewModel
 @{
     Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
-    ViewData["Title"] = "Gắn tiện nghi cho loại phòng";
+    ViewData["Title"] = "Gắn tiện nghi cho phòng";
     ViewData["ActiveLandlordMenu"] = "TienNghi";
+    var daChonCount = Model.TienNghiDaChon.Count;
+    var coPhong = Model.PhongTroIdDangChon is > 0;
+    var nhanPhongDangChon = coPhong
+        ? Model.DanhSachPhong.FirstOrDefault(p => p.Value == Model.PhongTroIdDangChon!.Value.ToString())?.Text
+        : null;
 }
 
 <section class="landlord-amenity-page">
     <header class="landlord-form-page__header mb-4">
-        <h1 class="landlord-page-title">Gắn tiện nghi cho loại phòng</h1>
+        <h1 class="landlord-page-title">Gắn tiện nghi cho phòng</h1>
         <p class="landlord-page-subtitle mb-0">
-            Chọn các tiện nghi áp dụng cho loại phòng đang quản lý.
+            Chọn phòng và đánh dấu các tiện nghi áp dụng (lưu gán sẽ được bổ sung sau).
         </p>
     </header>
 
-    <div class="landlord-card landlord-selected-roomtype mb-4">
-        <div class="landlord-selected-roomtype__icon" aria-hidden="true">
-            <i class="bi bi-layout-text-window"></i>
-        </div>
-        <div class="landlord-selected-roomtype__body">
-            <p class="landlord-selected-roomtype__label mb-1">Loại phòng đang chọn</p>
-            <h2 class="landlord-selected-roomtype__name mb-2">Phòng trọ có gác</h2>
-            <ul class="landlord-selected-roomtype__meta list-unstyled mb-0">
-                <li><i class="bi bi-aspect-ratio" aria-hidden="true"></i> Diện tích 25 m²</li>
-                <li><i class="bi bi-people" aria-hidden="true"></i> Sức chứa 2-3 người</li>
-                <li><i class="bi bi-upc-scan" aria-hidden="true"></i> Mã loại phòng <strong>LTG-003</strong></li>
-            </ul>
-        </div>
-    </div>
+    @if (Model.DanhSachPhong.Count == 0)
+    {
+        <div class="alert alert-info mb-4" role="status">Bạn chưa có phòng nào. Hãy thêm phòng trước khi gán tiện nghi.</div>
+    }
+    else if (!coPhong)
+    {
+        <div class="alert alert-info mb-4" role="status">Vui lòng chọn phòng.</div>
+    }
 
-    <div class="row g-3 g-xl-4">
-        <div class="col-lg-6">
-            <div class="landlord-card landlord-amenity-panel h-100">
-                <h2 class="landlord-panel__title">Danh sách tiện nghi</h2>
-                <ul class="landlord-amenity-list list-unstyled mb-0">
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" checked />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-wifi landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>WiFi</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" checked />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-snow landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Máy lạnh</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" checked />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-droplet landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>WC riêng</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-droplet-half landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Máy giặt</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-box-seam landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Tủ lạnh</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" checked />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-camera-video landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Camera</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" checked />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-bicycle landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Chỗ để xe</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-door-open landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Ban công</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" checked />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-thermometer-half landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Nóng lạnh</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-cup-hot landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Bếp nấu</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-fire landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>PCCC</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-building landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Thang máy</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" checked />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-clock landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Giờ giấc tự do</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" checked />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-person-check landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Không chung chủ</span>
-                        </label>
-                    </li>
-                    <li class="landlord-amenity-list__item">
-                        <label class="landlord-amenity-check">
-                            <input type="checkbox" />
-                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
-                            <i class="bi bi-brush landlord-amenity-check__icon" aria-hidden="true"></i>
-                            <span>Dọn phòng</span>
-                        </label>
-                    </li>
-                </ul>
+    @if (Model.DanhSachPhong.Count > 0)
+    {
+        <form method="get" asp-controller="ChuTro" asp-action="TienNghi" class="landlord-card mb-4">
+            <label class="form-label fw-semibold" for="phongTroId">Chọn phòng</label>
+            <div class="row g-2 align-items-end">
+                <div class="col-md-8 col-lg-6">
+                    <select class="form-select" id="phongTroId" name="phongTroId" asp-for="PhongTroIdDangChon" asp-items="Model.DanhSachPhong">
+                        <option value="">-- Chọn phòng --</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-landlord-primary">
+                        <i class="bi bi-funnel" aria-hidden="true"></i>
+                        Áp dụng
+                    </button>
+                </div>
+            </div>
+        </form>
+    }
+
+    @if (coPhong && !string.IsNullOrEmpty(nhanPhongDangChon))
+    {
+        <div class="landlord-card landlord-selected-roomtype mb-4">
+            <div class="landlord-selected-roomtype__icon" aria-hidden="true">
+                <i class="bi bi-door-closed"></i>
+            </div>
+            <div class="landlord-selected-roomtype__body">
+                <p class="landlord-selected-roomtype__label mb-1">Phòng đang chọn</p>
+                <h2 class="landlord-selected-roomtype__name mb-2">@nhanPhongDangChon</h2>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class="landlord-card landlord-amenity-panel landlord-amenity-panel--selected h-100">
-                <h2 class="landlord-panel__title">
-                    Tiện nghi đã chọn
-                    <span class="landlord-amenity-panel__count">8</span>
-                </h2>
-                <ul class="landlord-amenity-selected list-unstyled mb-0">
-                    <li class="landlord-amenity-selected__item">
-                        <i class="bi bi-wifi" aria-hidden="true"></i>
-                        <span>WiFi</span>
-                        <button type="button" class="landlord-amenity-selected__remove" aria-label="Bỏ chọn WiFi">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                    </li>
-                    <li class="landlord-amenity-selected__item">
-                        <i class="bi bi-snow" aria-hidden="true"></i>
-                        <span>Máy lạnh</span>
-                        <button type="button" class="landlord-amenity-selected__remove" aria-label="Bỏ chọn Máy lạnh">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                    </li>
-                    <li class="landlord-amenity-selected__item">
-                        <i class="bi bi-droplet" aria-hidden="true"></i>
-                        <span>WC riêng</span>
-                        <button type="button" class="landlord-amenity-selected__remove" aria-label="Bỏ chọn WC riêng">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                    </li>
-                    <li class="landlord-amenity-selected__item">
-                        <i class="bi bi-camera-video" aria-hidden="true"></i>
-                        <span>Camera</span>
-                        <button type="button" class="landlord-amenity-selected__remove" aria-label="Bỏ chọn Camera">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                    </li>
-                    <li class="landlord-amenity-selected__item">
-                        <i class="bi bi-bicycle" aria-hidden="true"></i>
-                        <span>Chỗ để xe</span>
-                        <button type="button" class="landlord-amenity-selected__remove" aria-label="Bỏ chọn Chỗ để xe">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                    </li>
-                    <li class="landlord-amenity-selected__item">
-                        <i class="bi bi-thermometer-half" aria-hidden="true"></i>
-                        <span>Nóng lạnh</span>
-                        <button type="button" class="landlord-amenity-selected__remove" aria-label="Bỏ chọn Nóng lạnh">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                    </li>
-                    <li class="landlord-amenity-selected__item">
-                        <i class="bi bi-clock" aria-hidden="true"></i>
-                        <span>Giờ giấc tự do</span>
-                        <button type="button" class="landlord-amenity-selected__remove" aria-label="Bỏ chọn Giờ giấc tự do">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                    </li>
-                    <li class="landlord-amenity-selected__item">
-                        <i class="bi bi-person-check" aria-hidden="true"></i>
-                        <span>Không chung chủ</span>
-                        <button type="button" class="landlord-amenity-selected__remove" aria-label="Bỏ chọn Không chung chủ">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                    </li>
-                </ul>
+        <div class="row g-3 g-xl-4">
+            <div class="col-lg-6">
+                <div class="landlord-card landlord-amenity-panel h-100">
+                    <h2 class="landlord-panel__title">Danh sách tiện nghi</h2>
+                    @if (Model.DanhSachTienNghi.Count == 0)
+                    {
+                        <p class="text-muted mb-0">Chưa có tiện nghi nào đang hiển thị.</p>
+                    }
+                    else
+                    {
+                        <ul class="landlord-amenity-list list-unstyled mb-0">
+                            @foreach (var item in Model.DanhSachTienNghi)
+                            {
+                                <li class="landlord-amenity-list__item">
+                                    <label class="landlord-amenity-check">
+                                        <input type="checkbox" disabled @(item.DaChon ? "checked" : null) />
+                                        <span class="landlord-amenity-check__box" aria-hidden="true"></span>
+                                        <i class="@item.Icon landlord-amenity-check__icon" aria-hidden="true"></i>
+                                        <span>@item.TenTienNghi</span>
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="landlord-card landlord-amenity-panel landlord-amenity-panel--selected h-100">
+                    <h2 class="landlord-panel__title">
+                        Tiện nghi đã chọn
+                        <span class="landlord-amenity-panel__count">@daChonCount</span>
+                    </h2>
+                    @if (daChonCount == 0)
+                    {
+                        <p class="text-muted mb-0">Chưa gán tiện nghi cho phòng này.</p>
+                    }
+                    else
+                    {
+                        <ul class="landlord-amenity-selected list-unstyled mb-0">
+                            @foreach (var item in Model.TienNghiDaChon)
+                            {
+                                <li class="landlord-amenity-selected__item">
+                                    <i class="@item.Icon" aria-hidden="true"></i>
+                                    <span>@item.TenTienNghi</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
             </div>
         </div>
-    </div>
+    }
 
     <div class="landlord-form-actions mt-4">
         <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="NhaTro">
             <i class="bi bi-arrow-left" aria-hidden="true"></i>
             Quay lại
         </a>
-        <button type="button" class="btn btn-landlord-primary">
-            <i class="bi bi-check-lg" aria-hidden="true"></i>
-            Lưu tiện nghi
-        </button>
+        @if (coPhong)
+        {
+            <button type="button" class="btn btn-landlord-primary" disabled title="Chức năng lưu sẽ được bổ sung sau">
+                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                Lưu tiện nghi
+            </button>
+        }
     </div>
 </section>

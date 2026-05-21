@@ -5,14 +5,10 @@
     @await Html.PartialAsync("_RoomCard", phongCard)
 *@
 @model QLNhaTro.Models.PhongTro.PhongTroCardViewModel
-@using System.Globalization
 
 @{
-    var culture = CultureInfo.GetCultureInfo("vi-VN");
-    var giaThueHienThi = $"{Model.GiaThue.ToString("N0", culture)} đ/tháng";
-    var dienTichHienThi = Model.DienTich % 1 == 0
-        ? $"{Model.DienTich:N0} m²"
-        : $"{Model.DienTich.ToString("0.##", culture)} m²";
+    var giaThueHienThi = $"{FormatHelper.FormatGiaThue(Model.GiaThue)}/tháng";
+    var dienTichHienThi = FormatHelper.FormatDienTich(Model.DienTich);
     var coThongTinPhu = !string.IsNullOrWhiteSpace(Model.ThongTinPhu);
 }
 

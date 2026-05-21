@@ -1,5 +1,7 @@
 @model QLNhaTro.Models.PhongTro.PhongTroCreateUpdateViewModel
+@using System.Globalization
 @{
+    var invariant = CultureInfo.InvariantCulture;
     Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
     ViewData["Title"] = "Thêm / Sửa phòng cụ thể";
     ViewData["ActiveLandlordMenu"] = "PhongCuThe";
@@ -26,6 +28,10 @@
     {
         <div class="alert alert-success" role="status">@successMessage</div>
     }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger" role="alert">@errorMessage</div>
+    }
 
     <div class="row g-3 g-xl-4 align-items-start">
         <div class="col-lg-8">
@@ -33,13 +39,13 @@
                 <div class="card-body">
                     <form class="landlord-form"
                           asp-controller="ChuTro"
-                          asp-action="ThemPhong"
+                          asp-action="ThemSuaPhongCuThe"
                           method="post"
                           novalidate
                           id="phongCuTheForm">
                         <input type="hidden" asp-for="Id" />
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
                         <fieldset class="landlord-form-section">
                             <legend class="landlord-form-section__title">Thông tin cơ bản</legend>
@@ -79,17 +85,35 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label landlord-form__label" asp-for="GiaThueThang"></label>
-                                    <input class="form-control" asp-for="GiaThueThang" type="number" min="0" step="1000" />
+                                    <input class="form-control"
+                                           type="number"
+                                           min="0"
+                                           step="any"
+                                           id="@Html.IdFor(m => m.GiaThueThang)"
+                                           name="@Html.NameFor(m => m.GiaThueThang)"
+                                           value="@Model.GiaThueThang.ToString(invariant)" />
                                     <span class="text-danger small" asp-validation-for="GiaThueThang"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label landlord-form__label" asp-for="TienCoc"></label>
-                                    <input class="form-control" asp-for="TienCoc" type="number" min="0" step="1000" />
+                                    <input class="form-control"
+                                           type="number"
+                                           min="0"
+                                           step="any"
+                                           id="@Html.IdFor(m => m.TienCoc)"
+                                           name="@Html.NameFor(m => m.TienCoc)"
+                                           value="@Model.TienCoc.ToString(invariant)" />
                                     <span class="text-danger small" asp-validation-for="TienCoc"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label landlord-form__label" asp-for="DienTich"></label>
-                                    <input class="form-control" asp-for="DienTich" type="number" min="0.01" step="0.1" />
+                                    <input class="form-control"
+                                           type="number"
+                                           min="0.01"
+                                           step="any"
+                                           id="@Html.IdFor(m => m.DienTich)"
+                                           name="@Html.NameFor(m => m.DienTich)"
+                                           value="@Model.DienTich.ToString(invariant)" />
                                     <span class="text-danger small" asp-validation-for="DienTich"></span>
                                 </div>
                                 <div class="col-md-6">

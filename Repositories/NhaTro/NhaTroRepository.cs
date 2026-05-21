@@ -2,28 +2,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLNhaTro.Data;
 using QLNhaTro.Models.NhaTro;
+using QuanLyNhaTro.Helpers.Constants;
 
 namespace QLNhaTro.Repositories.NhaTro;
 
 public class NhaTroRepository : INhaTroRepository
 {
-    private const string TrangThaiHienThi = "HIEN_THI";
-    private const string TrangThaiMacDinh = "HOAT_DONG";
-
-    private static readonly HashSet<string> TrangThaiNhaTroHopLe =
-    [
-        "HOAT_DONG",
-        "TAM_AN",
-        "NGUNG_HOAT_DONG"
-    ];
-
     private readonly PhongTroDaNangContext _context;
 
     public NhaTroRepository(PhongTroDaNangContext context)
     {
         _context = context;
     }
-
+    // Lấy danh sách nhà trọ của chủ trọ đang đăng nhập
     public async Task<List<NhaTroListItemViewModel>> GetNhaTroCuaChuTro(string userId)
     {
         var chuNhaTroId = await LayChuNhaTroIdTheoUser(userId);
@@ -65,17 +56,19 @@ public class NhaTroRepository : INhaTroRepository
             DiaChiDayDu = TaoDiaChiDayDu(r.SoNha, r.TenDuong, r.TenXa, r.TenQuanhuyen, r.ThanhPho, r.DiaChiChiTiet)
         }).ToList();
     }
-
+    // Lấy thông tin chi tiết nhà trọ để hiển thị trên form thêm mới/sửa
     public async Task<NhaTroCreateUpdateViewModel?> GetForm(int? id, string userId)
     {
+        // Hỗ trợ hiển thị dropdowm quận huyện ngay cả khi tạo mới nhà trọ
         var danhSachQuanHuyen = await GetQuanHuyenOptions();
 
         if (id is null or <= 0)
         {
             return new NhaTroCreateUpdateViewModel
             {
-                TrangThai = TrangThaiMacDinh,
+                TrangThai = NhaTroStatus.MacDinh,
                 DanhSachQuanHuyen = danhSachQuanHuyen
+
             };
         }
 
@@ -108,13 +101,13 @@ public class NhaTroRepository : INhaTroRepository
         {
             return null;
         }
-
+        // Điền danh sách quận huyện, phường xã, đường phố để hiển thị dropdown
         row.DanhSachQuanHuyen = danhSachQuanHuyen;
         row.DanhSachXa = await GetXaOptions(row.QuanHuyenId);
         row.DanhSachDuongPho = await GetDuongPhoOptions(row.XaId);
         return row;
     }
-
+    // Thêm mới nhà trọ nếu chưa có id
     public async Task<NhaTroRepositoryResult> CreateAsync(string userId, NhaTroCreateUpdateViewModel model)
     {
         var chuNhaTroId = await LayChuNhaTroIdTheoUser(userId);
@@ -123,8 +116,8 @@ public class NhaTroRepository : INhaTroRepository
             return ThatBai("Không xác định được hồ sơ chủ trọ.");
         }
 
-        var trangThai = string.IsNullOrWhiteSpace(model.TrangThai) ? TrangThaiMacDinh : model.TrangThai.Trim();
-        if (!TrangThaiNhaTroHopLe.Contains(trangThai))
+        var trangThai = string.IsNullOrWhiteSpace(model.TrangThai) ? NhaTroStatus.MacDinh : model.TrangThai.Trim();
+        if (!NhaTroStatus.IsValid(trangThai))
         {
             return ThatBai("Trạng thái nhà trọ không hợp lệ.");
         }
@@ -156,7 +149,7 @@ public class NhaTroRepository : INhaTroRepository
 
         return ThanhCong("Thêm nhà trọ thành công.");
     }
-
+    //Cập nhật nhà trọ nếu đã có id
     public async Task<NhaTroRepositoryResult> UpdateAsync(string userId, NhaTroCreateUpdateViewModel model)
     {
         if (model.Id <= 0)
@@ -170,7 +163,7 @@ public class NhaTroRepository : INhaTroRepository
             return ThatBai("Không xác định được hồ sơ chủ trọ.");
         }
 
-        if (!TrangThaiNhaTroHopLe.Contains(model.TrangThai))
+        if (!NhaTroStatus.IsValid(model.TrangThai))
         {
             return ThatBai("Trạng thái nhà trọ không hợp lệ.");
         }
@@ -198,20 +191,17 @@ public class NhaTroRepository : INhaTroRepository
         nhaTro.KinhDo = model.KinhDo;
         nhaTro.TrangThai = model.TrangThai.Trim();
         nhaTro.NgayCapNhat = DateTime.Now;
-
         await _context.SaveChangesAsync();
-
         return ThanhCong("Cập nhật nhà trọ thành công.");
     }
 
     public async Task<List<SelectListItem>> GetQuanHuyenOptions() =>
         await _context.Quanhuyens
             .AsNoTracking()
-            .Where(q => q.TrangThai == TrangThaiHienThi)
+            .Where(q => q.TrangThai == DisplayStatus.HienThi)
             .OrderBy(q => q.TenQuanhuyen)
             .Select(q => new SelectListItem(q.TenQuanhuyen, q.Id.ToString()))
             .ToListAsync();
-
     public async Task<List<SelectListItem>> GetXaOptions(int? quanHuyenId)
     {
         if (quanHuyenId is null or <= 0)
@@ -221,7 +211,7 @@ public class NhaTroRepository : INhaTroRepository
 
         return await _context.Xas
             .AsNoTracking()
-            .Where(x => x.Quanhuyenid == quanHuyenId.Value && x.TrangThai == TrangThaiHienThi)
+            .Where(x => x.Quanhuyenid == quanHuyenId.Value && x.TrangThai == DisplayStatus.HienThi)
             .OrderBy(x => x.TenXahuyen)
             .Select(x => new SelectListItem(x.TenXahuyen, x.Id.ToString()))
             .ToListAsync();
@@ -236,7 +226,7 @@ public class NhaTroRepository : INhaTroRepository
 
         return await _context.DuongPhos
             .AsNoTracking()
-            .Where(d => d.Xaid == xaId.Value && d.TrangThai == TrangThaiHienThi)
+            .Where(d => d.Xaid == xaId.Value && d.TrangThai == DisplayStatus.HienThi)
             .OrderBy(d => d.TenDuong)
             .Select(d => new SelectListItem(d.TenDuong, d.Id.ToString()))
             .ToListAsync();
@@ -256,10 +246,7 @@ public class NhaTroRepository : INhaTroRepository
             .FirstOrDefaultAsync();
     }
 
-    private async Task<(bool IsValid, int? DuongPhoId)> XacThucDuongPhoId(
-        int? duongPhoId,
-        int? xaId,
-        int? quanHuyenId)
+    private async Task<(bool IsValid, int? DuongPhoId)> XacThucDuongPhoId(int? duongPhoId,int? xaId,int? quanHuyenId)
     {
         if (duongPhoId is null or <= 0)
         {
@@ -268,7 +255,7 @@ public class NhaTroRepository : INhaTroRepository
 
         var duongPho = await _context.DuongPhos
             .AsNoTracking()
-            .Where(d => d.Id == duongPhoId.Value && d.TrangThai == TrangThaiHienThi)
+            .Where(d => d.Id == duongPhoId.Value && d.TrangThai == DisplayStatus.HienThi)
             .Select(d => new { d.Id, d.Xaid, Quanhuyenid = d.Xa.Quanhuyenid })
             .FirstOrDefaultAsync();
 
@@ -290,13 +277,7 @@ public class NhaTroRepository : INhaTroRepository
         return (true, duongPho.Id);
     }
 
-    private static string TaoDiaChiDayDu(
-        string? soNha,
-        string? tenDuong,
-        string? tenXa,
-        string? tenQuanhuyen,
-        string? thanhPho,
-        string diaChiChiTiet)
+    private static string TaoDiaChiDayDu( string? soNha, string? tenDuong, string? tenXa, string? tenQuanhuyen, string? thanhPho, string diaChiChiTiet)
     {
         var parts = new List<string>();
 
@@ -330,9 +311,7 @@ public class NhaTroRepository : INhaTroRepository
             return string.Join(", ", parts);
         }
 
-        return string.IsNullOrWhiteSpace(diaChiChiTiet)
-            ? string.Empty
-            : diaChiChiTiet.Trim();
+        return string.IsNullOrWhiteSpace(diaChiChiTiet)? string.Empty : diaChiChiTiet.Trim();
     }
 
     private static bool TryParseNguoiDungId(string userId, out int nguoiDungId) =>

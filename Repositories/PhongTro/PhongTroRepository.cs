@@ -2,16 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using QLNhaTro.Data;
 using QLNhaTro.Domain;
 using QLNhaTro.Models.PhongTro;
+using QuanLyNhaTro.Helpers.Constants;
 
 namespace QLNhaTro.Repositories.PhongTro;
 
 public class PhongTroRepository : IPhongTroRepository
 {
-    private const string TrangThaiDaDuyet = "DA_DUYET";
-    private const string TrangThaiNhaTroHoatDong = "HOAT_DONG";
-    private const string TrangThaiPhongTamAn = "TAM_AN";
-    private const string AnhDemoMacDinh = "/images/phong-mau.jpg";
-
     private static readonly Dictionary<string, string> KhuVucSlugMap = new(StringComparer.OrdinalIgnoreCase)
     {
         ["lien-chieu"] = "Liên Chiểu",
@@ -201,7 +197,7 @@ public class PhongTroRepository : IPhongTroRepository
 
         if (danhSachAnh.Count == 0)
         {
-            danhSachAnh.Add(AnhDemoMacDinh);
+            danhSachAnh.Add(DefaultImage.PhongTro);
         }
 
         var moTa = !string.IsNullOrWhiteSpace(row.MoTa)
@@ -268,9 +264,9 @@ public class PhongTroRepository : IPhongTroRepository
     {
         return _context.BaiDangs
             .AsNoTracking()
-            .Where(b => b.TrangThaiDuyet == TrangThaiDaDuyet)
-            .Where(b => b.PhongTro.TrangThai != TrangThaiPhongTamAn)
-            .Where(b => b.PhongTro.NhaTro.TrangThai == TrangThaiNhaTroHoatDong);
+            .Where(b => b.TrangThaiDuyet == BaiDangStatus.DaDuyet)
+            .Where(b => b.PhongTro.TrangThai != PhongTroStatus.TamAn)
+            .Where(b => b.PhongTro.NhaTro.TrangThai == NhaTroStatus.HoatDong);
     }
 
     private static IQueryable<BaiDang> ApDungLocMucGia(IQueryable<BaiDang> query, string mucGia) =>
@@ -363,7 +359,7 @@ public class PhongTroRepository : IPhongTroRepository
     {
         if (string.IsNullOrWhiteSpace(duongDanAnh))
         {
-            return AnhDemoMacDinh;
+            return DefaultImage.PhongTro;
         }
 
         var path = duongDanAnh.Trim();

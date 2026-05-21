@@ -28,12 +28,7 @@
     <div class="row g-3 g-xl-4 align-items-start">
         <div class="col-lg-8">
             <div class="landlord-card landlord-form-card">
-                <form class="landlord-form"
-                      asp-controller="ChuTro"
-                      asp-action="ThemSuaNhaTro"
-                      method="post"
-                      novalidate
-                      id="nhaTroForm">
+                <form class="landlord-form" asp-controller="ChuTro" asp-action="ThemSuaNhaTro" method="post" novalidate id="nhaTroForm">
                     <input type="hidden" asp-for="Id" />
 
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
@@ -96,7 +91,6 @@
                             </div>
                         </div>
                     </fieldset>
-
                     <fieldset class="landlord-form-section mb-0">
                         <legend class="landlord-form-section__title">Tọa độ</legend>
                         <div class="row g-3">
@@ -112,7 +106,6 @@
                             </div>
                         </div>
                     </fieldset>
-
                     <div class="landlord-form-actions d-flex flex-wrap gap-2 mt-4 pt-3 border-top">
                         <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="NhaTro">
                             <i class="bi bi-arrow-left" aria-hidden="true"></i>
@@ -331,6 +324,76 @@
                 if (panMap) {
                     mapInstance.panTo([latFixed, lngFixed]);
                 }
+            }
+
+            const xaPlaceholder = '-- Chọn phường/xã --';
+            const duongPlaceholder = '-- Chọn đường/phố --';
+
+            function resetSelect(selectEl, placeholder) {
+                if (!selectEl) return;
+                selectEl.innerHTML = '';
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = placeholder;
+                selectEl.appendChild(opt);
+            }
+
+            function fillSelect(selectEl, items, placeholder) {
+                if (!selectEl) return;
+                resetSelect(selectEl, placeholder);
+                (items || []).forEach(function (item) {
+                    const opt = document.createElement('option');
+                    opt.value = item.value;
+                    opt.textContent = item.text;
+                    selectEl.appendChild(opt);
+                });
+            }
+
+            async function loadXaTheoQuanHuyen(quanHuyenId) {
+                resetSelect(fields.xa, xaPlaceholder);
+                resetSelect(fields.duongPho, duongPlaceholder);
+                updatePreview();
+
+                if (!quanHuyenId || quanHuyenId <= 0) return;
+
+                try {
+                    const response = await fetch('/ChuTro/GetXaTheoQuanHuyen?quanHuyenId=' + encodeURIComponent(quanHuyenId));
+                    if (!response.ok) return;
+                    const items = await response.json();
+                    fillSelect(fields.xa, items, xaPlaceholder);
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            async function loadDuongPhoTheoXa(xaId) {
+                resetSelect(fields.duongPho, duongPlaceholder);
+                updatePreview();
+
+                if (!xaId || xaId <= 0) return;
+
+                try {
+                    const response = await fetch('/ChuTro/GetDuongPhoTheoXa?xaId=' + encodeURIComponent(xaId));
+                    if (!response.ok) return;
+                    const items = await response.json();
+                    fillSelect(fields.duongPho, items, duongPlaceholder);
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            if (fields.quanHuyen) {
+                fields.quanHuyen.addEventListener('change', function () {
+                    const quanHuyenId = parseInt(this.value, 10);
+                    loadXaTheoQuanHuyen(quanHuyenId);
+                });
+            }
+
+            if (fields.xa) {
+                fields.xa.addEventListener('change', function () {
+                    const xaId = parseInt(this.value, 10);
+                    loadDuongPhoTheoXa(xaId);
+                });
             }
 
             form.addEventListener('input', updatePreview);

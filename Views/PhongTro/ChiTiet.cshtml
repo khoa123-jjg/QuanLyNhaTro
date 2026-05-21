@@ -1,14 +1,10 @@
 @model QLNhaTro.Models.PhongTro.PhongTroDetailViewModel
-@using System.Globalization
 @{
     ViewData["Title"] = "Chi tiết phòng";
     ViewData["ActiveNav"] = "rooms";
 
-    var culture = CultureInfo.GetCultureInfo("vi-VN");
-    var giaThueHienThi = $"{Model.GiaThue.ToString("N0", culture)} đ/tháng";
-    var dienTichHienThi = Model.DienTich % 1 == 0
-        ? $"{Model.DienTich:N0} m²"
-        : $"{Model.DienTich.ToString("0.##", culture)} m²";
+    var giaThueHienThi = $"{FormatHelper.FormatGiaThue(Model.GiaThue)}/tháng";
+    var dienTichHienThi = FormatHelper.FormatDienTich(Model.DienTich);
     var anhChinh = Model.DanhSachAnh[0];
     var soAnh = Model.DanhSachAnh.Count;
     var isNguoiThue = User.IsInRole("NGUOI_THUE");
