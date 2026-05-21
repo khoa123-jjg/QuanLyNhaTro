@@ -1,15 +1,27 @@
+@model QLNhaTro.Models.PhongTro.PhongTroDetailViewModel
+@using System.Globalization
 @{
     ViewData["Title"] = "Chi tiết phòng";
     ViewData["ActiveNav"] = "rooms";
+
+    var culture = CultureInfo.GetCultureInfo("vi-VN");
+    var giaThueHienThi = $"{Model.GiaThue.ToString("N0", culture)} đ/tháng";
+    var dienTichHienThi = Model.DienTich % 1 == 0
+        ? $"{Model.DienTich:N0} m²"
+        : $"{Model.DienTich.ToString("0.##", culture)} m²";
+    var anhChinh = Model.DanhSachAnh[0];
+    var soAnh = Model.DanhSachAnh.Count;
+    var isNguoiThue = User.IsInRole("NGUOI_THUE");
+    var isKhach = User.Identity?.IsAuthenticated != true;
 }
 
 <section class="room-detail-page">
     <div class="container py-4 py-lg-5">
         <nav aria-label="breadcrumb" class="room-breadcrumb mb-4">
             <ol class="breadcrumb mb-0 room-breadcrumb__list">
-                <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="/PhongTro">Tìm phòng</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Chi tiết phòng</li>
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a asp-controller="PhongTro" asp-action="Index">Tìm phòng</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.TieuDe</li>
             </ol>
         </nav>
 
@@ -17,117 +29,98 @@
             <div class="col-lg-7">
                 <div class="room-gallery">
                     <div class="room-gallery__main">
-                        <img class="room-gallery__image" src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&h=800&fit=crop" alt="Phòng gác lửng Hòa Minh" />
+                        <img class="room-gallery__image"
+                             id="roomGalleryMain"
+                             src="@anhChinh"
+                             alt="@Model.TieuDe" />
 
-                        <button type="button" class="room-gallery__nav room-gallery__nav--left" aria-label="Ảnh trước">
-                            <i class="bi bi-chevron-left" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="room-gallery__nav room-gallery__nav--right" aria-label="Ảnh sau">
-                            <i class="bi bi-chevron-right" aria-hidden="true"></i>
-                        </button>
+                        @if (soAnh > 1)
+                        {
+                            <button type="button" class="room-gallery__nav room-gallery__nav--left" aria-label="Ảnh trước" data-gallery-prev>
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="room-gallery__nav room-gallery__nav--right" aria-label="Ảnh sau" data-gallery-next>
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        }
 
                         <button type="button" class="room-gallery__favorite" aria-label="Yêu thích">
                             <i class="bi bi-heart" aria-hidden="true"></i>
                         </button>
 
-                        <div class="room-gallery__count">1/6</div>
+                        <div class="room-gallery__count" id="roomGalleryCount">1/@soAnh</div>
                     </div>
 
-                    <div class="room-gallery__thumbs" aria-hidden="true">
-                        <button type="button" class="room-gallery__thumb is-active">
-                            <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=300&h=220&fit=crop" alt="" />
-                        </button>
-                        <button type="button" class="room-gallery__thumb">
-                            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=300&h=220&fit=crop" alt="" />
-                        </button>
-                        <button type="button" class="room-gallery__thumb">
-                            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=300&h=220&fit=crop" alt="" />
-                        </button>
-                        <button type="button" class="room-gallery__thumb">
-                            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300&h=220&fit=crop" alt="" />
-                        </button>
-                        <button type="button" class="room-gallery__thumb">
-                            <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=300&h=220&fit=crop" alt="" />
-                        </button>
-                    </div>
+                    @if (soAnh > 1)
+                    {
+                        <div class="room-gallery__thumbs" id="roomGalleryThumbs">
+                            @for (var i = 0; i < Model.DanhSachAnh.Count; i++)
+                            {
+                                var anh = Model.DanhSachAnh[i];
+                                <button type="button"
+                                        class="room-gallery__thumb @(i == 0 ? "is-active" : "")"
+                                        data-gallery-index="@i"
+                                        data-gallery-src="@anh"
+                                        aria-label="Xem ảnh @(i + 1)">
+                                    <img src="@anh" alt="" />
+                                </button>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
 
             <div class="col-lg-5">
                 <div class="room-detail-panel">
                     <div class="room-detail-panel__header">
-                        <h1 class="room-detail__title">Phòng gác lửng – Hòa Minh</h1>
-                        <div class="room-detail__price">2.000.000 đ/tháng</div>
+                        <h1 class="room-detail__title">@Model.TieuDe</h1>
+                        <div class="room-detail__price">@giaThueHienThi</div>
                         <div class="room-detail__summary">
-                            <span>18 m²</span>
-                            <span>Tầng 2</span>
-                            <span>Quận Liên Chiểu</span>
+                            <span>@dienTichHienThi</span>
+                            <span>@Model.TenNhaTro</span>
                         </div>
                     </div>
 
                     <div class="room-info-grid">
                         <div class="room-info-grid__item">
                             <span class="room-info-grid__label">Diện tích</span>
-                            <span class="room-info-grid__value">18 m²</span>
+                            <span class="room-info-grid__value">@dienTichHienThi</span>
                         </div>
                         <div class="room-info-grid__item">
+                            <span class="room-info-grid__label">Nhà trọ</span>
+                            <span class="room-info-grid__value">@Model.TenNhaTro</span>
+                        </div>
+                        <div class="room-info-grid__item room-info-grid__item--wide">
                             <span class="room-info-grid__label">Khu vực</span>
-                            <span class="room-info-grid__value">Hòa Minh, Liên Chiểu</span>
-                        </div>
-                        <div class="room-info-grid__item">
-                            <span class="room-info-grid__label">Tầng</span>
-                            <span class="room-info-grid__value">Tầng 2</span>
-                        </div>
-                        <div class="room-info-grid__item">
-                            <span class="room-info-grid__label">Phòng tắm</span>
-                            <span class="room-info-grid__value">Khép kín</span>
-                        </div>
-                        <div class="room-info-grid__item">
-                            <span class="room-info-grid__label">Tiền cọc</span>
-                            <span class="room-info-grid__value">2.000.000 đ</span>
-                        </div>
-                        <div class="room-info-grid__item">
-                            <span class="room-info-grid__label">Điện</span>
-                            <span class="room-info-grid__value">3.500 đ/kWh</span>
-                        </div>
-                        <div class="room-info-grid__item">
-                            <span class="room-info-grid__label">Nước</span>
-                            <span class="room-info-grid__value">80.000 đ/người</span>
-                        </div>
-                        <div class="room-info-grid__item">
-                            <span class="room-info-grid__label">Internet</span>
-                            <span class="room-info-grid__value">Miễn phí</span>
+                            <span class="room-info-grid__value">@Model.DiaChi</span>
                         </div>
                     </div>
 
-                    <div class="room-section">
-                        <h2 class="room-section__title">Tiện nghi</h2>
-                        <div class="amenity-tags">
-                            <span class="amenity-tag">Máy lạnh</span>
-                            <span class="amenity-tag">Wifi</span>
-                            <span class="amenity-tag">Nóng lạnh</span>
-                            <span class="amenity-tag">Camera</span>
-                            <span class="amenity-tag">Kệ bếp</span>
-                            <span class="amenity-tag">Máy giặt</span>
-                            <span class="amenity-tag">Tủ quần áo</span>
-                            <span class="amenity-tag">Ban công</span>
+                    @if (Model.TienNghi.Count > 0)
+                    {
+                        <div class="room-section">
+                            <h2 class="room-section__title">Tiện nghi</h2>
+                            <div class="amenity-tags">
+                                @foreach (var tienNghi in Model.TienNghi)
+                                {
+                                    <span class="amenity-tag">@tienNghi</span>
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
 
-                    <div class="room-section">
-                        <h2 class="room-section__title">Mô tả phòng</h2>
-                        <p class="room-description mb-0">
-                            Phòng gác lửng sạch đẹp, thoáng mát, phù hợp cho sinh viên và nhân viên văn phòng.
-                            Không gian được bố trí hợp lý với khu sinh hoạt riêng, bếp nhỏ tiện nấu ăn và nhà tắm khép kín.
-                            Khu vực an ninh, yên tĩnh, gần chợ, siêu thị, trường học và các tuyến đường lớn nên di chuyển rất thuận tiện.
-                            Chủ nhà thân thiện, hỗ trợ tận tâm, vào ở được ngay.
-                        </p>
-                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.MoTa))
+                    {
+                        <div class="room-section">
+                            <h2 class="room-section__title">Mô tả phòng</h2>
+                            <p class="room-description mb-0">@Model.MoTa</p>
+                        </div>
+                    }
 
                     <div class="room-section">
                         <h2 class="room-section__title">Địa chỉ</h2>
-                        <p class="room-address mb-2">Đường Tôn Đức Thắng, Hòa Minh, Liên Chiểu, Đà Nẵng</p>
-                        <a class="room-map-link" href="/PhongTro/BanDo">
+                        <p class="room-address mb-2">@Model.DiaChi</p>
+                        <a class="room-map-link" asp-controller="PhongTro" asp-action="BanDo">
                             Xem trên bản đồ <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -136,25 +129,45 @@
         </div>
 
         <div class="row g-4 mt-0 mt-lg-1">
-            <div class="col-lg-5 offset-lg-7">
-                <div class="room-contact-box">
-                    <h2 class="room-contact-box__title">Liên hệ chủ phòng</h2>
-                    <div class="room-contact-box__phone">0901 234 567</div>
-                    <div class="room-contact-box__note">Thời gian liên hệ: 7:00 - 21:00</div>
-                </div>
-            </div>
-
-            <div class="col-lg-5 offset-lg-7">
-                <div class="room-rent-box">
-                    <h2 class="room-rent-box__title">Yêu cầu thuê</h2>
-                    <div class="room-rent-box__notice">Bạn cần đăng nhập để gửi yêu cầu thuê.</div>
-                    <a class="btn btn-primary room-rent-box__login-btn" href="/Account/Login">Đăng nhập để gửi yêu cầu</a>
-                    <div class="room-rent-box__register">
-                        Chưa có tài khoản?
-                        <a href="/Account/Register">Đăng ký ngay</a>
+            @if (!string.IsNullOrWhiteSpace(Model.SoDienThoaiLienHe))
+            {
+                <div class="col-lg-5 offset-lg-7">
+                    <div class="room-contact-box">
+                        <h2 class="room-contact-box__title">Liên hệ chủ phòng</h2>
+                        <div class="room-contact-box__phone">@Model.SoDienThoaiLienHe</div>
+                        <div class="room-contact-box__note">Thời gian liên hệ: 7:00 - 21:00</div>
                     </div>
                 </div>
-            </div>
+            }
+
+            @if (isKhach || isNguoiThue)
+            {
+                <div class="col-lg-5 offset-lg-7">
+                    <div class="room-rent-box">
+                        <h2 class="room-rent-box__title">Yêu cầu thuê</h2>
+                        @if (isNguoiThue)
+                        {
+                            <a class="btn btn-primary room-rent-box__login-btn"
+                               asp-controller="YeuCauThue"
+                               asp-action="GuiYeuCau"
+                               asp-route-id="@Model.Id">
+                                Gửi yêu cầu thuê
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="room-rent-box__notice">Bạn cần đăng nhập để gửi yêu cầu thuê.</div>
+                            <a class="btn btn-primary room-rent-box__login-btn" asp-controller="Account" asp-action="Login">
+                                Đăng nhập để gửi yêu cầu
+                            </a>
+                            <div class="room-rent-box__register">
+                                Chưa có tài khoản?
+                                <a asp-controller="Account" asp-action="Register">Đăng ký ngay</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         </div>
 
         <div class="room-commitment mt-4">
@@ -165,3 +178,27 @@
         </div>
     </div>
 </section>
+
+@if (soAnh > 1)
+{
+    <script>
+        (function () {
+            const images = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DanhSachAnh));
+            const main = document.getElementById('roomGalleryMain');
+            const count = document.getElementById('roomGalleryCount');
+            const thumbs = document.querySelectorAll('[data-gallery-index]');
+            let current = 0;
+
+            function show(index) {
+                current = (index + images.length) % images.length;
+                main.src = images[current];
+                count.textContent = `${current + 1}/${images.length}`;
+                thumbs.forEach((btn, i) => btn.classList.toggle('is-active', i === current));
+            }
+
+            document.querySelector('[data-gallery-prev]')?.addEventListener('click', () => show(current - 1));
+            document.querySelector('[data-gallery-next]')?.addEventListener('click', () => show(current + 1));
+            thumbs.forEach(btn => btn.addEventListener('click', () => show(Number(btn.dataset.galleryIndex))));
+        })();
+    </script>
+}

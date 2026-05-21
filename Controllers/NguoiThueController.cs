@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace QuanLyNhaTro.Controllers;
+namespace QLNhaTro.Controllers;
 
 [Authorize(Roles = "NGUOI_THUE")]
 public class NguoiThueController : Controller

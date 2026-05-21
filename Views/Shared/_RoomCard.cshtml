@@ -1,38 +1,30 @@
 @*
     Partial card phòng — dùng lại trang chủ & danh sách phòng.
 
-    Cách gọi (truyền tuple, không cần class riêng):
-    @await Html.PartialAsync("_RoomCard", (
-        ImageUrl: "/images/phong-mau.jpg",
-        Title: "Phòng trọ đường Trần Cao Vân",
-        District: "Thanh Khê",
-        Price: "2.800.000 đ/tháng",
-        Area: "25 m²",
-        Bathroom: "WC riêng",
-        DetailUrl: "/PhongTro/Details/1"
-    ))
+    Cách gọi:
+    @await Html.PartialAsync("_RoomCard", phongCard)
 *@
-@model (string ImageUrl, string Title, string District, string Price, string Area, string Bathroom, string DetailUrl)?
+@model QLNhaTro.Models.PhongTro.PhongTroCardViewModel
+@using System.Globalization
 
 @{
-    var card = Model ?? (
-        ImageUrl: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=450&fit=crop",
-        Title: "Phòng trọ mẫu",
-        District: "Liên Chiểu",
-        Price: "2.000.000 đ/tháng",
-        Area: "18 m²",
-        Bathroom: "WC riêng",
-        DetailUrl: "#"
-    );
-    var detailUrl = string.IsNullOrWhiteSpace(card.DetailUrl) ? "#" : card.DetailUrl;
+    var culture = CultureInfo.GetCultureInfo("vi-VN");
+    var giaThueHienThi = $"{Model.GiaThue.ToString("N0", culture)} đ/tháng";
+    var dienTichHienThi = Model.DienTich % 1 == 0
+        ? $"{Model.DienTich:N0} m²"
+        : $"{Model.DienTich.ToString("0.##", culture)} m²";
+    var coThongTinPhu = !string.IsNullOrWhiteSpace(Model.ThongTinPhu);
 }
 
 <article class="room-card h-100">
-    <a class="room-card__link d-flex flex-column h-100 text-decoration-none" href="@detailUrl">
+    <a class="room-card__link d-flex flex-column h-100 text-decoration-none"
+       asp-controller="PhongTro"
+       asp-action="ChiTiet"
+       asp-route-id="@Model.Id">
         <div class="room-card__media">
             <img class="room-card__img"
-                 src="@card.ImageUrl"
-                 alt="@card.Title"
+                 src="@Model.AnhDaiDien"
+                 alt="@Model.TieuDe"
                  loading="lazy" />
             <button type="button"
                     class="room-card__favorite"
@@ -42,15 +34,20 @@
             </button>
         </div>
         <div class="room-card__body">
-            <h3 class="room-card__title">@card.Title</h3>
+            <h3 class="room-card__title">@Model.TieuDe</h3>
             <p class="room-card__location mb-0">
                 <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
-                @card.District
+                @Model.KhuVuc
             </p>
             <p class="room-card__meta mb-0">
-                @card.Area<span class="room-card__meta-dot">•</span>@card.Bathroom
+                @dienTichHienThi
+                @if (coThongTinPhu)
+                {
+                    <span class="room-card__meta-dot">•</span>
+                    @Model.ThongTinPhu
+                }
             </p>
-            <p class="room-card__price mb-0">@card.Price</p>
+            <p class="room-card__price mb-0">@giaThueHienThi</p>
         </div>
     </a>
 </article>

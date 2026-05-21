@@ -1,17 +1,34 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using QLNhaTro.Repositories.PhongTro;
 
-namespace QuanLyNhaTro.Controllers;
+namespace QLNhaTro.Controllers;
 
 public class PhongTroController : Controller
 {
-    public IActionResult Index()
+    private readonly IPhongTroRepository _phongTroRepository;
+
+    public PhongTroController(IPhongTroRepository phongTroRepository)
     {
-        return View();
+        _phongTroRepository = phongTroRepository;
     }
 
-    public IActionResult ChiTiet()
+    [HttpGet]
+    public async Task<IActionResult> Index(string? khuVuc, string? mucGia, string? dienTich)
     {
-        return View();
+        var model = await _phongTroRepository.SearchPhongAsync(khuVuc, mucGia, dienTich);
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ChiTiet(int id)
+    {
+        var model = await _phongTroRepository.GetChiTietPhongAsync(id);
+        if (model is null)
+        {
+            return NotFound();
+        }
+
+        return View(model);
     }
 
     public IActionResult BanDo()

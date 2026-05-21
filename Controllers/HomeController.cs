@@ -1,14 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
-using QuanLyNhaTro.Models;
+using QLNhaTro.Models;
+using QLNhaTro.Models.Home;
+using QLNhaTro.Repositories.PhongTro;
 using System.Diagnostics;
 
-namespace QuanLyNhaTro.Controllers;
+namespace QLNhaTro.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+    private readonly IPhongTroRepository _phongTroRepository;
+
+    public HomeController(IPhongTroRepository phongTroRepository)
     {
-        return View();
+        _phongTroRepository = phongTroRepository;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var phongNoiBat = await _phongTroRepository.LayPhongNoiBatAsync(4);
+
+        var model = new HomeIndexViewModel
+        {
+            PhongNoiBat = phongNoiBat
+        };
+
+        return View(model);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,4 +1,4 @@
-namespace QuanLyNhaTro.Models
+﻿namespace QLNhaTro.Models
 {
     public class ErrorViewModel
     {

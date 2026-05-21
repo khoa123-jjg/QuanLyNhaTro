@@ -1,10 +1,10 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using QuanLyNhaTro.Data;
-using QuanLyNhaTro.Domain;
-using QuanLyNhaTro.Models.Auth;
+using QLNhaTro.Data;
+using QLNhaTro.Domain;
+using QLNhaTro.Models.Auth;
 
-namespace QuanLyNhaTro.Repositories.Auth;
+namespace QLNhaTro.Repositories.Auth;
 
 public class AuthRepository : IAuthRepository
 {
@@ -20,7 +20,7 @@ public class AuthRepository : IAuthRepository
         _context = context;
     }
 
-    public async Task<AuthResult> RegisterAsync(RegisterViewModel model)
+    public async Task<AuthResult> Register(RegisterViewModel model)
     {
         var vaiTroDangKy = model.VaiTroDangKy.Trim().ToUpperInvariant();
 
@@ -59,6 +59,7 @@ public class AuthRepository : IAuthRepository
 
         try
         {
+
             var nguoiDung = new NguoiDung
             {
                 HoTen = model.HoTen.Trim(),
@@ -115,7 +116,7 @@ public class AuthRepository : IAuthRepository
         }
     }
 
-    public async Task<AuthResult> LoginAsync(LoginViewModel model)
+    public async Task<AuthResult> Login(LoginViewModel model)
     {
         var email = model.Email.Trim();
 

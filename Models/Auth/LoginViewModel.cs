@@ -1,6 +1,6 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuanLyNhaTro.Models.Auth;
+namespace QLNhaTro.Models.Auth;
 
 public class LoginViewModel
 {

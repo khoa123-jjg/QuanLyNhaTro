@@ -1,7 +1,9 @@
+@model QLNhaTro.Models.PhongTro.PhongTroCreateUpdateViewModel
 @{
-    Layout = "~/Views/Shared/_LandlordLayout.cshtml";
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
     ViewData["Title"] = "Thêm / Sửa phòng cụ thể";
     ViewData["ActiveLandlordMenu"] = "PhongCuThe";
+    var isEdit = Model.Id > 0;
 }
 
 <nav class="landlord-breadcrumb mb-4" aria-label="Breadcrumb">
@@ -14,70 +16,116 @@
 
 <section class="landlord-page landlord-room-form-page">
     <div class="landlord-page__header mb-4">
-        <h1 class="landlord-page-title mb-2">Thêm / Sửa phòng cụ thể</h1>
-        <p class="landlord-page-subtitle mb-0">Thiết lập thông tin cho từng phòng cụ thể trong hệ thống quản lý nhà trọ.</p>
+        <h1 class="landlord-page-title mb-2">@(isEdit ? "Sửa phòng cụ thể" : "Thêm phòng cụ thể")</h1>
+        <p class="landlord-page-subtitle mb-0">
+            Thiết lập thông tin cho từng phòng trong nhà trọ của bạn theo dữ liệu hệ thống hiện tại.
+        </p>
     </div>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success" role="status">@successMessage</div>
+    }
 
     <div class="row g-3 g-xl-4 align-items-start">
         <div class="col-lg-8">
-            <div class="card landlord-card mb-3">
+            <div class="card landlord-card landlord-form-card mb-3">
                 <div class="card-body">
-                    <form class="landlord-form" action="#" method="post" novalidate>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label landlord-form__label" for="maPhong">Mã phòng</label>
-                                <input class="form-control" id="maPhong" type="text" value="P101" />
+                    <form class="landlord-form"
+                          asp-controller="ChuTro"
+                          asp-action="ThemPhong"
+                          method="post"
+                          novalidate
+                          id="phongCuTheForm">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <fieldset class="landlord-form-section">
+                            <legend class="landlord-form-section__title">Thông tin cơ bản</legend>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="MaPhong"></label>
+                                    <input class="form-control" asp-for="MaPhong" placeholder="VD: P101" />
+                                    <span class="text-danger small" asp-validation-for="MaPhong"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="TenPhong"></label>
+                                    <input class="form-control" asp-for="TenPhong" placeholder="VD: Phòng ban công tầng 1" />
+                                    <span class="text-danger small" asp-validation-for="TenPhong"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="NhaTroId"></label>
+                                    <select class="form-select" asp-for="NhaTroId" asp-items="Model.DanhSachNhaTro">
+                                        <option value="">-- Chọn nhà trọ --</option>
+                                    </select>
+                                    <span class="text-danger small" asp-validation-for="NhaTroId"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="Tang"></label>
+                                    <input class="form-control" asp-for="Tang" type="number" min="0" step="1" placeholder="VD: 1" />
+                                    <span class="text-danger small" asp-validation-for="Tang"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="TrangThai"></label>
+                                    <select class="form-select" asp-for="TrangThai" asp-items="Model.DanhSachTrangThai"></select>
+                                    <span class="text-danger small" asp-validation-for="TrangThai"></span>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label landlord-form__label" for="nhaTro">Nhà trọ</label>
-                                <select class="form-select" id="nhaTro">
-                                    <option selected>Nhà trọ An Phú</option>
-                                    <option>Nhà trọ Hòa Khánh</option>
-                                    <option>Nhà trọ Sơn Trà</option>
-                                </select>
+                        </fieldset>
+
+                        <fieldset class="landlord-form-section">
+                            <legend class="landlord-form-section__title">Thông tin giá &amp; diện tích</legend>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="GiaThueThang"></label>
+                                    <input class="form-control" asp-for="GiaThueThang" type="number" min="0" step="1000" />
+                                    <span class="text-danger small" asp-validation-for="GiaThueThang"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="TienCoc"></label>
+                                    <input class="form-control" asp-for="TienCoc" type="number" min="0" step="1000" />
+                                    <span class="text-danger small" asp-validation-for="TienCoc"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="DienTich"></label>
+                                    <input class="form-control" asp-for="DienTich" type="number" min="0.01" step="0.1" />
+                                    <span class="text-danger small" asp-validation-for="DienTich"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label landlord-form__label" asp-for="SoNguoiToiDa"></label>
+                                    <input class="form-control" asp-for="SoNguoiToiDa" type="number" min="1" step="1" placeholder="Để trống nếu không giới hạn" />
+                                    <span class="text-danger small" asp-validation-for="SoNguoiToiDa"></span>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label landlord-form__label" for="tang">Tầng</label>
-                                <select class="form-select" id="tang">
-                                    <option selected>Tầng 1</option>
-                                    <option>Tầng 2</option>
-                                    <option>Tầng 3</option>
-                                </select>
+                        </fieldset>
+
+                        <fieldset class="landlord-form-section mb-0">
+                            <legend class="landlord-form-section__title">Mô tả / ghi chú</legend>
+                            <div class="mb-3">
+                                <label class="form-label landlord-form__label" asp-for="MoTa"></label>
+                                <textarea class="form-control landlord-form__textarea" asp-for="MoTa" rows="4" placeholder="Mô tả chi tiết phòng, tiện ích, quy định..."></textarea>
+                                <span class="text-danger small" asp-validation-for="MoTa"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label landlord-form__label" for="loaiPhong">Loại phòng</label>
-                                <select class="form-select" id="loaiPhong">
-                                    <option selected>Phòng tiêu chuẩn</option>
-                                    <option>Phòng rộng</option>
-                                    <option>Phòng cao cấp</option>
-                                </select>
+                            <div>
+                                <label class="form-label landlord-form__label" asp-for="GhiChu"></label>
+                                <textarea class="form-control landlord-form__textarea" asp-for="GhiChu" rows="3" placeholder="Ghi chú nội bộ cho chủ trọ"></textarea>
+                                <span class="text-danger small" asp-validation-for="GhiChu"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label landlord-form__label" for="trangThaiPhong">Trạng thái</label>
-                                <select class="form-select" id="trangThaiPhong">
-                                    <option selected>Trống</option>
-                                    <option>Đã thuê</option>
-                                    <option>Đang sửa</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label landlord-form__label" for="ghiChuPhong">Ghi chú</label>
-                                <textarea class="form-control landlord-form__textarea" id="ghiChuPhong" rows="5">Phòng sạch sẽ, có ban công và gần khu bếp chung.</textarea>
-                            </div>
+                        </fieldset>
+
+                        <div class="landlord-form-actions d-flex flex-wrap gap-2 mt-4 pt-3 border-top">
+                            <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="PhongCuThe">
+                                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                                Hủy bỏ
+                            </a>
+                            <button type="submit" class="btn btn-landlord-primary">
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                Lưu thông tin
+                            </button>
                         </div>
                     </form>
                 </div>
-            </div>
-
-            <div class="d-flex flex-wrap gap-2">
-                <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="PhongCuThe">
-                    <i class="bi bi-x-lg" aria-hidden="true"></i>
-                    Hủy bỏ
-                </a>
-                <button type="button" class="btn btn-landlord-primary">
-                    <i class="bi bi-check-lg" aria-hidden="true"></i>
-                    Lưu thông tin
-                </button>
             </div>
         </div>
 
@@ -91,34 +139,124 @@
                     </div>
                     <div class="landlord-room-status-card__item">
                         <span class="landlord-badge landlord-badge--info">Đã thuê</span>
-                        <p class="mb-0">Phòng đang có người thuê và phát sinh hợp đồng.</p>
+                        <p class="mb-0">Phòng đang có người thuê.</p>
                     </div>
                     <div class="landlord-room-status-card__item mb-0">
                         <span class="landlord-badge landlord-badge--warning">Đang sửa</span>
-                        <p class="mb-0">Phòng tạm ngưng sử dụng để bảo trì hoặc nâng cấp.</p>
+                        <p class="mb-0">Phòng tạm ngừng sử dụng để bảo trì.</p>
                     </div>
                 </div>
             </div>
 
             <div class="card landlord-card sticky-lg-top">
                 <div class="card-body">
-                    <h2 class="landlord-room-preview-card__title">Card xem trước phòng</h2>
-                    <div class="landlord-room-preview-card__hero" aria-hidden="true"><i class="bi bi-house-gear"></i></div>
+                    <h2 class="landlord-room-preview-card__title">Xem trước phòng</h2>
+                    <div class="landlord-room-preview-card__hero" aria-hidden="true">
+                        <i class="bi bi-house-gear"></i>
+                    </div>
                     <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
                         <div>
-                            <h3 class="landlord-room-preview-card__name mb-1">P101</h3>
-                            <p class="landlord-room-preview-card__meta mb-0">Nhà trọ An Phú · Tầng 1</p>
+                            <h3 class="landlord-room-preview-card__name mb-1" id="previewMaPhong">@(string.IsNullOrWhiteSpace(Model.MaPhong) ? "—" : Model.MaPhong)</h3>
+                            <p class="landlord-room-preview-card__meta mb-0" id="previewMeta">—</p>
                         </div>
-                        <span class="landlord-badge landlord-badge--success">Trống</span>
+                        <span class="landlord-badge landlord-badge--success" id="previewBadge">Trống</span>
                     </div>
                     <ul class="landlord-room-preview-card__list list-unstyled mb-3">
-                        <li><span>Loại phòng</span><strong>Phòng tiêu chuẩn</strong></li>
-                        <li><span>Trạng thái</span><strong>Trống</strong></li>
-                        <li><span>Ghi chú</span><strong>Phòng sạch sẽ, có ban công.</strong></li>
+                        <li><span>Trạng thái</span><strong id="previewTrangThai">Trống</strong></li>
+                        <li><span>Giá thuê / tháng</span><strong id="previewGiaThue">—</strong></li>
+                        <li><span>Diện tích</span><strong id="previewDienTich">—</strong></li>
+                        <li><span>Số người tối đa</span><strong id="previewSoNguoi">—</strong></li>
+                        <li><span>Ghi chú</span><strong id="previewGhiChu">—</strong></li>
                     </ul>
-                    <p class="landlord-room-preview-card__desc mb-0">Đây là khu vực xem trước tĩnh giúp bạn kiểm tra nhanh thông tin phòng trước khi lưu.</p>
+                    <p class="landlord-room-preview-card__desc mb-0" id="previewMoTa">Cập nhật theo thông tin bạn nhập trên form.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const statusLabels = {
+                TRONG: { text: 'Trống', badge: 'landlord-badge--success' },
+                DANG_THUE: { text: 'Đã thuê', badge: 'landlord-badge--info' },
+                DANG_SUA: { text: 'Đang sửa', badge: 'landlord-badge--warning' },
+                TAM_AN: { text: 'Tạm ẩn', badge: 'landlord-badge--secondary' }
+            };
+
+            const form = document.getElementById('phongCuTheForm');
+            if (!form) return;
+
+            const fields = {
+                maPhong: form.querySelector('[name="MaPhong"]'),
+                tenPhong: form.querySelector('[name="TenPhong"]'),
+                nhaTro: form.querySelector('[name="NhaTroId"]'),
+                tang: form.querySelector('[name="Tang"]'),
+                trangThai: form.querySelector('[name="TrangThai"]'),
+                giaThue: form.querySelector('[name="GiaThueThang"]'),
+                dienTich: form.querySelector('[name="DienTich"]'),
+                soNguoi: form.querySelector('[name="SoNguoiToiDa"]'),
+                ghiChu: form.querySelector('[name="GhiChu"]'),
+                moTa: form.querySelector('[name="MoTa"]')
+            };
+
+            const preview = {
+                maPhong: document.getElementById('previewMaPhong'),
+                meta: document.getElementById('previewMeta'),
+                badge: document.getElementById('previewBadge'),
+                trangThai: document.getElementById('previewTrangThai'),
+                giaThue: document.getElementById('previewGiaThue'),
+                dienTich: document.getElementById('previewDienTich'),
+                soNguoi: document.getElementById('previewSoNguoi'),
+                ghiChu: document.getElementById('previewGhiChu'),
+                moTa: document.getElementById('previewMoTa')
+            };
+
+            function formatMoney(value) {
+                const num = Number(value);
+                if (!Number.isFinite(num) || num < 0) return '—';
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(num);
+            }
+
+            function displayText(value, fallback) {
+                const text = (value ?? '').toString().trim();
+                return text.length ? text : (fallback ?? '—');
+            }
+
+            function updatePreview() {
+                const ma = displayText(fields.maPhong?.value, '—');
+                preview.maPhong.textContent = ma;
+
+                const tenNha = fields.nhaTro?.selectedOptions?.[0]?.text?.trim() || '';
+                const tang = fields.tang?.value?.trim();
+                const tenPhong = fields.tenPhong?.value?.trim();
+                const metaParts = [];
+                if (tenNha && tenNha !== '-- Chọn nhà trọ --') metaParts.push(tenNha);
+                if (tang) metaParts.push('Tầng ' + tang);
+                if (tenPhong) metaParts.push(tenPhong);
+                preview.meta.textContent = metaParts.length ? metaParts.join(' · ') : '—';
+
+                const code = fields.trangThai?.value || 'TRONG';
+                const status = statusLabels[code] || { text: code, badge: 'landlord-badge--secondary' };
+                preview.trangThai.textContent = status.text;
+                preview.badge.textContent = status.text;
+                preview.badge.className = 'landlord-badge ' + status.badge;
+
+                preview.giaThue.textContent = formatMoney(fields.giaThue?.value);
+                const dt = Number(fields.dienTich?.value);
+                preview.dienTich.textContent = Number.isFinite(dt) && dt > 0 ? dt + ' m²' : '—';
+                const sn = fields.soNguoi?.value?.trim();
+                preview.soNguoi.textContent = sn ? sn + ' người' : '—';
+                preview.ghiChu.textContent = displayText(fields.ghiChu?.value);
+                const moTa = displayText(fields.moTa?.value);
+                preview.moTa.textContent = moTa !== '—' ? moTa : 'Cập nhật theo thông tin bạn nhập trên form.';
+            }
+
+            form.addEventListener('input', updatePreview);
+            form.addEventListener('change', updatePreview);
+            updatePreview();
+        })();
+    </script>
+}

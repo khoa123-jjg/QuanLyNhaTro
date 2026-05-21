@@ -1,9 +1,11 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using QuanLyNhaTro.Data;
-using QuanLyNhaTro.Repositories.Auth;
+using QLNhaTro.Data;
+using QLNhaTro.Repositories.Auth;
+using QLNhaTro.Repositories.NhaTro;
+using QLNhaTro.Repositories.PhongTro;
 
-namespace QuanLyNhaTro
+namespace QLNhaTro
 {
     public class Program
     {
@@ -18,6 +20,9 @@ namespace QuanLyNhaTro
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+            builder.Services.AddScoped<IPhongTroRepository, PhongTroRepository>();
+            builder.Services.AddScoped<IPhongTroManagementRepository, PhongTroManagementRepository>();
+            builder.Services.AddScoped<INhaTroRepository, NhaTroRepository>();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
