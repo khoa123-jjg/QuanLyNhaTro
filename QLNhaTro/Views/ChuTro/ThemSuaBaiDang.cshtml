@@ -1,0 +1,150 @@
+@{
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Tạo / Sửa bài đăng";
+    ViewData["ActiveLandlordMenu"] = "BaiDang";
+    var coPhong = false;
+}
+
+<section class="landlord-form-page landlord-post-form-page">
+    <nav class="landlord-breadcrumb mb-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb landlord-breadcrumb__list mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="ChuTro" asp-action="BaiDang">Tin đăng</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tạo / Sửa bài đăng</li>
+        </ol>
+    </nav>
+
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">Tạo / Sửa bài đăng</h1>
+        <p class="landlord-page-subtitle mb-0">Nhập tiêu đề, nội dung và chọn phòng cụ thể để đăng bài.</p>
+    </header>
+
+    <form class="landlord-form"
+          id="formThemSuaBaiDang"
+          asp-controller="ChuTro"
+          asp-action="ThemSuaBaiDang"
+          method="post"
+          novalidate>
+        <div class="row g-3 g-xl-4 align-items-start">
+            <div class="col-lg-8">
+                <div class="landlord-card landlord-form-card">
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="landlord-form__label mb-0" for="tieuDeBaiDang">Tiêu đề bài đăng <span class="text-danger">*</span></label>
+                            <span class="landlord-char-counter">0/120</span>
+                        </div>
+                        <input class="form-control"
+                               id="tieuDeBaiDang"
+                               name="tieuDe"
+                               type="text"
+                               maxlength="120"
+                               placeholder="VD: Phòng trọ mới xây – Gần trường đại học" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="landlord-form__label" for="nhaTroBaiDang">Nhà trọ <span class="text-danger">*</span></label>
+                        <select class="form-select" id="nhaTroBaiDang" name="nhaTroId">
+                            <option value="">— Chọn nhà trọ —</option>
+                            @* Sau này foreach Model.DanhSachNhaTro *@
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="landlord-form__label mb-0" for="noiDungChiTiet">Nội dung chi tiết <span class="text-danger">*</span></label>
+                            <span class="landlord-char-counter">0 từ</span>
+                        </div>
+                        <div class="landlord-rich-editor">
+                            <div class="landlord-rich-editor__toolbar" role="toolbar" aria-label="Định dạng nội dung">
+                                <select class="form-select form-select-sm landlord-rich-editor__format" aria-label="Kiểu đoạn" disabled>
+                                    <option>Normal</option>
+                                </select>
+                                <button type="button" class="landlord-rich-editor__btn" disabled aria-label="In đậm"><i class="bi bi-type-bold" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" disabled aria-label="In nghiêng"><i class="bi bi-type-italic" aria-hidden="true"></i></button>
+                                <button type="button" class="landlord-rich-editor__btn" disabled aria-label="Danh sách"><i class="bi bi-list-ul" aria-hidden="true"></i></button>
+                            </div>
+                            <textarea class="form-control landlord-rich-editor__area"
+                                      id="noiDungChiTiet"
+                                      name="noiDungChiTiet"
+                                      rows="8"
+                                      placeholder="Mô tả chi tiết phòng, tiện ích, quy định..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="landlord-form__label d-block mb-2">Gắn thẻ</span>
+                        <div class="landlord-tag-list">
+                            @* Sau này foreach Model.DanhSachThe *@
+                            <button type="button" class="landlord-tag landlord-tag--add" disabled>
+                                <i class="bi bi-plus-lg" aria-hidden="true"></i> Thêm thẻ
+                            </button>
+                        </div>
+                        <p class="text-muted small mb-0 mt-2">Thẻ sẽ được tải từ hệ thống sau.</p>
+                    </div>
+
+                    <fieldset class="mb-0">
+                        <legend class="landlord-form__label mb-3">Điểm nổi bật</legend>
+                        <div class="row g-2 landlord-highlight-grid">
+                            @* Sau này foreach Model.DanhSachDiemNoiBat *@
+                            <div class="col-12">
+                                <p class="text-muted small mb-0">Điểm nổi bật sẽ được tải từ hệ thống sau.</p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="col-lg-4 landlord-post-form-page__aside">
+                <div class="landlord-card post-room-picker-card mb-3 sticky-lg-top">
+                    <h2 class="landlord-panel__title">Chọn phòng đăng bài</h2>
+                    <div class="post-room-picker @(coPhong ? "" : "post-room-picker--empty")" role="radiogroup" aria-label="Chọn phòng đăng bài">
+                        @* Sau này foreach Model.DanhSachPhongCoThe:
+                        <label class="post-room-picker__item">
+                            <input type="radio" class="post-room-picker__radio" name="phongTroId" value="@phong.Id" />
+                            <div class="post-room-picker__content">
+                                <span class="post-room-picker__title">@phong.MaPhong — @phong.TenNhaTro</span>
+                                <span class="post-room-picker__meta">@phong.DienTich · @phong.GiaThue</span>
+                            </div>
+                        </label>
+                        *@
+                        @if (!coPhong)
+                        {
+                            <div class="post-room-picker__empty">
+                                <p class="mb-0">Chưa có phòng nào để tạo bài đăng. Vui lòng thêm phòng cụ thể trước.</p>
+                                <a class="btn btn-landlord-primary btn-sm mt-3" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe">
+                                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                    Thêm phòng
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="landlord-card post-preview-card">
+                    <h2 class="landlord-panel__title">Xem trước bài đăng</h2>
+                    <div class="post-preview-card__body">
+                        <div class="post-preview-card__media post-preview-card__media--empty" aria-hidden="true">
+                            <i class="bi bi-image"></i>
+                        </div>
+                        <p class="post-preview-card__placeholder mb-0">
+                            Chọn phòng để xem trước bài đăng.
+                        </p>
+                        @* Sau này đổ: ảnh, tên nhà trọ, mã phòng, giá, diện tích, tiện nghi *@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="landlord-form-actions">
+            <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="BaiDang">Hủy</a>
+            <button type="button" class="btn btn-landlord-outline">
+                <i class="bi bi-save" aria-hidden="true"></i>
+                Lưu nháp
+            </button>
+            <a class="btn btn-landlord-accent" asp-controller="ChuTro" asp-action="GuiBaiChoDuyet">
+                <i class="bi bi-send" aria-hidden="true"></i>
+                Gửi chờ duyệt
+            </a>
+        </div>
+    </form>
+</section>

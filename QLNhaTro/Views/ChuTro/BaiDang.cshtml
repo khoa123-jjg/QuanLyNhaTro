@@ -1,0 +1,104 @@
+@{
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Danh sách bài đăng";
+    ViewData["ActiveLandlordMenu"] = "BaiDang";
+    var coBaiDang = false;
+}
+
+<section class="landlord-page landlord-post-list-page">
+    <div class="landlord-page__header d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
+        <div>
+            <h1 class="landlord-page-title mb-2">Danh sách bài đăng</h1>
+            <p class="landlord-page-subtitle mb-0">Quản lý các bài đăng cho thuê phòng của bạn.</p>
+        </div>
+        <a class="btn btn-landlord-accent" asp-controller="ChuTro" asp-action="ThemSuaBaiDang">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Tạo bài đăng mới
+        </a>
+    </div>
+
+    <div class="card landlord-card mb-4">
+        <div class="card-body">
+            <form method="get"
+                  asp-controller="ChuTro"
+                  asp-action="BaiDang"
+                  class="row g-3 align-items-end"
+                  id="baiDangFilterForm">
+                <div class="col-xl-4 col-lg-6">
+                    <label class="landlord-form__label" for="tuKhoa">Tìm kiếm</label>
+                    <div class="landlord-input-icon">
+                        <i class="bi bi-search landlord-input-icon__icon" aria-hidden="true"></i>
+                        <input class="form-control"
+                               type="search"
+                               id="tuKhoa"
+                               name="tuKhoa"
+                               placeholder="Tìm kiếm bài đăng theo tiêu đề..." />
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6">
+                    <label class="landlord-form__label" for="nhaTroId">Nhà trọ</label>
+                    <select class="form-select" id="nhaTroId" name="nhaTroId">
+                        <option value="">Tất cả nhà trọ</option>
+                        @* Sau này foreach Model.DanhSachNhaTro *@
+                    </select>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6">
+                    <label class="landlord-form__label" for="trangThaiDuyet">Trạng thái duyệt</label>
+                    <select class="form-select" id="trangThaiDuyet" name="trangThaiDuyet">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="DA_DUYET">Đã duyệt</option>
+                        <option value="CHO_DUYET">Chờ duyệt</option>
+                        <option value="NHAP">Nháp</option>
+                        <option value="TU_CHOI">Bị từ chối</option>
+                    </select>
+                </div>
+                <div class="col-xl-2 col-lg-12">
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-landlord-primary flex-grow-1">
+                            <i class="bi bi-funnel" aria-hidden="true"></i>
+                            Lọc
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card landlord-card landlord-table-card">
+        <div class="landlord-table-wrap">
+            <table class="table landlord-data-table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" class="landlord-data-table__col-stt">STT</th>
+                        <th scope="col">Bài đăng</th>
+                        <th scope="col">Nhà trọ</th>
+                        <th scope="col">Trạng thái duyệt</th>
+                        <th scope="col">Ngày tạo</th>
+                        <th scope="col" class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @* Sau này foreach Model.DanhSachBaiDang tại đây *@
+                    @if (!coBaiDang)
+                    {
+                        <tr>
+                            <td colspan="6" class="p-0 border-0">
+                                <div class="landlord-empty-state p-4 p-md-5 text-center">
+                                    <p class="landlord-empty-state__text mb-3">
+                                        Chưa có bài đăng nào. Hãy tạo bài đăng đầu tiên cho phòng trọ của bạn.
+                                    </p>
+                                    <a class="btn btn-landlord-accent btn-sm" asp-controller="ChuTro" asp-action="ThemSuaBaiDang">
+                                        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                        Tạo bài đăng mới
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @* Sau này hiển thị phân trang khi có Model.DanhSachBaiDang *@
+    </div>
+</section>

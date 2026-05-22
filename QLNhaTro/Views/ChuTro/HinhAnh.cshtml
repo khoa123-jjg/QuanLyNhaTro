@@ -1,0 +1,152 @@
+@model QLNhaTro.Models.PhongTro.HinhAnhPhongPageViewModel
+@{
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Quản lý hình ảnh";
+    ViewData["ActiveLandlordMenu"] = "PhongCuThe";
+    var phong = Model.PhongDangChon;
+    var soAnh = Model.DanhSachAnh.Count;
+    var maxAnh = QLNhaTro.Models.PhongTro.HinhAnhPhongPageViewModel.MaxAnhMoiPhong;
+}
+
+<section class="landlord-image-page">
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">Quản lý hình ảnh</h1>
+        <p class="landlord-page-subtitle mb-0">
+            Sắp xếp, đặt ảnh bìa và quản lý thư viện ảnh cho phòng @phong.MaPhong.
+        </p>
+    </header>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success mb-4" role="status">@successMessage</div>
+    }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger mb-4" role="alert">@errorMessage</div>
+    }
+
+    <div class="landlord-card landlord-selected-roomtype mb-4">
+        <div class="landlord-selected-roomtype__icon" aria-hidden="true">
+            <i class="bi bi-door-closed"></i>
+        </div>
+        <div class="landlord-selected-roomtype__body">
+            <p class="landlord-selected-roomtype__label mb-1">Phòng đang chọn</p>
+            <h2 class="landlord-selected-roomtype__name mb-2">@phong.MaPhong@if (!string.IsNullOrWhiteSpace(phong.TenPhong)) { <text> — @phong.TenPhong</text> }</h2>
+            <ul class="landlord-selected-roomtype__meta list-unstyled mb-0">
+                <li><i class="bi bi-building" aria-hidden="true"></i> @phong.TenNhaTro</li>
+                <li><i class="bi bi-layers" aria-hidden="true"></i> @(phong.Tang.HasValue ? $"Tầng {phong.Tang}" : "—")</li>
+                <li><i class="bi bi-aspect-ratio" aria-hidden="true"></i> @FormatHelper.FormatDienTich(phong.DienTich)</li>
+                <li><i class="bi bi-circle-fill" aria-hidden="true"></i> @phong.TrangThaiHienThi</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row g-3 g-xl-4 align-items-start">
+        <div class="col-xl-8">
+            <div class="landlord-card landlord-image-grid-card mb-3">
+                <h2 class="landlord-panel__title">Danh sách hình ảnh (@soAnh/@maxAnh)</h2>
+                @if (soAnh == 0)
+                {
+                    <p class="text-muted mb-0">Chưa có ảnh nào. Hãy tải ảnh lên bên dưới.</p>
+                }
+                else
+                {
+                    <div class="row g-3 landlord-image-grid">
+                        @foreach (var anh in Model.DanhSachAnh)
+                        {
+                            <div class="col-6 col-md-3">
+                                <article class="landlord-image-item @(anh.LaAnhDaiDien ? "landlord-image-item--cover" : "")">
+                                    <img src="@anh.DuongDanAnh" alt="Ảnh phòng @anh.ThuTuHienThi" />
+                                    <span class="landlord-image-item__order">@anh.ThuTuHienThi</span>
+                                    @if (anh.LaAnhDaiDien)
+                                    {
+                                        <span class="landlord-image-item__cover-badge">Ảnh bìa</span>
+                                    }
+                                    <div class="landlord-image-item__toolbar">
+                                        <button type="button" class="landlord-image-item__btn" disabled aria-label="Kéo thả ảnh @anh.ThuTuHienThi">
+                                            <i class="bi bi-grip-vertical" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="landlord-image-item__btn landlord-image-item__btn--delete" disabled aria-label="Xóa ảnh @anh.ThuTuHienThi">
+                                            <i class="bi bi-trash3" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </article>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+            @if (soAnh < maxAnh)
+            {
+                <form method="post"
+                      asp-controller="ChuTro"
+                      asp-action="UploadHinhAnhPhong"
+                      enctype="multipart/form-data"
+                      class="landlord-card landlord-image-upload">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="phongTroId" value="@Model.PhongTroId" />
+                    <div class="landlord-image-upload__inner">
+                        <i class="bi bi-cloud-arrow-up landlord-image-upload__icon" aria-hidden="true"></i>
+                        <p class="landlord-image-upload__title mb-2">
+                            Chọn ảnh từ máy (có thể chọn nhiều ảnh)
+                        </p>
+                        <input class="form-control mb-2"
+                               type="file"
+                               name="files"
+                               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                               multiple
+                               required />
+                        <p class="landlord-image-upload__hint mb-3">
+                            Hỗ trợ JPG, JPEG, PNG, WebP · Tối đa 5MB/ảnh · Tối đa @maxAnh ảnh/phòng
+                        </p>
+                        <button type="submit" class="btn btn-landlord-primary">
+                            <i class="bi bi-upload" aria-hidden="true"></i>
+                            Tải ảnh lên
+                        </button>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <div class="alert alert-warning mb-0" role="status">Đã đạt tối đa @maxAnh ảnh cho phòng này.</div>
+            }
+        </div>
+
+        <div class="col-xl-4">
+            <div class="landlord-card landlord-image-settings sticky-lg-top">
+                <h2 class="landlord-panel__title">Cài đặt hình ảnh</h2>
+                <ul class="landlord-image-settings__list list-unstyled mb-0">
+                    <li class="landlord-image-settings__item">
+                        <label class="landlord-image-settings__check">
+                            <input type="checkbox" checked disabled />
+                            <span>Đặt làm ảnh bìa</span>
+                        </label>
+                        <p class="landlord-image-settings__desc mb-0">Ảnh đầu tiên của phòng chưa có ảnh sẽ là ảnh bìa.</p>
+                    </li>
+                    <li class="landlord-image-settings__item">
+                        <label class="landlord-image-settings__check">
+                            <input type="checkbox" checked disabled />
+                            <span>Hiển thị thứ tự</span>
+                        </label>
+                        <p class="landlord-image-settings__desc mb-0">Sắp xếp ảnh theo thứ tự bạn chọn (sẽ bổ sung sau).</p>
+                    </li>
+                    <li class="landlord-image-settings__item">
+                        <label class="landlord-image-settings__check">
+                            <input type="checkbox" checked disabled />
+                            <span>Hiển thị số thứ tự trên ảnh</span>
+                        </label>
+                        <p class="landlord-image-settings__desc mb-0">Hiện số thứ tự góc ảnh để dễ quản lý.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="landlord-form-actions mt-4">
+        <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="PhongCuThe">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            Quay lại
+        </a>
+    </div>
+</section>
