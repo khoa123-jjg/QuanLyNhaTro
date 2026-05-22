@@ -1,5 +1,9 @@
 # Visual Studio
 .vs/
+bin/
+obj/
+appsettings.Development.json
+wwwroot/uploads/
 *.user
 *.suo
 *.userosscache
