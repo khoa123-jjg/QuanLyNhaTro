@@ -1,4 +1,4 @@
-namespace QuanLyNhaTro.Helpers.Constants;
+namespace QLNhaTro.Helpers.Constants;
 
 public static class DefaultImage
 {

@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using QLNhaTro.Models.BaiDang;
 using QLNhaTro.Models.PhongTro;
+using QLNhaTro.Repositories.BaiDang;
 using QLNhaTro.Repositories.NhaTro;
 using QLNhaTro.Repositories.PhongTro;
 
@@ -19,15 +21,18 @@ public class ChuTroController : Controller
 
     private readonly IPhongTroManagementRepository _phongTroManagementRepository;
     private readonly INhaTroRepository _nhaTroRepository;
+    private readonly IBaiDangRepository _baiDangRepository;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
     public ChuTroController(
         IPhongTroManagementRepository phongTroManagementRepository,
         INhaTroRepository nhaTroRepository,
+        IBaiDangRepository baiDangRepository,
         IWebHostEnvironment webHostEnvironment)
     {
         _phongTroManagementRepository = phongTroManagementRepository;
         _nhaTroRepository = nhaTroRepository;
+        _baiDangRepository = baiDangRepository;
         _webHostEnvironment = webHostEnvironment;
     }
 
@@ -420,21 +425,165 @@ public class ChuTroController : Controller
         ThemSuaPhongCuThe(model);
 
     [HttpGet]
-    public IActionResult BaiDang()
+    public async Task<IActionResult> BaiDang(string? tuKhoa, int? nhaTroId, string? trangThaiDuyet)
     {
-        return View();
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
+
+        var model = await _baiDangRepository.GetDanhSachBaiDangAsync(
+            userId, tuKhoa, nhaTroId, trangThaiDuyet);
+
+        ViewData["ActiveLandlordMenu"] = "BaiDang";
+        return View(model);
     }
 
     [HttpGet]
-    public IActionResult ThemSuaBaiDang()
+    public async Task<IActionResult> ThemSuaBaiDang(int? id, int? nhaTroId)
     {
-        return View();
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
+
+        BaiDangCreateUpdateViewModel? model;
+        if (id is > 0)
+        {
+            model = await _baiDangRepository.GetUpdateModelAsync(userId, id.Value);
+        }
+        else
+        {
+            model = await _baiDangRepository.GetCreateModelAsync(userId, nhaTroId);
+        }
+
+        if (model is null)
+        {
+            TempData["Error"] = id is > 0
+                ? "Chỉ có thể sửa bài đăng ở trạng thái Nháp."
+                : "Không tìm thấy bài đăng hoặc bạn không có quyền chỉnh sửa.";
+            return RedirectToAction(nameof(BaiDang));
+        }
+
+        ViewData["ActiveLandlordMenu"] = "BaiDang";
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ThemSuaBaiDang(BaiDangCreateUpdateViewModel model, string submitAction)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            await TaiLaiFormBaiDangAsync(userId, model);
+            ViewData["ActiveLandlordMenu"] = "BaiDang";
+            return View(model);
+        }
+
+        if (submitAction == "GuiChoDuyet")
+        {
+            var baiDangId = await _baiDangRepository.LuuNhapVaTraVeIdAsync(userId, model);
+            if (baiDangId is null)
+            {
+                TempData["Error"] = "Không thể lưu bài đăng. Vui lòng kiểm tra phòng đã chọn và thử lại.";
+                await TaiLaiFormBaiDangAsync(userId, model);
+                ViewData["ActiveLandlordMenu"] = "BaiDang";
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(GuiBaiChoDuyet), new { id = baiDangId.Value });
+        }
+
+        var luuNhapThanhCong = await _baiDangRepository.LuuNhapAsync(userId, model);
+        if (!luuNhapThanhCong)
+        {
+            TempData["Error"] = "Không thể lưu bài đăng. Vui lòng kiểm tra phòng đã chọn và thử lại.";
+            await TaiLaiFormBaiDangAsync(userId, model);
+            ViewData["ActiveLandlordMenu"] = "BaiDang";
+            return View(model);
+        }
+
+        TempData["Success"] = "Đã lưu nháp bài đăng.";
+        return RedirectToAction(nameof(BaiDang));
+    }
+
+    private async Task TaiLaiFormBaiDangAsync(string userId, BaiDangCreateUpdateViewModel model)
+    {
+        if (model.Id is > 0)
+        {
+            var reload = await _baiDangRepository.GetUpdateModelAsync(userId, model.Id.Value);
+            if (reload is not null)
+            {
+                model.DanhSachNhaTro = reload.DanhSachNhaTro;
+                model.DanhSachPhong = reload.DanhSachPhong;
+                return;
+            }
+        }
+
+        var create = await _baiDangRepository.GetCreateModelAsync(userId, model.NhaTroId);
+        model.DanhSachNhaTro = create.DanhSachNhaTro;
+        model.DanhSachPhong = create.DanhSachPhong;
     }
 
     [HttpGet]
-    public IActionResult GuiBaiChoDuyet()
+    public async Task<IActionResult> GuiBaiChoDuyet(int id)
     {
-        return View();
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
+
+        if (id <= 0)
+        {
+            TempData["Error"] = "Bài đăng không hợp lệ.";
+            return RedirectToAction(nameof(BaiDang));
+        }
+
+        var model = await _baiDangRepository.GetGuiBaiChoDuyetAsync(userId, id);
+        if (model is null)
+        {
+            TempData["Error"] = "Không tìm thấy bài đăng nháp hoặc bạn không có quyền gửi bài này.";
+            return RedirectToAction(nameof(BaiDang));
+        }
+
+        ViewData["ActiveLandlordMenu"] = "BaiDang";
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> XacNhanGuiBaiChoDuyet(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
+
+        if (id <= 0)
+        {
+            TempData["Error"] = "Bài đăng không hợp lệ.";
+            return RedirectToAction(nameof(BaiDang));
+        }
+
+        var thanhCong = await _baiDangRepository.XacNhanGuiChoDuyetAsync(userId, id);
+        if (!thanhCong)
+        {
+            TempData["Error"] = "Không thể gửi bài đăng. Chỉ bài ở trạng thái Nháp mới được gửi chờ duyệt.";
+            return RedirectToAction(nameof(BaiDang));
+        }
+
+        TempData["Success"] = "Đã gửi bài đăng chờ admin duyệt.";
+        return RedirectToAction(nameof(BaiDang));
     }
 
     [HttpGet]

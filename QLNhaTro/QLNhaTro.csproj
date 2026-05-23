@@ -24,6 +24,8 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Extension\" />
+    <Folder Include="Models\BaiDang\" />
+    <Folder Include="Repositories\BaiDang\" />
     <Folder Include="Validation\" />
   </ItemGroup>
 
