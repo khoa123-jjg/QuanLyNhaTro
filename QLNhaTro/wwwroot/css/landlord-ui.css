@@ -646,7 +646,7 @@ body {
     display: flex;
     align-items: center;
     gap: 0.85rem;
-    min-width: 16rem;
+    min-width: 0;
 }
 
 .landlord-post-cell__thumb {
@@ -2074,7 +2074,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 9rem;
+    height: 190px;
+    min-height: 190px;
     background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
     color: #94a3b8;
     font-size: 2.25rem;
@@ -2093,4 +2094,432 @@ body {
 
 .landlord-filter-bar--post {
     display: block;
+}
+
+/* =============================================================================
+   Post pages (BaiDang / ThemSuaBaiDang / GuiBaiChoDuyet) — layout polish
+   ============================================================================= */
+
+.text-safe,
+.post-post-cell__body,
+.post-room-picker__content,
+.review-post-card__content {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.min-width-0 {
+    min-width: 0;
+}
+
+/* ---- List page ---- */
+.post-page-header__cta {
+    white-space: nowrap;
+}
+
+.post-filter-card .card-body {
+    padding: 1.25rem 1.5rem;
+}
+
+.post-filter-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: end;
+}
+
+@media (min-width: 768px) {
+    .post-filter-grid {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+    }
+}
+
+.post-filter-grid__label-hidden {
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.post-filter-control {
+    min-height: 2.75rem;
+    border-radius: 10px;
+    border-color: var(--landlord-border);
+}
+
+.post-filter-submit {
+    min-height: 2.75rem;
+    border-radius: 10px;
+}
+
+.post-table-card {
+    overflow: hidden;
+}
+
+.post-data-table .post-col-stt {
+    width: 3.5rem;
+    text-align: center;
+}
+
+.post-data-table .post-col-post {
+    min-width: 14rem;
+    width: 36%;
+}
+
+.post-data-table .post-col-hostel {
+    min-width: 9rem;
+    width: 18%;
+}
+
+.post-data-table .post-col-status {
+    width: 10rem;
+    text-align: center;
+}
+
+.post-data-table .post-col-date {
+    width: 7.5rem;
+    white-space: nowrap;
+}
+
+.post-data-table .post-col-actions {
+    width: 5.5rem;
+    text-align: center;
+}
+
+.post-data-table thead .post-col-actions {
+    text-align: center;
+}
+
+.post-post-cell {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.post-post-cell__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.post-thumbnail {
+    width: 80px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: block;
+    max-width: none;
+}
+
+.landlord-post-cell__title {
+    max-width: 100%;
+}
+
+.post-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.post-action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+}
+
+.post-action-empty {
+    color: var(--landlord-muted);
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.post-icon-btn {
+    box-sizing: border-box;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid #bfdbfe;
+    background: #fff;
+    color: var(--landlord-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.post-icon-btn:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    color: var(--landlord-primary);
+}
+
+.post-icon-btn--edit i {
+    font-size: 1rem;
+}
+
+/* ---- Create / edit form ---- */
+.post-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+@media (min-width: 992px) {
+    .post-form-grid {
+        grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+.post-form-grid__main,
+.post-form-grid__aside {
+    min-width: 0;
+}
+
+.post-form-grid__aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.post-form-card,
+.room-select-card,
+.post-preview-card,
+.review-post-card,
+.review-checklist-card {
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.35rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    min-width: 0;
+}
+
+.post-form-field + .post-form-field {
+    margin-top: 1.25rem;
+}
+
+.post-form-control {
+    min-height: 2.75rem;
+    border-radius: 10px;
+    border-color: var(--landlord-border);
+}
+
+.post-form-textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.post-form-actions {
+    margin-top: 1.5rem;
+    padding-top: 0.25rem;
+}
+
+.post-btn-draft {
+    border: 1px solid var(--landlord-primary);
+    background: #eff6ff;
+    color: var(--landlord-primary);
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 0.5rem 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.post-btn-draft:hover {
+    background: #dbeafe;
+    border-color: var(--landlord-primary);
+    color: var(--landlord-primary);
+}
+
+.post-preview-card__media {
+    width: 100%;
+    height: 190px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background: #f1f5f9;
+}
+
+.post-preview-card__media img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.post-preview-card__title {
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--landlord-text);
+    margin-bottom: 0.35rem;
+    line-height: 1.4;
+}
+
+.post-preview-card__price {
+    font-weight: 700;
+    color: var(--landlord-accent);
+    margin-bottom: 0.25rem;
+}
+
+.post-preview-card__meta {
+    font-size: 0.88rem;
+    color: var(--landlord-muted);
+}
+
+.post-room-picker__item {
+    align-items: center;
+}
+
+/* ---- Submit review ---- */
+.submit-review-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+@media (min-width: 992px) {
+    .submit-review-grid {
+        grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.8fr);
+        gap: 1.5rem;
+    }
+}
+
+.submit-review-grid__aside {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.review-post-card__media,
+.landlord-post-summary-card__media {
+    width: 100%;
+    height: 240px;
+    max-height: 260px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.15rem;
+    background: #f1f5f9;
+}
+
+.review-post-card__media img,
+.landlord-post-summary-card__media img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: none;
+    object-fit: cover;
+    display: block;
+}
+
+.review-post-card__media-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
+    color: #94a3b8;
+    font-size: 2.5rem;
+    border-radius: 14px;
+}
+
+.review-post-card__heading,
+.landlord-post-summary-card__title {
+    font-size: 1.25rem;
+    line-height: 1.35;
+    max-width: 100%;
+}
+
+.review-post-card__content {
+    white-space: pre-line;
+}
+
+.landlord-post-summary-card__details li strong {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.review-checklist-card {
+    padding: 1.25rem 1.35rem;
+}
+
+.landlord-checklist__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.landlord-checklist__body strong,
+.landlord-checklist__body span {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.landlord-checklist__item:not(.landlord-checklist__item--done) i {
+    color: #cbd5e1;
+}
+
+.landlord-checklist__item:not(.landlord-checklist__item--done) span {
+    color: #b45309;
+}
+
+.landlord-checklist__item--done span {
+    color: var(--landlord-success);
+}
+
+.review-approval-hours {
+    color: var(--landlord-accent);
+    font-size: 1.05rem;
+}
+
+.submit-review-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+}
+
+@media (min-width: 576px) {
+    .submit-review-actions {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+    }
+
+    .submit-review-actions__form {
+        min-width: 0;
+    }
+}
+
+.submit-review-actions__back,
+.submit-review-actions__submit {
+    min-height: 2.85rem;
+    border-radius: 10px;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.submit-review-actions__form {
+    margin: 0;
+}
+
+@media (max-width: 575.98px) {
+    .submit-review-actions__back,
+    .submit-review-actions__submit {
+        width: 100%;
+    }
 }

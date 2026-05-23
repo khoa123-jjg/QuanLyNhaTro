@@ -1,6 +1,7 @@
+using BaiDangEntity = QLNhaTro.Domain.BaiDang;
 using Microsoft.EntityFrameworkCore;
 using QLNhaTro.Data;
-using QLNhaTro.Domain;
+using QLNhaTro.Helpers.Constants;
 using QLNhaTro.Models.PhongTro;
 using QuanLyNhaTro.Helpers.Constants;
 
@@ -260,7 +261,7 @@ public class PhongTroRepository : IPhongTroRepository
             : diaChiChiTiet.Trim();
     }
 
-    private IQueryable<BaiDang> TaoTruyVanBaiDangHienThi()
+    private IQueryable<BaiDangEntity> TaoTruyVanBaiDangHienThi()
     {
         return _context.BaiDangs
             .AsNoTracking()
@@ -269,7 +270,7 @@ public class PhongTroRepository : IPhongTroRepository
             .Where(b => b.PhongTro.NhaTro.TrangThai == NhaTroStatus.HoatDong);
     }
 
-    private static IQueryable<BaiDang> ApDungLocMucGia(IQueryable<BaiDang> query, string mucGia) =>
+    private static IQueryable<BaiDangEntity> ApDungLocMucGia(IQueryable<BaiDangEntity> query, string mucGia) =>
         mucGia switch
         {
             "0-2000000" => query.Where(b => b.PhongTro.GiaThueThang < 2_000_000),
@@ -281,7 +282,7 @@ public class PhongTroRepository : IPhongTroRepository
             _ => query
         };
 
-    private static IQueryable<BaiDang> ApDungLocDienTich(IQueryable<BaiDang> query, string dienTich) =>
+    private static IQueryable<BaiDangEntity> ApDungLocDienTich(IQueryable<BaiDangEntity> query, string dienTich) =>
         dienTich switch
         {
             "0-15" => query.Where(b => b.PhongTro.DienTich < 15),
