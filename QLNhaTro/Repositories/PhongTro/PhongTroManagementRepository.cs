@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLNhaTro.Data;
 using QLNhaTro.Domain;
-using QLNhaTro.Models.PhongTro;
 using QuanLyNhaTro.Helpers.Constants;
+using QLNhaTro.Models.PhongTro;
 using QuanLyNhaTro.Models.TienNghi;
+using TienNghiEntity = QLNhaTro.Domain.TienNghi;
 namespace QLNhaTro.Repositories.PhongTro;
 
 public class PhongTroManagementRepository : IPhongTroManagementRepository
@@ -411,7 +412,7 @@ public class PhongTroManagementRepository : IPhongTroManagementRepository
             .Distinct()
             .ToList();
 
-        List<TienNghi> tienNghiMoi = [];
+        List<TienNghiEntity> tienNghiMoi = [];
         //Tiện nghi có trạng thái hiển thị -- DisplayStatus.HienThi trong helper/Constants/DisplayStatus để định nghĩa các trạng thái hiển thị của tiện nghi, chỉ lấy những tiện nghi đang hiển thị để gắn cho phòng
         if (idsHopLe.Count > 0)
         {
