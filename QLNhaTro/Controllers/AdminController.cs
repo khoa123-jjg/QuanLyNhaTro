@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QLNhaTro.Helpers.Constants;
+using QLNhaTro.Models.Admin.DiaChi;
 using QLNhaTro.Models.Admin.TienNghi;
+using QLNhaTro.Repositories.DiaChi;
 using QLNhaTro.Repositories.TienNghi;
 
 namespace QLNhaTro.Controllers;
@@ -10,10 +11,12 @@ namespace QLNhaTro.Controllers;
 public class AdminController : Controller
 {
     private readonly ITienNghiRepository _tienNghiRepository;
+    private readonly IAdminDiaChiRepository _adminDiaChiRepository;
 
-    public AdminController(ITienNghiRepository tienNghiRepository)
+    public AdminController(ITienNghiRepository tienNghiRepository, IAdminDiaChiRepository adminDiaChiRepository)
     {
         _tienNghiRepository = tienNghiRepository;
+        _adminDiaChiRepository = adminDiaChiRepository;
     }
 
     [HttpGet]
@@ -115,15 +118,69 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    public IActionResult DonViHanhChinh()
+    public async Task<IActionResult> DonViHanhChinh(string? tuKhoa, int? quanHuyenId, int? id)
     {
-        return View();
+        ViewData["ActiveAdminMenu"] = "DonViHanhChinh";
+        var model = await _adminDiaChiRepository.GetXaPageAsync(tuKhoa, quanHuyenId, id);
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> LuuXa(XaFormViewModel form)
+    {
+        if (!ModelState.IsValid)
+        {
+            var model = await _adminDiaChiRepository.GetXaPageAsync(null, null, form.Id);
+            model.Form = form;
+            return View("DonViHanhChinh", model);
+        }
+
+        var result = await _adminDiaChiRepository.LuuXaAsync(form);
+        TempData[result.Success ? "Success" : "Error"] = result.Message;
+        return RedirectToAction(nameof(DonViHanhChinh));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> XoaXa(int id)
+    {
+        var result = await _adminDiaChiRepository.XoaXaAsync(id);
+        TempData[result.Success ? "Success" : "Error"] = result.Message;
+        return RedirectToAction(nameof(DonViHanhChinh));
     }
 
     [HttpGet]
-    public IActionResult DuongPho()
+    public async Task<IActionResult> DuongPho(string? tuKhoa, int? xaId, int? id)
     {
-        return View();
+        ViewData["ActiveAdminMenu"] = "DuongPho";
+        var model = await _adminDiaChiRepository.GetDuongPhoPageAsync(tuKhoa, xaId, id);
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> LuuDuongPho(DuongPhoFormViewModel form)
+    {
+        if (!ModelState.IsValid)
+        {
+            var model = await _adminDiaChiRepository.GetDuongPhoPageAsync(null, null, form.Id);
+            model.Form = form;
+            return View("DuongPho", model);
+        }
+
+        var result = await _adminDiaChiRepository.LuuDuongPhoAsync(form);
+        TempData[result.Success ? "Success" : "Error"] = result.Message;
+        return RedirectToAction(nameof(DuongPho));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> XoaDuongPho(int id)
+    {
+        var result = await _adminDiaChiRepository.XoaDuongPhoAsync(id);
+        TempData[result.Success ? "Success" : "Error"] = result.Message;
+        return RedirectToAction(nameof(DuongPho));
     }
 
     [HttpGet]
