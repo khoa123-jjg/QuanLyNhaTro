@@ -1,3 +1,4 @@
+@model QLNhaTro.Models.ChuTro.CaiDat.ChuTroCaiDatViewModel
 @{
     Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
     ViewData["Title"] = "Cài đặt";
@@ -7,43 +8,43 @@
 <section class="landlord-form-page landlord-settings-page">
     <header class="landlord-form-page__header mb-4">
         <h1 class="landlord-page-title">Cài đặt</h1>
-        <p class="landlord-page-subtitle mb-0">Quản lý thiết lập tài khoản và tùy chọn hoạt động của chủ trọ.</p>
+        <p class="landlord-page-subtitle mb-0">Cập nhật thông tin tài khoản và mật khẩu của bạn.</p>
     </header>
 
-    <div class="row g-3 g-xl-4 mb-3">
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success">@successMessage</div>
+    }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <div class="row g-3 g-xl-4">
         <div class="col-lg-6">
             <div class="landlord-card landlord-settings-card h-100">
                 <h2 class="landlord-panel__title">
                     <i class="bi bi-person-badge" aria-hidden="true"></i>
                     Thông tin tài khoản
                 </h2>
-                <form class="landlord-form" action="#" method="post" novalidate>
-                    <div class="landlord-settings-avatar mb-4">
-                        <img class="landlord-settings-avatar__img"
-                             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=face"
-                             alt="Ảnh đại diện Nguyễn Văn A" />
-                        <div>
-                            <p class="landlord-settings-avatar__label mb-1">Ảnh đại diện</p>
-                            <p class="landlord-settings-avatar__hint mb-2">JPG, PNG — tối đa 2MB.</p>
-                            <button type="button" class="btn btn-landlord-outline btn-sm">
-                                <i class="bi bi-camera" aria-hidden="true"></i>
-                                Đổi ảnh
-                            </button>
-                        </div>
+                <form class="landlord-form" asp-action="CapNhatThongTin" asp-controller="ChuTro" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label class="landlord-form__label" asp-for="ThongTin.HoTen">Họ tên</label>
+                        <input class="form-control" asp-for="ThongTin.HoTen" />
+                        <span class="text-danger" asp-validation-for="ThongTin.HoTen"></span>
                     </div>
                     <div class="mb-3">
-                        <label class="landlord-form__label" for="hoTenChuTro">Họ tên</label>
-                        <input class="form-control" id="hoTenChuTro" type="text" value="Nguyễn Văn A" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="landlord-form__label" for="emailChuTro">Email</label>
-                        <input class="form-control" id="emailChuTro" type="email" value="nguyenvana@gmail.com" />
+                        <label class="landlord-form__label" asp-for="ThongTin.Email">Email</label>
+                        <input class="form-control" asp-for="ThongTin.Email" />
+                        <span class="text-danger" asp-validation-for="ThongTin.Email"></span>
                     </div>
                     <div class="mb-4">
-                        <label class="landlord-form__label" for="sdtChuTro">Số điện thoại</label>
-                        <input class="form-control" id="sdtChuTro" type="tel" value="0901 234 567" />
+                        <label class="landlord-form__label" asp-for="ThongTin.SoDienThoai">Số điện thoại</label>
+                        <input class="form-control" asp-for="ThongTin.SoDienThoai" />
+                        <span class="text-danger" asp-validation-for="ThongTin.SoDienThoai"></span>
                     </div>
-                    <button type="button" class="btn btn-landlord-primary">
+                    <button type="submit" class="btn btn-landlord-primary">
                         <i class="bi bi-check-lg" aria-hidden="true"></i>
                         Lưu thay đổi
                     </button>
@@ -57,20 +58,24 @@
                     <i class="bi bi-shield-lock" aria-hidden="true"></i>
                     Đổi mật khẩu
                 </h2>
-                <form class="landlord-form" action="#" method="post" novalidate>
+                <form class="landlord-form" asp-action="DoiMatKhau" asp-controller="ChuTro" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="mb-3">
-                        <label class="landlord-form__label" for="matKhauHienTai">Mật khẩu hiện tại</label>
-                        <input class="form-control" id="matKhauHienTai" type="password" value="********" autocomplete="current-password" />
+                        <label class="landlord-form__label" asp-for="DoiMatKhau.MatKhauHienTai">Mật khẩu hiện tại</label>
+                        <input class="form-control" asp-for="DoiMatKhau.MatKhauHienTai" type="password"  />
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauHienTai"></span>
                     </div>
                     <div class="mb-3">
-                        <label class="landlord-form__label" for="matKhauMoi">Mật khẩu mới</label>
-                        <input class="form-control" id="matKhauMoi" type="password" placeholder="Nhập mật khẩu mới" autocomplete="new-password" />
+                        <label class="landlord-form__label" asp-for="DoiMatKhau.MatKhauMoi">Mật khẩu mới</label>
+                        <input class="form-control" asp-for="DoiMatKhau.MatKhauMoi" type="password"  />
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauMoi"></span>
                     </div>
                     <div class="mb-4">
-                        <label class="landlord-form__label" for="xacNhanMatKhauMoi">Xác nhận mật khẩu mới</label>
-                        <input class="form-control" id="xacNhanMatKhauMoi" type="password" placeholder="Nhập lại mật khẩu mới" autocomplete="new-password" />
+                        <label class="landlord-form__label" asp-for="DoiMatKhau.XacNhanMatKhauMoi">Xác nhận mật khẩu mới</label>
+                        <input class="form-control" asp-for="DoiMatKhau.XacNhanMatKhauMoi" type="password"  />
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.XacNhanMatKhauMoi"></span>
                     </div>
-                    <button type="button" class="btn btn-landlord-outline">
+                    <button type="submit" class="btn btn-landlord-outline">
                         <i class="bi bi-key" aria-hidden="true"></i>
                         Đổi mật khẩu
                     </button>
@@ -78,148 +83,8 @@
             </div>
         </div>
     </div>
-
-    <div class="landlord-card landlord-settings-card mb-3">
-        <h2 class="landlord-panel__title">
-            <i class="bi bi-bell" aria-hidden="true"></i>
-            Cài đặt thông báo
-        </h2>
-        <ul class="landlord-settings-toggle-list list-unstyled mb-0">
-            <li class="landlord-settings-toggle-list__item">
-                <div>
-                    <strong>Nhận thông báo khi có yêu cầu thuê mới</strong>
-                    <p class="mb-0">Thông báo ngay khi có người thuê gửi yêu cầu xem phòng.</p>
-                </div>
-                <div class="form-check form-switch landlord-settings-switch">
-                    <input class="form-check-input" type="checkbox" id="tbYeuCauMoi" checked />
-                    <label class="form-check-label visually-hidden" for="tbYeuCauMoi">Bật thông báo yêu cầu mới</label>
-                </div>
-            </li>
-            <li class="landlord-settings-toggle-list__item">
-                <div>
-                    <strong>Nhận thông báo khi bài đăng được duyệt</strong>
-                    <p class="mb-0">Cập nhật khi bài đăng đã được hệ thống phê duyệt.</p>
-                </div>
-                <div class="form-check form-switch landlord-settings-switch">
-                    <input class="form-check-input" type="checkbox" id="tbBaiDuyet" checked />
-                    <label class="form-check-label visually-hidden" for="tbBaiDuyet">Bật thông báo bài duyệt</label>
-                </div>
-            </li>
-            <li class="landlord-settings-toggle-list__item">
-                <div>
-                    <strong>Nhận thông báo khi bài đăng bị từ chối</strong>
-                    <p class="mb-0">Nhận lý do từ chối để chỉnh sửa và gửi lại.</p>
-                </div>
-                <div class="form-check form-switch landlord-settings-switch">
-                    <input class="form-check-input" type="checkbox" id="tbBaiTuChoi" checked />
-                    <label class="form-check-label visually-hidden" for="tbBaiTuChoi">Bật thông báo bài từ chối</label>
-                </div>
-            </li>
-            <li class="landlord-settings-toggle-list__item">
-                <div>
-                    <strong>Nhận thông báo qua email</strong>
-                    <p class="mb-0">Gửi bản sao thông báo quan trọng đến email đã đăng ký.</p>
-                </div>
-                <div class="form-check form-switch landlord-settings-switch">
-                    <input class="form-check-input" type="checkbox" id="tbEmail" checked />
-                    <label class="form-check-label visually-hidden" for="tbEmail">Bật thông báo email</label>
-                </div>
-            </li>
-            <li class="landlord-settings-toggle-list__item">
-                <div>
-                    <strong>Nhận thông báo trong hệ thống</strong>
-                    <p class="mb-0">Hiển thị thông báo trên biểu tượng chuông trong dashboard.</p>
-                </div>
-                <div class="form-check form-switch landlord-settings-switch">
-                    <input class="form-check-input" type="checkbox" id="tbHeThong" checked />
-                    <label class="form-check-label visually-hidden" for="tbHeThong">Bật thông báo hệ thống</label>
-                </div>
-            </li>
-        </ul>
-    </div>
-
-    <div class="landlord-card landlord-settings-card mb-3">
-        <h2 class="landlord-panel__title">
-            <i class="bi bi-megaphone" aria-hidden="true"></i>
-            Cài đặt hiển thị tin đăng
-        </h2>
-        <form class="landlord-form" action="#" method="post" novalidate>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="landlord-form__label" for="nhaTroMacDinh">Nhà trọ mặc định</label>
-                    <select class="form-select" id="nhaTroMacDinh">
-                        <option selected>Nhà trọ An Bình</option>
-                        <option>Nhà trọ Minh Khang</option>
-                        <option>Nhà trọ Hòa Phú</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="landlord-form__label" for="loaiPhongMacDinh">Loại phòng mặc định</label>
-                    <select class="form-select" id="loaiPhongMacDinh">
-                        <option selected>Phòng có ban công</option>
-                        <option>Phòng tiêu chuẩn</option>
-                        <option>Phòng cao cấp</option>
-                    </select>
-                </div>
-            </div>
-            <ul class="landlord-settings-toggle-list list-unstyled mb-0 mt-3">
-                <li class="landlord-settings-toggle-list__item">
-                    <div>
-                        <strong>Hiển thị số điện thoại trên bài đăng</strong>
-                        <p class="mb-0">Cho phép người thuê liên hệ trực tiếp qua SĐT trên tin đăng.</p>
-                    </div>
-                    <div class="form-check form-switch landlord-settings-switch">
-                        <input class="form-check-input" type="checkbox" id="hienThiSdt" checked />
-                        <label class="form-check-label visually-hidden" for="hienThiSdt">Hiển thị số điện thoại</label>
-                    </div>
-                </li>
-                <li class="landlord-settings-toggle-list__item">
-                    <div>
-                        <strong>Cho phép người thuê gửi yêu cầu xem phòng</strong>
-                        <p class="mb-0">Bật nút gửi yêu cầu trên trang chi tiết bài đăng.</p>
-                    </div>
-                    <div class="form-check form-switch landlord-settings-switch">
-                        <input class="form-check-input" type="checkbox" id="choPhepYeuCau" checked />
-                        <label class="form-check-label visually-hidden" for="choPhepYeuCau">Cho phép yêu cầu xem phòng</label>
-                    </div>
-                </li>
-            </ul>
-        </form>
-    </div>
-
-    <article class="landlord-card landlord-settings-card landlord-settings-card--security">
-        <h2 class="landlord-panel__title">
-            <i class="bi bi-shield-check" aria-hidden="true"></i>
-            Bảo mật tài khoản
-        </h2>
-        <div class="row g-3 g-xl-4 align-items-start">
-            <div class="col-lg-4">
-                <p class="landlord-settings-security__label mb-2">Trạng thái tài khoản</p>
-                <span class="landlord-badge landlord-badge--success">
-                    <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
-                    Hoạt động
-                </span>
-                <p class="landlord-settings-security__meta mt-3 mb-1">Lần đăng nhập gần nhất</p>
-                <p class="landlord-settings-security__value mb-0">18/05/2025 08:42 · Chrome · Windows</p>
-            </div>
-            <div class="col-lg-5">
-                <p class="landlord-settings-security__label mb-2">Khuyến nghị bảo mật</p>
-                <ul class="landlord-settings-security-tips list-unstyled mb-0">
-                    <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Đã xác minh email tài khoản</li>
-                    <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Đã cập nhật số điện thoại liên hệ</li>
-                    <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Mật khẩu đủ mạnh (8+ ký tự)</li>
-                    <li class="landlord-settings-security-tips__muted">
-                        <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
-                        Nên bật xác thực hai lớp khi tính năng có sẵn
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-3 d-flex align-items-lg-end justify-content-lg-end">
-                <button type="button" class="btn btn-landlord-danger-outline w-100 w-lg-auto">
-                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
-                    Đăng xuất khỏi tất cả thiết bị
-                </button>
-            </div>
-        </div>
-    </article>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

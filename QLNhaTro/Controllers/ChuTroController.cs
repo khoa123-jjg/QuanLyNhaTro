@@ -1,9 +1,13 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QLNhaTro.Models.BaiDang;
+using QLNhaTro.Models.ChuTro.CaiDat;
 using QLNhaTro.Models.PhongTro;
 using QLNhaTro.Repositories.BaiDang;
+using QLNhaTro.Repositories.ChuTro;
 using QLNhaTro.Repositories.NhaTro;
 using QLNhaTro.Repositories.PhongTro;
 
@@ -22,17 +26,20 @@ public class ChuTroController : Controller
     private readonly IPhongTroManagementRepository _phongTroManagementRepository;
     private readonly INhaTroRepository _nhaTroRepository;
     private readonly IBaiDangRepository _baiDangRepository;
+    private readonly IChuTroTaiKhoanRepository _chuTroTaiKhoanRepository;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
     public ChuTroController(
         IPhongTroManagementRepository phongTroManagementRepository,
         INhaTroRepository nhaTroRepository,
         IBaiDangRepository baiDangRepository,
+        IChuTroTaiKhoanRepository chuTroTaiKhoanRepository,
         IWebHostEnvironment webHostEnvironment)
     {
         _phongTroManagementRepository = phongTroManagementRepository;
         _nhaTroRepository = nhaTroRepository;
         _baiDangRepository = baiDangRepository;
+        _chuTroTaiKhoanRepository = chuTroTaiKhoanRepository;
         _webHostEnvironment = webHostEnvironment;
     }
 
@@ -605,9 +612,97 @@ public class ChuTroController : Controller
     }
 
     [HttpGet]
-    public IActionResult CaiDat()
+    public async Task<IActionResult> CaiDat()
     {
-        return View();
+        ViewData["Title"] = "Cài đặt";
+        ViewData["ActiveLandlordMenu"] = "CaiDat";
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var model = await _chuTroTaiKhoanRepository.GetCaiDatAsync(userId);
+        if (model is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CapNhatThongTin([Bind(Prefix = "ThongTin")] CapNhatThongTinViewModel model)
+    {
+        ViewData["Title"] = "Cài đặt";
+        ViewData["ActiveLandlordMenu"] = "CaiDat";
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            var pageModel = await _chuTroTaiKhoanRepository.GetCaiDatAsync(userId)
+                ?? new ChuTroCaiDatViewModel();
+
+            pageModel.ThongTin = model;
+            pageModel.DoiMatKhau = new DoiMatKhauViewModel();
+
+            return View("CaiDat", pageModel);
+        }
+
+        var result = await _chuTroTaiKhoanRepository.CapNhatThongTinAsync(userId, model);
+
+        if (result.Success)
+        {
+            TempData["Success"] = result.Message;
+        }
+        else
+        {
+            TempData["Error"] = result.Message;
+        }
+
+        return RedirectToAction(nameof(CaiDat));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DoiMatKhau([Bind(Prefix = "DoiMatKhau")] DoiMatKhauViewModel model)
+    {
+        ViewData["Title"] = "Cài đặt";
+        ViewData["ActiveLandlordMenu"] = "CaiDat";
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            var pageModel = await _chuTroTaiKhoanRepository.GetCaiDatAsync(userId)
+                ?? new ChuTroCaiDatViewModel();
+
+            pageModel.DoiMatKhau = new DoiMatKhauViewModel();
+            return View("CaiDat", pageModel);
+        }
+
+        var result = await _chuTroTaiKhoanRepository.DoiMatKhauAsync(userId, model);
+
+        if (!result.Success)
+        {
+            TempData["Error"] = result.Message;
+            return RedirectToAction(nameof(CaiDat));
+        }
+
+        TempData["Success"] = "Đổi mật khẩu thành công. Vui lòng đăng nhập lại.";
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Login", "Account");
     }
 
    

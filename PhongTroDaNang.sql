@@ -383,39 +383,3 @@ FROM dbo.NGUOI_DUNG nd
 JOIN dbo.VAI_TRO vt ON vt.TenVaiTro = 'ADMIN'
 WHERE nd.Email = N'admin@phongtrodanang.vn';
 GO
-
-/* ============================================================
-   GHI CHÚ THIẾT KẾ (v4 — đạt 3NF):
-
-   CÁC VI PHẠM ĐÃ XỬ LÝ:
-   1. [3NF - BAI_DANG] Xóa NguoiDungId vì suy ra được qua JOIN:
-        BAI_DANG.NhaTroId → NHA_TRO.ChuNhaTroId → CHU_NHA_TRO.NguoiDungId
-      Khi cần lấy thông tin chủ trọ tạo bài, dùng query:
-        SELECT nd.*
-        FROM BAI_DANG bd
-        JOIN NHA_TRO nt  ON nt.Id = bd.NhaTroId
-        JOIN CHU_NHA_TRO c ON c.Id = nt.ChuNhaTroId
-        JOIN NGUOI_DUNG nd ON nd.Id = c.NguoiDungId
-        WHERE bd.Id = @BaiDangId
-
-   2. [3NF - DIA_CHI] Phụ thuộc bắc cầu khi DuongPhoId IS NOT NULL.
-      → Đã bổ sung trigger TR_DIA_CHI_Check_DVHC để enforce nhất quán.
-
-   3. [Ràng buộc nghiệp vụ - BAI_DANG_LOAI_PHONG]
-      LoaiPhongId phải cùng NhaTro với bài đăng.
-      → Bổ sung trigger TR_BDLP_Check_NhaTro.
-
-   4. [Ràng buộc nghiệp vụ - DAT_THUE]
-      PhongTroId phải thuộc LoaiPhongId đã chọn.
-      → Bổ sung trigger TR_DAT_THUE_Check_Phong.
-
-   CHẤP NHẬN (có giải thích):
-   5. DAT_THUE: HoTenLienHe, SoDienThoaiLienHe lưu trùng với NGUOI_DUNG.
-      → Snapshot pattern hợp lệ: ghi nhận thông tin tại thời điểm đặt.
-
-   6. DON_VI_HANH_CHINH: ThanhPho luôn = 'Đà Nẵng' trong dữ liệu hiện tại.
-      → Giữ lại để hỗ trợ mở rộng thành phố khác sau này.
-
-   KHÔNG LƯU (tính được):
-   7. TongSoPhong, SoPhongTrong → tính từ PHONG_TRO.
-   ============================================================ */
