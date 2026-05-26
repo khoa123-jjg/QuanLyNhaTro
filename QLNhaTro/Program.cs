@@ -7,6 +7,7 @@ using QLNhaTro.Repositories.BaiDang;
 using QLNhaTro.Repositories.ChuTro;
 using QLNhaTro.Repositories.DiaChi;
 using QLNhaTro.Repositories.NhaTro;
+using QLNhaTro.Repositories.NguoiThue;
 using QLNhaTro.Repositories.PhongTro;
 using QLNhaTro.Repositories.TienNghi;
 
@@ -33,6 +34,7 @@ namespace QLNhaTro
             builder.Services.AddScoped<IAdminTaiKhoanRepository, AdminTaiKhoanRepository>();
             builder.Services.AddScoped<ITienNghiRepository, TienNghiRepository>();
             builder.Services.AddScoped<IAdminDiaChiRepository, AdminDiaChiRepository>();
+            builder.Services.AddScoped<INguoiThueHoSoRepository, NguoiThueHoSoRepository>();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
