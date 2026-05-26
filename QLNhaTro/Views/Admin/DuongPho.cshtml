@@ -1,3 +1,4 @@
+@model QLNhaTro.Models.Admin.DiaChi.DuongPhoPageViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Quản lý đường phố";
@@ -13,29 +14,29 @@
     <div class="admin-split-layout admin-split-layout--side-form">
         <div class="admin-split-layout__main">
             <div class="admin-card admin-filter-card mb-4">
-                <form class="admin-filter-bar admin-filter-bar--street" action="#" method="get" novalidate>
+                <form class="admin-filter-bar admin-filter-bar--street" method="get">
                     <div class="admin-filter-bar__field admin-filter-bar__field--search">
                         <label class="admin-form__label" for="searchDuongPho">Tìm kiếm</label>
                         <div class="admin-input-icon">
                             <i class="bi bi-search admin-input-icon__icon" aria-hidden="true"></i>
-                            <input class="form-control" id="searchDuongPho" type="search" placeholder="Tìm kiếm tên đường..." />
+                            <input class="form-control" id="searchDuongPho" name="tuKhoa" type="search" value="@Model.TuKhoa" placeholder="Tìm kiếm tên đường..." />
                         </div>
                     </div>
                     <div class="admin-filter-bar__field">
-                        <label class="admin-form__label" for="donViDuongFilter">Đơn vị hành chính</label>
-                        <select class="form-select admin-filter-select" id="donViDuongFilter">
-                            <option selected>Đơn vị hành chính: Tất cả</option>
-                            <option>Quận Hải Châu</option>
-                            <option>Quận Thanh Khê</option>
-                            <option>Quận Sơn Trà</option>
-                            <option>Quận Ngũ Hành Sơn</option>
+                        <label class="admin-form__label" for="xaFilter">Phường/Xã</label>
+                        <select class="form-select admin-filter-select" id="xaFilter" name="xaId">
+                            <option value="">Phường/Xã: Tất cả</option>
+                            @foreach (var item in Model.DanhSachXa)
+                            {
+                                <option value="@item.Value" selected="@(item.Value == Model.XaId?.ToString())">@item.Text</option>
+                            }
                         </select>
                     </div>
                     <div class="admin-filter-bar__action">
                         <span class="admin-form__label admin-filter-bar__action-label" aria-hidden="true">&nbsp;</span>
-                        <button type="button" class="btn btn-admin-primary">
-                            <i class="bi bi-plus-lg" aria-hidden="true"></i>
-                            Thêm đường phố
+                        <button type="submit" class="btn btn-admin-primary">
+                            <i class="bi bi-funnel" aria-hidden="true"></i>
+                            Lọc
                         </button>
                     </div>
                 </form>
@@ -48,115 +49,38 @@
                             <tr>
                                 <th scope="col" class="admin-data-table__col-stt">STT</th>
                                 <th scope="col">Tên đường</th>
-                                <th scope="col">Thuộc đơn vị</th>
-                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Phường/Xã</th>
+                                <th scope="col">Quận/Huyện</th>
                                 <th scope="col" class="text-end">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Đường Nguyễn Văn Linh</td>
-                                <td>Quận Hải Châu</td>
-                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
-                                <td class="text-end">
-                                    <div class="admin-table-actions">
-                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Đường Điện Biên Phủ</td>
-                                <td>Quận Thanh Khê</td>
-                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
-                                <td class="text-end">
-                                    <div class="admin-table-actions">
-                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Đường Lê Duẩn</td>
-                                <td>Quận Hải Châu</td>
-                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
-                                <td class="text-end">
-                                    <div class="admin-table-actions">
-                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Đường Hoàng Sa</td>
-                                <td>Quận Sơn Trà</td>
-                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
-                                <td class="text-end">
-                                    <div class="admin-table-actions">
-                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Đường Mỹ Khê</td>
-                                <td>Quận Sơn Trà</td>
-                                <td><span class="admin-badge admin-badge--success">Hiển thị</span></td>
-                                <td class="text-end">
-                                    <div class="admin-table-actions">
-                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-on" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>Đường Tôn Đức Thắng</td>
-                                <td>Quận Ngũ Hành Sơn</td>
-                                <td><span class="admin-badge admin-badge--warning">Ẩn</span></td>
-                                <td class="text-end">
-                                    <div class="admin-table-actions">
-                                        <button type="button" class="admin-action-btn" aria-label="Xem"><i class="bi bi-eye" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn" aria-label="Ẩn/Hiện"><i class="bi bi-toggle-off" aria-hidden="true"></i></button>
-                                        <button type="button" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
+                            @for (var i = 0; i < Model.DanhSachDuongPho.Count; i++)
+                            {
+                                var item = Model.DanhSachDuongPho[i];
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>@item.TenDuong</td>
+                                    <td>@item.TenXa</td>
+                                    <td>@item.TenQuanHuyen</td>
+                                    <td class="text-end">
+                                        <div class="admin-table-actions">
+                                            <a class="admin-action-btn" asp-action="DuongPho" asp-route-id="@item.Id" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                            <form asp-action="XoaDuongPho" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa đường phố này?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
 
                 <nav class="admin-pagination-bar admin-pagination-bar--bordered" aria-label="Phân trang đường phố">
-                    <p class="admin-pagination-bar__summary mb-0">Hiển thị 1 - 6 của 842 đường</p>
-                    <ul class="admin-pagination mb-0">
-                        <li><span class="admin-pagination__link" aria-hidden="true">&lsaquo;</span></li>
-                        <li><span class="admin-pagination__link is-active">1</span></li>
-                        <li><a class="admin-pagination__link" href="#">2</a></li>
-                        <li><a class="admin-pagination__link" href="#">3</a></li>
-                        <li><span class="admin-pagination__link">…</span></li>
-                        <li><a class="admin-pagination__link" href="#">8</a></li>
-                        <li><a class="admin-pagination__link" href="#" aria-label="Trang sau">&rsaquo;</a></li>
-                    </ul>
-                    <select class="form-select form-select-sm admin-pagination__size" aria-label="Số dòng mỗi trang">
-                        <option selected>10 / trang</option>
-                        <option>20 / trang</option>
-                    </select>
+                    <p class="admin-pagination-bar__summary mb-0">Hiển thị 1 - @Model.DanhSachDuongPho.Count của @Model.DanhSachDuongPho.Count đường</p>
                 </nav>
             </article>
         </div>
@@ -166,40 +90,27 @@
                 <h2 class="admin-card__title mb-0">Thêm / Sửa đường phố</h2>
             </div>
             <div class="admin-card__body">
-                <form class="admin-form admin-side-form" action="#" method="post" novalidate>
+                <form class="admin-form admin-side-form" asp-action="LuuDuongPho" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Form.Id" />
                     <div class="mb-3">
-                        <label class="admin-form__label" for="tenDuong">
-                            Tên đường <span class="admin-required">*</span>
-                        </label>
-                        <input class="form-control" id="tenDuong" type="text" value="Đường Nguyễn Văn Linh" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="admin-form__label" for="donViDuong">
-                            Thuộc đơn vị <span class="admin-required">*</span>
-                        </label>
-                        <select class="form-select" id="donViDuong">
-                            <option selected>Quận Hải Châu</option>
-                            <option>Quận Thanh Khê</option>
-                            <option>Quận Sơn Trà</option>
-                            <option>Quận Ngũ Hành Sơn</option>
-                            <option>Huyện Hòa Vang</option>
-                        </select>
+                        <label class="admin-form__label" asp-for="Form.TenDuong">Tên đường <span class="admin-required">*</span></label>
+                        <input class="form-control" asp-for="Form.TenDuong" />
+                        <span class="text-danger" asp-validation-for="Form.TenDuong"></span>
                     </div>
                     <div class="mb-4">
-                        <label class="admin-form__label" for="trangThaiDuong">
-                            Trạng thái <span class="admin-required">*</span>
-                        </label>
-                        <select class="form-select" id="trangThaiDuong">
-                            <option selected>Hiển thị</option>
-                            <option>Ẩn</option>
+                        <label class="admin-form__label" asp-for="Form.XaId">Phường/Xã <span class="admin-required">*</span></label>
+                        <select class="form-select" asp-for="Form.XaId" asp-items="Model.DanhSachXa">
+                            <option value="">-- Chọn phường/xã --</option>
                         </select>
+                        <span class="text-danger" asp-validation-for="Form.XaId"></span>
                     </div>
                     <div class="admin-side-form-card__actions">
-                        <button type="button" class="btn btn-admin-primary w-100">
+                        <button type="submit" class="btn btn-admin-primary w-100">
                             <i class="bi bi-save" aria-hidden="true"></i>
                             Lưu
                         </button>
-                        <button type="button" class="btn btn-admin-outline w-100">Hủy</button>
+                        <a class="btn btn-admin-outline w-100" asp-action="DuongPho">Hủy</a>
                     </div>
                 </form>
             </div>
