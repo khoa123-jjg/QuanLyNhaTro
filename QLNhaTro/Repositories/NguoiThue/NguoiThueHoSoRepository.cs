@@ -15,7 +15,7 @@ public class NguoiThueHoSoRepository : INguoiThueHoSoRepository
     {
         _context = context;
     }
-
+    //Trả giao diện hồ sơ người thuê
     public async Task<NguoiThueHoSoViewModel?> GetHoSoAsync(string userId)
     {
         if (!int.TryParse(userId, out var nguoiDungId))
@@ -62,7 +62,7 @@ public class NguoiThueHoSoRepository : INguoiThueHoSoRepository
         {
             return (false, "Không tìm thấy tài khoản.");
         }
-
+        // Kiểm tra email đã được sử dụng hay chưa
         var email = model.Email.Trim();
         var emailTrung = await _context.NguoiDungs.AnyAsync(x => x.Email == email && x.Id != nguoiDungId);
         if (emailTrung)
@@ -75,20 +75,25 @@ public class NguoiThueHoSoRepository : INguoiThueHoSoRepository
         nguoiDung.SoDienThoai = string.IsNullOrWhiteSpace(model.SoDienThoai)
             ? null
             : NormalizePhoneForStorage(model.SoDienThoai);
+        //Tách khoản trắng của số điện thoại
         nguoiDung.NgayCapNhat = DateTime.Now;
-
+        // Tạo hồ sơ người thuê nếu chưa có, thông thường khi tạo tài khoản thì chưa có người thuê
         var nguoiThue = nguoiDung.NguoiThue;
+        //Kiểm tra tài khoản người dùng này đã trên bảng người thuê hay chưa
+        // Nếu chưa thì tạo
         if (nguoiThue is null)
         {
+            // gán id và ngày tạo
             nguoiThue = new NguoiThueEntity
             {
                 NguoiDungId = nguoiDung.Id,
                 NgayTao = DateTime.Now
             };
+            //add vào bảng người thuê
             _context.NguoiThues.Add(nguoiThue);
             nguoiDung.NguoiThue = nguoiThue;
         }
-
+        // đưa thông tin trên web vào
         nguoiThue.NgheNghiep = string.IsNullOrWhiteSpace(model.NgheNghiep)
             ? null
             : model.NgheNghiep.Trim();
@@ -96,11 +101,11 @@ public class NguoiThueHoSoRepository : INguoiThueHoSoRepository
             ? null
             : model.NhuCauThue.Trim();
         nguoiThue.NgayCapNhat = DateTime.Now;
-
+        // Lưu thông tin
         await _context.SaveChangesAsync();
         return (true, "Cập nhật hồ sơ thành công.");
     }
-
+    // Đổi  mật khẩu
     public async Task<(bool Success, string Message)> DoiMatKhauAsync(string userId, DoiMatKhauNguoiThueViewModel model)
     {
         if (!int.TryParse(userId, out var nguoiDungId))
