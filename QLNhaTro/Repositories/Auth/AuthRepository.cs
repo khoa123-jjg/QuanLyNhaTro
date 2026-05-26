@@ -1,7 +1,7 @@
-﻿using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using QLNhaTro.Data;
 using QLNhaTro.Domain;
+using QLNhaTro.Helpers;
 using QLNhaTro.Models.Auth;
 
 namespace QLNhaTro.Repositories.Auth;
@@ -65,7 +65,7 @@ public class AuthRepository : IAuthRepository
                 HoTen = model.HoTen.Trim(),
                 Email = email,
                 SoDienThoai = soDienThoai,
-                MatKhauHash = HashPassword(model.MatKhau),
+                MatKhauHash = PasswordHelper.HashPassword(model.MatKhau),
                 TrangThai = TrangThaiHoatDong,
                 NgayTao = DateTime.Now
             };
@@ -135,7 +135,7 @@ public class AuthRepository : IAuthRepository
             return Fail("Tài khoản đã bị khóa hoặc chưa được kích hoạt.");
         }
 
-        if (!VerifyPassword(model.MatKhau, nguoiDung.MatKhauHash))
+        if (!PasswordHelper.VerifyPassword(model.MatKhau, nguoiDung.MatKhauHash))
         {
             return Fail("Email hoặc mật khẩu không đúng.");
         }
@@ -159,37 +159,4 @@ public class AuthRepository : IAuthRepository
         Message = message
     };
 
-    private static string HashPassword(string password)
-    {
-        var salt = RandomNumberGenerator.GetBytes(16);
-        var hash = Rfc2898DeriveBytes.Pbkdf2(
-            password,
-            salt,
-            iterations: 100_000,
-            HashAlgorithmName.SHA256,
-            outputLength: 32);
-
-        return $"{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
-    }
-
-    private static bool VerifyPassword(string password, string storedHash)
-    {
-        var parts = storedHash.Split('.', 2);
-        if (parts.Length != 2)
-        {
-            return false;
-        }
-
-        var salt = Convert.FromBase64String(parts[0]);
-        var expectedHash = Convert.FromBase64String(parts[1]);
-
-        var actualHash = Rfc2898DeriveBytes.Pbkdf2(
-            password,
-            salt,
-            iterations: 100_000,
-            HashAlgorithmName.SHA256,
-            outputLength: 32);
-
-        return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
-    }
 }

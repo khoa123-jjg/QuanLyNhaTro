@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using QLNhaTro.Data;
 using QLNhaTro.Repositories.Auth;
 using QLNhaTro.Repositories.BaiDang;
+using QLNhaTro.Repositories.ChuTro;
 using QLNhaTro.Repositories.NhaTro;
 using QLNhaTro.Repositories.PhongTro;
 using QLNhaTro.Repositories.TienNghi;
@@ -26,6 +27,7 @@ namespace QLNhaTro
             builder.Services.AddScoped<IPhongTroManagementRepository, PhongTroManagementRepository>();
             builder.Services.AddScoped<INhaTroRepository, NhaTroRepository>();
             builder.Services.AddScoped<IBaiDangRepository, BaiDangRepository>();
+            builder.Services.AddScoped<IChuTroTaiKhoanRepository, ChuTroTaiKhoanRepository>();
             builder.Services.AddScoped<ITienNghiRepository, TienNghiRepository>();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
