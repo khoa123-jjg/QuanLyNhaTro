@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QLNhaTro.Models.Admin.DiaChi;
+using QLNhaTro.Models.Admin.HoSo;
 using QLNhaTro.Models.Admin.TienNghi;
+using QLNhaTro.Repositories.Admin;
 using QLNhaTro.Repositories.DiaChi;
 using QLNhaTro.Repositories.TienNghi;
 
@@ -12,11 +17,16 @@ public class AdminController : Controller
 {
     private readonly ITienNghiRepository _tienNghiRepository;
     private readonly IAdminDiaChiRepository _adminDiaChiRepository;
+    private readonly IAdminTaiKhoanRepository _adminTaiKhoanRepository;
 
-    public AdminController(ITienNghiRepository tienNghiRepository, IAdminDiaChiRepository adminDiaChiRepository)
+    public AdminController(
+        ITienNghiRepository tienNghiRepository,
+        IAdminDiaChiRepository adminDiaChiRepository,
+        IAdminTaiKhoanRepository adminTaiKhoanRepository)
     {
         _tienNghiRepository = tienNghiRepository;
         _adminDiaChiRepository = adminDiaChiRepository;
+        _adminTaiKhoanRepository = adminTaiKhoanRepository;
     }
 
     [HttpGet]
@@ -184,8 +194,61 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    public IActionResult HoSo()
+    public async Task<IActionResult> HoSo()
     {
-        return View();
+        ViewData["Title"] = "Hồ sơ admin";
+        ViewData["ActiveAdminMenu"] = "HoSo";
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var model = await _adminTaiKhoanRepository.GetHoSoAsync(userId);
+        if (model is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DoiMatKhauAdmin([Bind(Prefix = "DoiMatKhau")] AdminDoiMatKhauViewModel model)
+    {
+        ViewData["Title"] = "Hồ sơ admin";
+        ViewData["ActiveAdminMenu"] = "HoSo";
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            var pageModel = await _adminTaiKhoanRepository.GetHoSoAsync(userId);
+            if (pageModel is null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            pageModel.DoiMatKhau = new AdminDoiMatKhauViewModel();
+            return View("HoSo", pageModel);
+        }
+
+        var result = await _adminTaiKhoanRepository.DoiMatKhauAsync(userId, model);
+
+        if (!result.Success)
+        {
+            TempData["Error"] = result.Message;
+            return RedirectToAction(nameof(HoSo));
+        }
+
+        TempData["Success"] = "Đổi mật khẩu thành công. Vui lòng đăng nhập lại.";
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Login", "Account");
     }
 }
