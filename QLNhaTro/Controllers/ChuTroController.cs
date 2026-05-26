@@ -644,12 +644,13 @@ public class ChuTroController : Controller
         {
             return RedirectToAction("Login", "Account");
         }
-
+        // Nếu vi phạm validation
         if (!ModelState.IsValid)
         {
+            //Lấy lại thông tin người dung để hiển thị
             var pageModel = await _chuTroTaiKhoanRepository.GetCaiDatAsync(userId)
                 ?? new ChuTroCaiDatViewModel();
-
+            //Gán thông tin để hiển thị lại khi lỗi validation
             pageModel.ThongTin = model;
             pageModel.DoiMatKhau = new DoiMatKhauViewModel();
 
@@ -682,12 +683,13 @@ public class ChuTroController : Controller
         {
             return RedirectToAction("Login", "Account");
         }
-
+        // Nếu vi phạm validation
         if (!ModelState.IsValid)
         {
+            //Lấy lại thông tin người dung để hiển thị
             var pageModel = await _chuTroTaiKhoanRepository.GetCaiDatAsync(userId)
                 ?? new ChuTroCaiDatViewModel();
-
+            //Gán thông tin để hiển thị lại khi lỗi validation
             pageModel.DoiMatKhau = new DoiMatKhauViewModel();
             return View("CaiDat", pageModel);
         }
