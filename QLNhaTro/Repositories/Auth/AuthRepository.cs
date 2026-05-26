@@ -3,6 +3,7 @@ using QLNhaTro.Data;
 using QLNhaTro.Domain;
 using QLNhaTro.Helpers;
 using QLNhaTro.Models.Auth;
+using NguoiThueEntity = QLNhaTro.Domain.NguoiThue;
 
 namespace QLNhaTro.Repositories.Auth;
 
@@ -82,7 +83,7 @@ public class AuthRepository : IAuthRepository
 
             if (vaiTroDangKy == VaiTroNguoiThue)
             {
-                _context.NguoiThues.Add(new NguoiThue
+                _context.NguoiThues.Add(new NguoiThueEntity
                 {
                     NguoiDungId = nguoiDung.Id,
                     NgayTao = DateTime.Now

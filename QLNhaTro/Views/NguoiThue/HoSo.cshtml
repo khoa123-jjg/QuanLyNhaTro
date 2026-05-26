@@ -1,4 +1,6 @@
+@model QLNhaTro.Models.NguoiThue.HoSo.NguoiThueHoSoViewModel
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Hồ sơ cá nhân";
     ViewData["ActiveTenantMenu"] = "HoSo";
 }
@@ -21,99 +23,119 @@
 
         <header class="tenant-page-header mb-3">
             <h1 class="tenant-page-header__title">Hồ sơ cá nhân</h1>
-            <p class="tenant-page-header__subtitle">Cập nhật thông tin cá nhân và nhu cầu thuê.</p>
+            <p class="tenant-page-header__subtitle">Cập nhật thông tin cá nhân và đổi mật khẩu.</p>
         </header>
 
-        <div class="tenant-profile-alert" role="status">
-            <i class="bi bi-info-circle-fill tenant-profile-alert__icon" aria-hidden="true"></i>
-            <p class="tenant-profile-alert__text mb-0">
-                Thông tin của bạn được bảo mật và chỉ dùng để hỗ trợ tìm phòng phù hợp.
-            </p>
-        </div>
+        @if (TempData["Success"] is string successMessage)
+        {
+            <div class="alert alert-success">@successMessage</div>
+        }
 
-        <div class="tenant-page-layout tenant-page-layout--profile">
-            <div class="tenant-page-layout__main">
-                <div class="tenant-card tenant-profile-card">
+        @if (TempData["Error"] is string errorMessage)
+        {
+            <div class="alert alert-danger">@errorMessage</div>
+        }
+
+        <div class="tenant-profile-page-layout">
+            <main class="tenant-profile-main">
+                <article class="tenant-card tenant-profile-card tenant-profile-card--info">
                     <h2 class="tenant-profile-card__title">Thông tin cá nhân</h2>
+                    <form class="tenant-profile-form"
+                          asp-controller="NguoiThue"
+                          asp-action="CapNhatHoSo"
+                          method="post">
+                        @Html.AntiForgeryToken()
 
-                    <div class="tenant-profile-avatar">
-                        <img class="tenant-profile-avatar__image"
-                             src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
-                             alt="Ảnh đại diện Nguyễn Văn A" />
-                        <div class="tenant-profile-avatar__actions">
-                            <button type="button" class="btn-tenant-change-photo">
-                                <i class="bi bi-camera" aria-hidden="true"></i>
-                                Đổi ảnh
-                            </button>
-                            <p class="tenant-profile-avatar__hint mb-0">JPG, PNG tối đa 2MB</p>
-                        </div>
-                    </div>
-
-                    <form class="tenant-profile-form" action="#" method="post" novalidate>
                         <div class="row g-3 g-md-4">
                             <div class="col-md-6">
-                                <label class="tenant-profile-form__label" for="hoTen">Họ tên</label>
-                                <input class="form-control tenant-profile-form__input" id="hoTen" type="text" value="Nguyễn Văn A" />
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.HoTen">Họ tên</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.HoTen" />
+                                <span class="text-danger" asp-validation-for="ThongTin.HoTen"></span>
                             </div>
+
                             <div class="col-md-6">
-                                <label class="tenant-profile-form__label" for="email">Email</label>
-                                <input class="form-control tenant-profile-form__input" id="email" type="email" value="nguyenvana@gmail.com" />
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.Email">Email</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.Email" />
+                                <span class="text-danger" asp-validation-for="ThongTin.Email"></span>
                             </div>
+
                             <div class="col-md-6">
-                                <label class="tenant-profile-form__label" for="soDienThoai">Số điện thoại</label>
-                                <input class="form-control tenant-profile-form__input" id="soDienThoai" type="text" value="0901 234 567" />
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.SoDienThoai">Số điện thoại</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.SoDienThoai" />
+                                <span class="text-danger" asp-validation-for="ThongTin.SoDienThoai"></span>
                             </div>
+
                             <div class="col-md-6">
-                                <label class="tenant-profile-form__label" for="ngheNghiep">Nghề nghiệp</label>
-                                <select class="form-select tenant-profile-form__input" id="ngheNghiep">
-                                    <option selected>Nhân viên văn phòng</option>
-                                </select>
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.NgheNghiep">Nghề nghiệp</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.NgheNghiep" />
+                                <span class="text-danger" asp-validation-for="ThongTin.NgheNghiep"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label class="tenant-profile-form__label" for="cccd">CCCD/CMND</label>
-                                <input class="form-control tenant-profile-form__input" id="cccd" type="text" value="201234567890" />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="tenant-profile-form__label" for="nhuCauThue">Nhu cầu thuê</label>
-                                <select class="form-select tenant-profile-form__input" id="nhuCauThue">
-                                    <option selected>Phòng để ở lâu dài</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="tenant-profile-form__label" for="khuVuc">Khu vực mong muốn</label>
-                                <input class="form-control tenant-profile-form__input" id="khuVuc" type="text" value="Liên Chiểu, Thanh Khê, Hải Châu" />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="tenant-profile-form__label" for="mucGia">Mức giá mong muốn</label>
-                                <input class="form-control tenant-profile-form__input" id="mucGia" type="text" value="2.000.000 đ - 3.000.000 đ/tháng" />
-                            </div>
+
                             <div class="col-12">
-                                <label class="tenant-profile-form__label" for="ghiChu">Ghi chú</label>
-                                <div class="tenant-profile-form__textarea-wrap">
-                                    <textarea class="form-control tenant-profile-form__textarea" id="ghiChu" rows="4" maxlength="200">Ưu tiên phòng có cửa sổ, giờ giấc tự do, chỗ để xe thuận tiện.</textarea>
-                                    <span class="tenant-profile-form__counter">67/200</span>
-                                </div>
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.NhuCauThue">Nhu cầu thuê</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.NhuCauThue" />
+                                <span class="text-danger" asp-validation-for="ThongTin.NhuCauThue"></span>
                             </div>
                         </div>
 
-                        <div class="tenant-profile-form__actions">
-                            <button type="button" class="btn-tenant-save">
+                        <div class="tenant-profile-actions mt-4">
+                            <button type="submit" class="btn btn-primary tenant-btn-primary">
                                 <i class="bi bi-check-lg" aria-hidden="true"></i>
                                 Lưu cập nhật
                             </button>
-                            <button type="button" class="btn-tenant-password">
-                                <i class="bi bi-lock" aria-hidden="true"></i>
-                                Đổi mật khẩu
-                            </button>
                         </div>
                     </form>
-                </div>
-            </div>
+                </article>
 
-            <div class="tenant-aside-stack">
-                @await Html.PartialAsync("_TenantSidebar")
-                @await Html.PartialAsync("_TenantSupport")
-            </div>
+                <article class="tenant-card tenant-profile-card tenant-profile-password-card">
+                    <h2 class="tenant-profile-card__title">Đổi mật khẩu</h2>
+                    <form class="tenant-profile-form"
+                          asp-controller="NguoiThue"
+                          asp-action="DoiMatKhau"
+                          method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="tenant-profile-form__label" asp-for="DoiMatKhau.MatKhauHienTai">Mật khẩu hiện tại</label>
+                            <input class="form-control tenant-profile-form__input"
+                                   asp-for="DoiMatKhau.MatKhauHienTai"
+                                   type="password"
+                                   autocomplete="current-password" />
+                            <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauHienTai"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="tenant-profile-form__label" asp-for="DoiMatKhau.MatKhauMoi">Mật khẩu mới</label>
+                            <input class="form-control tenant-profile-form__input"
+                                   asp-for="DoiMatKhau.MatKhauMoi"
+                                   type="password"/>
+                            <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauMoi"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="tenant-profile-form__label" asp-for="DoiMatKhau.XacNhanMatKhauMoi">Xác nhận mật khẩu mới</label>
+                            <input class="form-control tenant-profile-form__input"
+                                   asp-for="DoiMatKhau.XacNhanMatKhauMoi"
+                                   type="password"/>
+                            <span class="text-danger" asp-validation-for="DoiMatKhau.XacNhanMatKhauMoi"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-outline-primary tenant-btn-outline">
+                            <i class="bi bi-lock" aria-hidden="true"></i>
+                            Đổi mật khẩu
+                        </button>
+                    </form>
+                </article>
+            </main>
+
+            <aside class="tenant-profile-aside">
+                @await Html.PartialAsync("_NguoiThueSidebar")
+                @await Html.PartialAsync("_NguoiThueSupport")
+            </aside>
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
