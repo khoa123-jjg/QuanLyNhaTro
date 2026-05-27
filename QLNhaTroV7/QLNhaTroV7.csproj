@@ -19,4 +19,18 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validation\" />
+    <Folder Include="NHOMNGUOIDUNG\Admin\" />
+    <Folder Include="NHOMNGUOIDUNG\NguoiThue\" />
+    <Folder Include="NHOMNGUOIDUNG\ChuTro\" />
+    <Folder Include="Repositories\Implementations\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Services\Implementations\" />
+    <Folder Include="ViewModels\ChuTro\" />
+    <Folder Include="ViewModels\Admin\" />
+    <Folder Include="ViewModels\NguoiThue\" />
+    <Folder Include="ViewModels\TaiKhoan\" />
+  </ItemGroup>
+
 </Project>
