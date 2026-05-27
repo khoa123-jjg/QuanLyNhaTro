@@ -8,7 +8,7 @@ public static class BaiDangStatus
 
     public const string DaDuyet = "DA_DUYET";
 
-    public const string BiTuChoi = "BI_TU_CHOI";
+    public const string BiTuChoi = "TU_CHOI";
 
     public static IReadOnlyCollection<string> Values { get; } =
     [

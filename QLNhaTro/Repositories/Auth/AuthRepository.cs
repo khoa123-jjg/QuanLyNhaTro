@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using QLNhaTro.Data;
 using QLNhaTro.Domain;
 using QLNhaTro.Helpers;

@@ -1,8 +1,9 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using QLNhaTro.Models.Admin.BaiDuyet;
 using QLNhaTro.Models.Admin.DiaChi;
 using QLNhaTro.Models.Admin.HoSo;
 using QLNhaTro.Models.Admin.TienNghi;
@@ -18,15 +19,18 @@ public class AdminController : Controller
     private readonly ITienNghiRepository _tienNghiRepository;
     private readonly IAdminDiaChiRepository _adminDiaChiRepository;
     private readonly IAdminTaiKhoanRepository _adminTaiKhoanRepository;
+    private readonly IAdminBaiDuyetRepository _adminBaiDuyetRepository;
 
     public AdminController(
         ITienNghiRepository tienNghiRepository,
         IAdminDiaChiRepository adminDiaChiRepository,
-        IAdminTaiKhoanRepository adminTaiKhoanRepository)
+        IAdminTaiKhoanRepository adminTaiKhoanRepository,
+        IAdminBaiDuyetRepository adminBaiDuyetRepository)
     {
         _tienNghiRepository = tienNghiRepository;
         _adminDiaChiRepository = adminDiaChiRepository;
         _adminTaiKhoanRepository = adminTaiKhoanRepository;
+        _adminBaiDuyetRepository = adminBaiDuyetRepository;
     }
 
     [HttpGet]
@@ -54,27 +58,89 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    public IActionResult BaiChoDuyet()
+    public async Task<IActionResult> BaiChoDuyet(string? tuKhoa, int? nhaTroId)
     {
-        return View();
+        ViewData["ActiveAdminMenu"] = "BaiChoDuyet";
+        var model = await _adminBaiDuyetRepository.GetDanhSachChoDuyetAsync(tuKhoa, nhaTroId);
+        return View(model);
     }
 
     [HttpGet]
-    public IActionResult ChiTietBaiChoDuyet()
+    public async Task<IActionResult> ChiTietBaiChoDuyet(int id)
     {
-        return View();
+        ViewData["ActiveAdminMenu"] = "BaiChoDuyet";
+        var model = await _adminBaiDuyetRepository.GetChiTietChoDuyetAsync(id);
+        if (model is null)
+        {
+            TempData["Error"] = "Không tìm thấy bài đăng đang chờ duyệt.";
+            return RedirectToAction(nameof(BaiChoDuyet));
+        }
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DuyetBai(int id)
+    {
+        var adminUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(adminUserId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var result = await _adminBaiDuyetRepository.DuyetBaiAsync(id, adminUserId);
+        TempData[result.Success ? "Success" : "Error"] = result.Message;
+        return RedirectToAction(nameof(BaiChoDuyet));
     }
 
     [HttpGet]
-    public IActionResult DuyetBai()
+    public async Task<IActionResult> TuChoiBai(int id)
     {
-        return View();
+        ViewData["ActiveAdminMenu"] = "BaiChoDuyet";
+        var model = await _adminBaiDuyetRepository.GetTuChoiViewModelAsync(id);
+        if (model is null)
+        {
+            TempData["Error"] = "Không tìm thấy bài đăng đang chờ duyệt.";
+            return RedirectToAction(nameof(BaiChoDuyet));
+        }
+
+        return View(model);
     }
 
-    [HttpGet]
-    public IActionResult TuChoiBai()
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> TuChoiBai(AdminTuChoiBaiViewModel model)
     {
-        return View();
+        ViewData["ActiveAdminMenu"] = "BaiChoDuyet";
+        if (!ModelState.IsValid)
+        {
+            var reload = await _adminBaiDuyetRepository.GetTuChoiViewModelAsync(model.Id);
+            if (reload is null)
+            {
+                TempData["Error"] = "Không tìm thấy bài đăng đang chờ duyệt.";
+                return RedirectToAction(nameof(BaiChoDuyet));
+            }
+
+            reload.LyDoTuChoi = model.LyDoTuChoi;
+            return View(reload);
+        }
+
+        var adminUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(adminUserId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var result = await _adminBaiDuyetRepository.TuChoiBaiAsync(model.Id, adminUserId, model.LyDoTuChoi);
+        if (result.Success)
+        {
+            TempData["Success"] = result.Message;
+            return RedirectToAction(nameof(BaiChoDuyet));
+        }
+
+        TempData["Error"] = result.Message;
+        return RedirectToAction(nameof(BaiChoDuyet));
     }
 
     [HttpGet]

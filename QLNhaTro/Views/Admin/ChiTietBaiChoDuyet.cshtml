@@ -1,3 +1,4 @@
+@model QLNhaTro.Models.Admin.BaiDuyet.AdminChiTietBaiChoDuyetViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Chi tiết bài chờ duyệt";
@@ -29,28 +30,28 @@
                             <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-card-text"></i></span>
                             <div>
                                 <p class="admin-info-row__label mb-0">Tiêu đề</p>
-                                <p class="admin-info-row__value mb-0">Phòng trọ mới đường Lê Duẩn</p>
+                                <p class="admin-info-row__value mb-0">@Model.TieuDe</p>
                             </div>
                         </div>
                         <div class="admin-info-row">
                             <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-person"></i></span>
                             <div>
                                 <p class="admin-info-row__label mb-0">Chủ trọ</p>
-                                <p class="admin-info-row__value mb-0">Nguyễn Văn A</p>
+                                <p class="admin-info-row__value mb-0">@Model.TenChuTro</p>
                             </div>
                         </div>
                         <div class="admin-info-row">
                             <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-building"></i></span>
                             <div>
                                 <p class="admin-info-row__label mb-0">Nhà trọ</p>
-                                <p class="admin-info-row__value mb-0">Nhà trọ An Bình</p>
+                                <p class="admin-info-row__value mb-0">@Model.TenNhaTro</p>
                             </div>
                         </div>
                         <div class="admin-info-row">
                             <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span>
                             <div>
                                 <p class="admin-info-row__label mb-0">Ngày gửi</p>
-                                <p class="admin-info-row__value mb-0">12/05/2025 10:20</p>
+                                <p class="admin-info-row__value mb-0">@(Model.NgayGuiDuyet?.ToString("dd/MM/yyyy HH:mm") ?? "-")</p>
                             </div>
                         </div>
                         <div class="admin-info-row">
@@ -58,18 +59,14 @@
                             <div>
                                 <p class="admin-info-row__label mb-0">Trạng thái hiện tại</p>
                                 <p class="admin-info-row__value mb-0">
-                                    <span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span>
+                                    <span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> @Model.TrangThaiText</span>
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     <h3 class="admin-post-detail__section-label">Nội dung mô tả</h3>
-                    <p class="admin-post-detail__description mb-0">
-                        Phòng trọ mới, sạch sẽ, đầy đủ tiện nghi cơ bản. Vị trí thuận tiện đi lại,
-                        gần trường học và khu vực ăn uống. Phù hợp sinh viên, người đi làm.
-                        Giá thuê ưu đãi cho khách thuê dài hạn. Liên hệ xem phòng trực tiếp.
-                    </p>
+                    <p class="admin-post-detail__description mb-0">@Model.NoiDung</p>
                 </div>
             </article>
         </div>
@@ -81,21 +78,17 @@
                 </div>
                 <div class="admin-card__body">
                     <div class="admin-post-gallery">
-                        <img class="admin-post-gallery__main"
-                             src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=500&fit=crop"
-                             alt="Ảnh phòng trọ" />
-                        <div class="admin-post-gallery__thumbs">
-                            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=200&h=140&fit=crop" alt="" />
-                            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=140&fit=crop" alt="" />
-                            <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=200&h=140&fit=crop" alt="" />
-                            <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200&h=140&fit=crop" alt="" />
-                            <img src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=200&h=140&fit=crop" alt="" />
-                            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&h=140&fit=crop" alt="" />
-                        </div>
+                        @if (Model.DanhSachAnh.Count > 0)
+                        {
+                            <img class="admin-post-gallery__main" src="@Model.DanhSachAnh[0]" alt="Ảnh phòng trọ" />
+                            <div class="admin-post-gallery__thumbs">
+                                @foreach (var anh in Model.DanhSachAnh)
+                                {
+                                    <img src="@anh" alt="" />
+                                }
+                            </div>
+                        }
                     </div>
-                    <button type="button" class="btn btn-admin-outline btn-sm w-100 mt-3">
-                        Xem tất cả 9 ảnh
-                    </button>
                 </div>
             </article>
 
@@ -106,28 +99,32 @@
                 <div class="admin-card__body">
                     <dl class="admin-post-meta-list">
                         <div class="admin-post-meta-list__item">
-                            <dt>Loại phòng</dt>
-                            <dd>Phòng đơn có ban công</dd>
+                            <dt>Mã phòng</dt>
+                            <dd>@Model.MaPhong</dd>
                         </div>
                         <div class="admin-post-meta-list__item">
                             <dt>Diện tích</dt>
-                            <dd>22 m²</dd>
+                            <dd>@Model.DienTich m²</dd>
                         </div>
                         <div class="admin-post-meta-list__item">
                             <dt>Số người tối đa</dt>
-                            <dd>2 người</dd>
+                            <dd>@(Model.SoNguoiToiDa?.ToString() ?? "-")</dd>
                         </div>
                         <div class="admin-post-meta-list__item">
-                            <dt>Nội thất</dt>
-                            <dd>Giường, tủ, bàn học, điều hòa</dd>
+                            <dt>Giá thuê / tháng</dt>
+                            <dd>@Model.GiaThueThang.ToString("N0") đ</dd>
+                        </div>
+                        <div class="admin-post-meta-list__item">
+                            <dt>Tiền cọc</dt>
+                            <dd>@Model.TienCoc.ToString("N0") đ</dd>
                         </div>
                     </dl>
                     <p class="admin-post-detail__section-label mb-2">Tiện ích</p>
                     <div class="admin-tags">
-                        <span class="admin-tag"><i class="bi bi-droplet" aria-hidden="true"></i> WC riêng</span>
-                        <span class="admin-tag"><i class="bi bi-wifi" aria-hidden="true"></i> Internet</span>
-                        <span class="admin-tag"><i class="bi bi-camera-video" aria-hidden="true"></i> Camera</span>
-                        <span class="admin-tag"><i class="bi bi-bicycle" aria-hidden="true"></i> Chỗ để xe</span>
+                        @foreach (var tienNghi in Model.DanhSachTienNghi)
+                        {
+                            <span class="admin-tag">@tienNghi</span>
+                        }
                     </div>
                 </div>
             </article>
@@ -136,11 +133,17 @@
 
     <div class="admin-page-actions admin-post-detail__actions">
         <a class="btn btn-admin-outline" asp-controller="Admin" asp-action="BaiChoDuyet">Quay lại</a>
-        <a class="btn btn-admin-primary" asp-controller="Admin" asp-action="DuyetBai">
-            <i class="bi bi-check-lg" aria-hidden="true"></i>
-            Duyệt
-        </a>
-        <a class="btn btn-admin-danger-outline" asp-controller="Admin" asp-action="TuChoiBai">
+        <form asp-controller="Admin"
+              asp-action="DuyetBai"
+              asp-route-id="@Model.Id"
+              method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-admin-primary">
+                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                Duyệt
+            </button>
+        </form>
+        <a class="btn btn-admin-danger-outline" asp-controller="Admin" asp-action="TuChoiBai" asp-route-id="@Model.Id">
             <i class="bi bi-x-lg" aria-hidden="true"></i>
             Từ chối
         </a>

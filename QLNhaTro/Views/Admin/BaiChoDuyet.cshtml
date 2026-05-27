@@ -1,3 +1,4 @@
+@model QLNhaTro.Models.Admin.BaiDuyet.AdminBaiChoDuyetListPageViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Quản lý bài chờ duyệt";
@@ -10,193 +11,90 @@
         <p class="admin-page-subtitle mb-0">Danh sách bài ở trạng thái chờ duyệt</p>
     </header>
 
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success">@successMessage</div>
+    }
+
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
     <div class="admin-card admin-filter-card mb-4">
-        <form class="admin-filter-bar admin-filter-bar--post" action="#" method="get" novalidate>
+        <form class="admin-filter-bar admin-filter-bar--post" asp-controller="Admin" asp-action="BaiChoDuyet" method="get">
             <div class="admin-filter-bar__field admin-filter-bar__field--search">
-                <label class="admin-form__label" for="searchBaiChoDuyet">Tìm kiếm</label>
+                <label class="admin-form__label" for="TuKhoa">Tìm kiếm</label>
                 <div class="admin-input-icon">
                     <i class="bi bi-search admin-input-icon__icon" aria-hidden="true"></i>
-                    <input class="form-control" id="searchBaiChoDuyet" type="search" placeholder="Tìm kiếm theo tiêu đề, chủ trọ, nhà trọ..." />
+                    <input class="form-control" id="TuKhoa" name="tuKhoa" value="@Model.TuKhoa" type="search" placeholder="Tìm kiếm theo tiêu đề, chủ trọ, nhà trọ..." />
                 </div>
             </div>
             <div class="admin-filter-bar__field">
-                <label class="admin-form__label" for="chuTroFilter">Chủ trọ</label>
-                <select class="form-select admin-filter-select" id="chuTroFilter">
-                    <option selected>Chủ trọ: Tất cả</option>
-                    <option>Nguyễn Văn A</option>
-                    <option>Trần Thị B</option>
-                    <option>Lê Văn C</option>
+                <label class="admin-form__label" for="NhaTroId">Nhà trọ</label>
+                <select class="form-select admin-filter-select" id="NhaTroId" name="nhaTroId">
+                    <option value="">Nhà trọ: Tất cả</option>
+                    @foreach (var item in Model.DanhSachNhaTro)
+                    {
+                        <option value="@item.Value" selected="@(item.Value == Model.NhaTroId?.ToString())">@item.Text</option>
+                    }
                 </select>
             </div>
-            <div class="admin-filter-bar__field">
-                <label class="admin-form__label" for="nhaTroFilter">Nhà trọ</label>
-                <select class="form-select admin-filter-select" id="nhaTroFilter">
-                    <option selected>Nhà trọ: Tất cả</option>
-                    <option>Nhà trọ An Bình</option>
-                    <option>Nhà trọ Minh Khang</option>
-                    <option>Nhà trọ Hòa Phú</option>
-                </select>
-            </div>
-            <div class="admin-filter-bar__field">
-                <label class="admin-form__label" for="trangThaiBaiFilter">Trạng thái</label>
-                <select class="form-select admin-filter-select" id="trangThaiBaiFilter">
-                    <option selected>Trạng thái: Chờ duyệt</option>
-                    <option>Đã duyệt</option>
-                    <option>Bị từ chối</option>
-                </select>
+            <div class="admin-filter-bar__field admin-filter-bar__field--actions">
+                <button type="submit" class="btn btn-admin-primary">Lọc</button>
             </div>
         </form>
     </div>
 
     <article class="admin-card admin-table-card">
-        <div class="admin-table-wrap">
-            <table class="table admin-data-table mb-0">
-                <thead>
-                    <tr>
-                        <th scope="col" class="admin-data-table__col-stt">STT</th>
-                        <th scope="col">Tiêu đề</th>
-                        <th scope="col">Chủ trọ</th>
-                        <th scope="col">Nhà trọ</th>
-                        <th scope="col">Ngày gửi</th>
-                        <th scope="col">Trạng thái</th>
-                        <th scope="col" class="text-end">Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="admin-table-post">
-                                <img class="admin-table-post__thumb" src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=80&h=80&fit=crop" alt="" />
-                                <span>Phòng trọ mới đường Lê Duẩn</span>
-                            </div>
-                        </td>
-                        <td>Nguyễn Văn A</td>
-                        <td>Nhà trọ An Bình</td>
-                        <td class="admin-data-table__date">12/05/2025 10:20</td>
-                        <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
-                        <td class="text-end">
-                            <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>
-                            <div class="admin-table-post">
-                                <img class="admin-table-post__thumb" src="https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=80&h=80&fit=crop" alt="" />
-                                <span>Phòng full nội thất quận Hải Châu</span>
-                            </div>
-                        </td>
-                        <td>Trần Thị B</td>
-                        <td>Nhà trọ Minh Khang</td>
-                        <td class="admin-data-table__date">11/05/2025 15:45</td>
-                        <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
-                        <td class="text-end">
-                            <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>
-                            <div class="admin-table-post">
-                                <img class="admin-table-post__thumb" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=80&h=80&fit=crop" alt="" />
-                                <span>Phòng gần Đại học Duy Tân</span>
-                            </div>
-                        </td>
-                        <td>Lê Văn C</td>
-                        <td>Nhà trọ Hòa Phú</td>
-                        <td class="admin-data-table__date">11/05/2025 09:10</td>
-                        <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
-                        <td class="text-end">
-                            <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>
-                            <div class="admin-table-post">
-                                <img class="admin-table-post__thumb" src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=80&h=80&fit=crop" alt="" />
-                                <span>Căn hộ mini mới xây</span>
-                            </div>
-                        </td>
-                        <td>Phạm Thị D</td>
-                        <td>Nhà trọ An Bình</td>
-                        <td class="admin-data-table__date">10/05/2025 14:00</td>
-                        <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
-                        <td class="text-end">
-                            <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>
-                            <div class="admin-table-post">
-                                <img class="admin-table-post__thumb" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=80&h=80&fit=crop" alt="" />
-                                <span>Phòng trọ giá rẻ quận Liên Chiểu</span>
-                            </div>
-                        </td>
-                        <td>Hoàng Văn E</td>
-                        <td>Nhà trọ Bình Minh</td>
-                        <td class="admin-data-table__date">10/05/2025 08:30</td>
-                        <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
-                        <td class="text-end">
-                            <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>
-                            <div class="admin-table-post">
-                                <img class="admin-table-post__thumb" src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=80&h=80&fit=crop" alt="" />
-                                <span>Phòng ban công view biển</span>
-                            </div>
-                        </td>
-                        <td>Đặng Thị F</td>
-                        <td>Nhà trọ Sơn Trà View</td>
-                        <td class="admin-data-table__date">09/05/2025 17:20</td>
-                        <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
-                        <td class="text-end">
-                            <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>
-                            <div class="admin-table-post">
-                                <img class="admin-table-post__thumb" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=80&h=80&fit=crop" alt="" />
-                                <span>Studio gần cầu Rồng</span>
-                            </div>
-                        </td>
-                        <td>Nguyễn Văn G</td>
-                        <td>Nhà trọ An Bình</td>
-                        <td class="admin-data-table__date">09/05/2025 11:05</td>
-                        <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span></td>
-                        <td class="text-end">
-                            <a class="admin-action-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" aria-label="Xem chi tiết"><i class="bi bi-eye" aria-hidden="true"></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="admin-pagination-bar admin-pagination-bar--bordered">
-            <p class="admin-pagination-bar__summary mb-0">Hiển thị 1 - 7 của 124 bài</p>
-            <nav aria-label="Phân trang bài chờ duyệt">
-                <ul class="admin-pagination">
-                    <li><span class="admin-pagination__link" aria-hidden="true">&lsaquo;</span></li>
-                    <li><span class="admin-pagination__link is-active">1</span></li>
-                    <li><a class="admin-pagination__link" href="#">2</a></li>
-                    <li><a class="admin-pagination__link" href="#">3</a></li>
-                    <li><span class="admin-pagination__link">…</span></li>
-                    <li><a class="admin-pagination__link" href="#">18</a></li>
-                    <li><a class="admin-pagination__link" href="#" aria-label="Trang sau">&rsaquo;</a></li>
-                </ul>
-            </nav>
-            <select class="form-select form-select-sm admin-pagination__size" aria-label="Số dòng mỗi trang">
-                <option selected>10 / trang</option>
-                <option>20 / trang</option>
-                <option>50 / trang</option>
-            </select>
-        </div>
+        @if (Model.BaiDangChoDuyet.Count == 0)
+        {
+            <div class="p-4">Hiện chưa có bài đăng nào đang chờ duyệt.</div>
+        }
+        else
+        {
+            <div class="admin-table-wrap">
+                <table class="table admin-data-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="admin-data-table__col-stt">STT</th>
+                            <th scope="col">Tiêu đề</th>
+                            <th scope="col">Chủ trọ</th>
+                            <th scope="col">Nhà trọ</th>
+                            <th scope="col">Ngày gửi</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col" class="text-end">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BaiDangChoDuyet)
+                        {
+                            <tr>
+                                <td>@item.Stt</td>
+                                <td>
+                                    <div class="admin-table-post">
+                                        <img class="admin-table-post__thumb" src="@(item.AnhDaiDien ?? "/images/phong-mau.jpg")" alt="" />
+                                        <span>@item.TieuDe</span>
+                                    </div>
+                                </td>
+                                <td>@item.TenChuTro</td>
+                                <td>@item.TenNhaTro</td>
+                                <td class="admin-data-table__date">@(item.NgayGuiDuyet?.ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                                <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> @item.TrangThaiText</span></td>
+                                <td class="text-end">
+                                    <a asp-controller="Admin"
+                                       asp-action="ChiTietBaiChoDuyet"
+                                       asp-route-id="@item.Id"
+                                       class="admin-action-btn"
+                                       aria-label="Xem chi tiết">
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
     </article>
 </section>
