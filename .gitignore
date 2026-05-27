@@ -1,0 +1,29 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build output
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+**/bin/
+**/obj/
+
+# ASP.NET Core local settings
+appsettings.Development.json
+
+# Uploaded files during runtime
+wwwroot/uploads/
+**/wwwroot/uploads/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db

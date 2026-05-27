@@ -1,0 +1,154 @@
+@model QLNhaTro.Models.BaiDang.BaiDangCreateUpdateViewModel
+@{
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Tạo / Sửa bài đăng";
+    ViewData["ActiveLandlordMenu"] = "BaiDang";
+    var isEdit = Model.Id is > 0;
+    var coPhong = Model.DanhSachPhong.Count > 0;
+    var phongChon = Model.PhongTroId.HasValue
+        ? Model.DanhSachPhong.FirstOrDefault(p => p.Id == Model.PhongTroId.Value)
+        : null;
+}
+
+<section class="landlord-form-page landlord-post-form-page">
+    <nav class="landlord-breadcrumb mb-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb landlord-breadcrumb__list mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="ChuTro" asp-action="BaiDang">Tin đăng</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@(isEdit ? "Sửa bài đăng" : "Tạo bài đăng")</li>
+        </ol>
+    </nav>
+
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">@(isEdit ? "Sửa bài đăng" : "Tạo bài đăng")</h1>
+        <p class="landlord-page-subtitle mb-0">Nhập tiêu đề, nội dung và chọn phòng cụ thể để đăng bài.</p>
+    </header>
+
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger mb-4" role="alert">@errorMessage</div>
+    }
+
+    <form class="landlord-form post-form"
+          id="formThemSuaBaiDang"
+          asp-controller="ChuTro"
+          asp-action="ThemSuaBaiDang"
+          method="post"
+          novalidate>
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="post-form-grid">
+            <div class="post-form-grid__main">
+                <div class="post-form-card">
+                    <div class="post-form-field">
+                        <label class="landlord-form__label" asp-for="TieuDe"></label>
+                        <input class="form-control post-form-control"
+                               asp-for="TieuDe"
+                               maxlength="120"
+                               placeholder="VD: Phòng trọ mới xây – Gần trường đại học" />
+                        <span class="text-danger small" asp-validation-for="TieuDe"></span>
+                    </div>
+
+                    <div class="post-form-field">
+                        <label class="landlord-form__label" asp-for="NhaTroId">Nhà trọ</label>
+                        <select class="form-select post-form-control"
+                                asp-for="NhaTroId"
+                                asp-items="Model.DanhSachNhaTro"
+                                onchange="location.href='@Url.Action("ThemSuaBaiDang", "ChuTro")?id=@(Model.Id)&nhaTroId=' + (this.value || '');">
+                            <option value="">— Chọn nhà trọ —</option>
+                        </select>
+                        <span class="text-danger small" asp-validation-for="NhaTroId"></span>
+                    </div>
+
+                    <div class="post-form-field mb-0">
+                        <label class="landlord-form__label" asp-for="NoiDung">Nội dung chi tiết</label>
+                        <textarea class="form-control post-form-control post-form-textarea"
+                                  asp-for="NoiDung"
+                                  rows="8"
+                                  placeholder="Mô tả chi tiết phòng, tiện ích, quy định..."></textarea>
+                        <span class="text-danger small" asp-validation-for="NoiDung"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-form-grid__aside">
+                <div class="room-select-card sticky-lg-top">
+                    <h2 class="landlord-panel__title">Chọn phòng đăng bài</h2>
+                    <div class="post-room-picker @(coPhong ? "" : "post-room-picker--empty")" role="radiogroup" aria-label="Chọn phòng đăng bài">
+                        @if (coPhong)
+                        {
+                            @foreach (var phong in Model.DanhSachPhong)
+                            {
+                                <label class="room-option-card post-room-picker__item">
+                                    <input type="radio"
+                                           class="post-room-picker__radio"
+                                           asp-for="PhongTroId"
+                                           value="@phong.Id" />
+                                    <div class="post-room-picker__content">
+                                        <span class="post-room-picker__title text-safe">@phong.MaPhong — @phong.TenNhaTro</span>
+                                        <span class="post-room-picker__meta text-safe">@FormatHelper.FormatDienTich(phong.DienTich) · @FormatHelper.FormatGiaThue(phong.GiaThueThang)</span>
+                                    </div>
+                                </label>
+                            }
+                            <span class="text-danger small d-block mt-2" asp-validation-for="PhongTroId"></span>
+                        }
+                        else
+                        {
+                            <div class="post-room-picker__empty">
+                                <p class="mb-0">Chưa có phòng nào để tạo bài đăng. Vui lòng thêm phòng cụ thể trước.</p>
+                                <a class="btn btn-landlord-primary btn-sm mt-3" asp-controller="ChuTro" asp-action="ThemSuaPhongCuThe">
+                                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                    Thêm phòng
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="post-preview-card">
+                    <h2 class="landlord-panel__title">Xem trước bài đăng</h2>
+                    <div class="post-preview-card__body">
+                        @if (phongChon is not null)
+                        {
+                            <div class="post-preview-card__media">
+                                <img src="@phongChon.AnhDaiDien" alt="" />
+                            </div>
+                            <p class="post-preview-card__title text-safe">@phongChon.MaPhong — @phongChon.TenNhaTro</p>
+                            <p class="post-preview-card__price">@FormatHelper.FormatGiaThue(phongChon.GiaThueThang)/tháng</p>
+                            <p class="post-preview-card__meta text-safe mb-0">
+                                @FormatHelper.FormatDienTich(phongChon.DienTich)
+                            </p>
+                        }
+                        else
+                        {
+                            <div class="post-preview-card__media post-preview-card__media--empty" aria-hidden="true">
+                                <i class="bi bi-image"></i>
+                            </div>
+                            <p class="post-preview-card__placeholder mb-0">
+                                Chọn phòng để xem trước bài đăng.
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="landlord-form-actions post-form-actions">
+            <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="BaiDang">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                Quay lại
+            </a>
+            <button type="submit" class="btn post-btn-draft" name="submitAction" value="LuuNhap">
+                <i class="bi bi-save" aria-hidden="true"></i>
+                Lưu nháp
+            </button>
+            <button type="submit" class="btn btn-landlord-accent" name="submitAction" value="GuiChoDuyet">
+                <i class="bi bi-send" aria-hidden="true"></i>
+                Gửi chờ duyệt
+            </button>
+        </div>
+    </form>
+</section>

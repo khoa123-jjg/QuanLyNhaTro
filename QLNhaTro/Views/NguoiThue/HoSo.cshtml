@@ -1,0 +1,141 @@
+@model QLNhaTro.Models.NguoiThue.HoSo.NguoiThueHoSoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Hồ sơ cá nhân";
+    ViewData["ActiveTenantMenu"] = "HoSo";
+}
+
+<section class="tenant-profile-page">
+    <div class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb" class="tenant-breadcrumb mb-3">
+            <ol class="breadcrumb mb-0 tenant-breadcrumb__list">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index" aria-label="Trang chủ">
+                        <i class="bi bi-house-door-fill tenant-breadcrumb__home-icon" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Hồ sơ cá nhân</li>
+            </ol>
+        </nav>
+
+        <header class="tenant-page-header mb-3">
+            <h1 class="tenant-page-header__title">Hồ sơ cá nhân</h1>
+            <p class="tenant-page-header__subtitle">Cập nhật thông tin cá nhân và đổi mật khẩu.</p>
+        </header>
+
+        @if (TempData["Success"] is string successMessage)
+        {
+            <div class="alert alert-success">@successMessage</div>
+        }
+
+        @if (TempData["Error"] is string errorMessage)
+        {
+            <div class="alert alert-danger">@errorMessage</div>
+        }
+
+        <div class="tenant-profile-page-layout">
+            <main class="tenant-profile-main">
+                <article class="tenant-card tenant-profile-card tenant-profile-card--info">
+                    <h2 class="tenant-profile-card__title">Thông tin cá nhân</h2>
+                    <form class="tenant-profile-form"
+                          asp-controller="NguoiThue"
+                          asp-action="CapNhatHoSo"
+                          method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row g-3 g-md-4">
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.HoTen">Họ tên</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.HoTen" />
+                                <span class="text-danger" asp-validation-for="ThongTin.HoTen"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.Email">Email</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.Email" />
+                                <span class="text-danger" asp-validation-for="ThongTin.Email"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.SoDienThoai">Số điện thoại</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.SoDienThoai" />
+                                <span class="text-danger" asp-validation-for="ThongTin.SoDienThoai"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.NgheNghiep">Nghề nghiệp</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.NgheNghiep" />
+                                <span class="text-danger" asp-validation-for="ThongTin.NgheNghiep"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="tenant-profile-form__label" asp-for="ThongTin.NhuCauThue">Nhu cầu thuê</label>
+                                <input class="form-control tenant-profile-form__input" asp-for="ThongTin.NhuCauThue" />
+                                <span class="text-danger" asp-validation-for="ThongTin.NhuCauThue"></span>
+                            </div>
+                        </div>
+
+                        <div class="tenant-profile-actions mt-4">
+                            <button type="submit" class="btn btn-primary tenant-btn-primary">
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                Lưu cập nhật
+                            </button>
+                        </div>
+                    </form>
+                </article>
+
+                <article class="tenant-card tenant-profile-card tenant-profile-password-card">
+                    <h2 class="tenant-profile-card__title">Đổi mật khẩu</h2>
+                    <form class="tenant-profile-form"
+                          asp-controller="NguoiThue"
+                          asp-action="DoiMatKhau"
+                          method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="tenant-profile-form__label" asp-for="DoiMatKhau.MatKhauHienTai">Mật khẩu hiện tại</label>
+                            <input class="form-control tenant-profile-form__input"
+                                   asp-for="DoiMatKhau.MatKhauHienTai"
+                                   type="password"
+                                   autocomplete="current-password" />
+                            <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauHienTai"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="tenant-profile-form__label" asp-for="DoiMatKhau.MatKhauMoi">Mật khẩu mới</label>
+                            <input class="form-control tenant-profile-form__input"
+                                   asp-for="DoiMatKhau.MatKhauMoi"
+                                   type="password"/>
+                            <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauMoi"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="tenant-profile-form__label" asp-for="DoiMatKhau.XacNhanMatKhauMoi">Xác nhận mật khẩu mới</label>
+                            <input class="form-control tenant-profile-form__input"
+                                   asp-for="DoiMatKhau.XacNhanMatKhauMoi"
+                                   type="password"/>
+                            <span class="text-danger" asp-validation-for="DoiMatKhau.XacNhanMatKhauMoi"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-outline-primary tenant-btn-outline">
+                            <i class="bi bi-lock" aria-hidden="true"></i>
+                            Đổi mật khẩu
+                        </button>
+                    </form>
+                </article>
+            </main>
+
+            <aside class="tenant-profile-aside">
+                @await Html.PartialAsync("_NguoiThueSidebar")
+                @await Html.PartialAsync("_NguoiThueSupport")
+            </aside>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,131 @@
+@model QLNhaTro.Models.Admin.HoSo.AdminHoSoViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Hồ sơ admin";
+    ViewData["ActiveAdminMenu"] = "HoSo";
+}
+
+<section class="admin-page admin-profile-page">
+    <header class="admin-page-header">
+        <h1 class="admin-page-title">Hồ sơ admin</h1>
+        <p class="admin-page-subtitle mb-0">Xem thông tin cá nhân và đổi mật khẩu</p>
+    </header>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success">@successMessage</div>
+    }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <div class="admin-profile-layout">
+        <article class="admin-card admin-profile-card">
+            <div class="admin-profile-card__header">
+                <span class="admin-profile-card__header-icon" aria-hidden="true">
+                    <i class="bi bi-person-fill"></i>
+                </span>
+                <h2 class="admin-profile-card__title mb-0">Thông tin cá nhân</h2>
+            </div>
+            <div class="admin-card__body">
+                <div class="admin-profile-info-list">
+                    <div class="admin-profile-info-row">
+                        <div class="admin-profile-info-label">Họ tên</div>
+                        <div class="admin-profile-info-value">@Model.HoTen</div>
+                    </div>
+
+                    <div class="admin-profile-info-row">
+                        <div class="admin-profile-info-label">Email</div>
+                        <div class="admin-profile-info-value">@Model.Email</div>
+                    </div>
+
+                    <div class="admin-profile-info-row">
+                        <div class="admin-profile-info-label">Số điện thoại</div>
+                        <div class="admin-profile-info-value">@Model.SoDienThoai</div>
+                    </div>
+
+                    <div class="admin-profile-info-row">
+                        <div class="admin-profile-info-label">Vai trò</div>
+                        <div class="admin-profile-info-value">@Model.VaiTro</div>
+                    </div>
+
+                    <div class="admin-profile-info-row">
+                        <div class="admin-profile-info-label">Ngày tạo</div>
+                        <div class="admin-profile-info-value">@(Model.NgayTao.HasValue ? Model.NgayTao.Value.ToString("dd/MM/yyyy HH:mm") : "-")</div>
+                    </div>
+
+                    <div class="admin-profile-info-row">
+                        <div class="admin-profile-info-label">Ghi chú</div>
+                        <div class="admin-profile-info-value">@(string.IsNullOrWhiteSpace(Model.GhiChu) ? "-" : Model.GhiChu)</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="admin-card admin-profile-card">
+            <div class="admin-profile-card__header">
+                <span class="admin-profile-card__header-icon" aria-hidden="true">
+                    <i class="bi bi-lock-fill"></i>
+                </span>
+                <h2 class="admin-profile-card__title mb-0">Đổi mật khẩu</h2>
+            </div>
+            <div class="admin-card__body">
+                <form class="admin-form admin-profile-password-form" asp-controller="Admin" asp-action="DoiMatKhauAdmin" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="admin-form__label" asp-for="DoiMatKhau.MatKhauHienTai">
+                            Mật khẩu hiện tại <span class="admin-required">*</span>
+                        </label>
+                        <div class="admin-input-password">
+                            <input class="form-control" asp-for="DoiMatKhau.MatKhauHienTai" type="password" />
+                            <button type="button" class="admin-input-password__toggle" aria-label="Hiện mật khẩu hiện tại">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauHienTai"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="admin-form__label" asp-for="DoiMatKhau.MatKhauMoi">
+                            Mật khẩu mới <span class="admin-required">*</span>
+                        </label>
+                        <div class="admin-input-password">
+                            <input class="form-control" asp-for="DoiMatKhau.MatKhauMoi" type="password"/>
+                            <button type="button" class="admin-input-password__toggle" aria-label="Hiện mật khẩu mới">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauMoi"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="admin-form__label" asp-for="DoiMatKhau.XacNhanMatKhauMoi">
+                            Xác nhận mật khẩu mới <span class="admin-required">*</span>
+                        </label>
+                        <div class="admin-input-password">
+                            <input class="form-control" asp-for="DoiMatKhau.XacNhanMatKhauMoi" type="password" />
+                            <button type="button" class="admin-input-password__toggle" aria-label="Hiện xác nhận mật khẩu">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.XacNhanMatKhauMoi"></span>
+                    </div>
+
+                    <div class="admin-page-actions admin-profile-page__actions">
+                        <button type="submit" class="btn btn-admin-primary">
+                            <i class="bi bi-save" aria-hidden="true"></i>
+                            Đổi mật khẩu
+                        </button>
+                        <a asp-controller="Admin" asp-action="HoSo" class="btn btn-admin-outline">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

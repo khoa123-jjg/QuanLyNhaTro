@@ -1,0 +1,187 @@
+@{
+    ViewData["Title"] = "Chi tiết yêu cầu thuê";
+    ViewData["ActiveTenantMenu"] = "YeuCauCuaToi";
+    ViewData["ActiveNav"] = "my-requests";
+}
+
+<section class="tenant-request-detail-page">
+    <div class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb" class="tenant-breadcrumb mb-3">
+            <ol class="breadcrumb mb-0 tenant-breadcrumb__list">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index" aria-label="Trang chủ">
+                        <i class="bi bi-house-door-fill tenant-breadcrumb__home-icon" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-controller="YeuCauThue" asp-action="DanhSach">Yêu cầu của tôi</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Chi tiết yêu cầu thuê</li>
+            </ol>
+        </nav>
+
+        <header class="tenant-page-header mb-4">
+            <h1 class="tenant-page-header__title">Chi tiết yêu cầu thuê</h1>
+            <p class="tenant-page-header__subtitle">Xem trạng thái, lịch sử cập nhật và lý do từ chối nếu có.</p>
+        </header>
+
+        <div class="tenant-page-layout tenant-page-layout--request-detail">
+            <div class="tenant-page-layout__main">
+                <div class="tenant-card rent-request-detail-room mb-4">
+                    <h2 class="rent-request-detail-card__title">Thông tin phòng</h2>
+                    <div class="rent-request-detail-room__inner">
+                        <img class="rent-request-detail-room__image"
+                             src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=480&h=320&fit=crop"
+                             alt="Phòng trọ gần Đại học Bách Khoa" />
+                        <div>
+                            <h3 class="rent-request-detail-room__name">Phòng trọ gần Đại học Bách Khoa</h3>
+                            <p class="rent-request-detail-room__price">2.800.000 đ/tháng</p>
+                            <p class="rent-request-detail-room__address">
+                                <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                                123 đường Tôn Đức Thắng, Hòa Cường Nam, Hải Châu, Đà Nẵng
+                            </p>
+                            <div class="rent-request-detail-room__specs">
+                                <span><i class="bi bi-arrows-angle-expand" aria-hidden="true"></i> 30 m²</span>
+                                <span><i class="bi bi-building" aria-hidden="true"></i> Tầng 2</span>
+                                <span><i class="bi bi-door-closed" aria-hidden="true"></i> 1 PN, 1 WC</span>
+                                <span><i class="bi bi-lamp" aria-hidden="true"></i> Nội thất cơ bản</span>
+                                <span><i class="bi bi-clock" aria-hidden="true"></i> Giờ giấc tự do</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <div class="tenant-card rent-request-detail-card h-100">
+                            <h2 class="rent-request-detail-card__title">Thông tin yêu cầu</h2>
+                            <ul class="rent-request-cancel-info list-unstyled mb-0">
+                                <li class="rent-request-cancel-info__item">
+                                    <span class="rent-request-cancel-info__icon" aria-hidden="true"><i class="bi bi-upc-scan"></i></span>
+                                    <div>
+                                        <span class="rent-request-cancel-info__label">Mã yêu cầu</span>
+                                        <span class="rent-request-cancel-info__value rent-request-cancel-info__value--code">YCT-250503-00072</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-cancel-info__item">
+                                    <span class="rent-request-cancel-info__icon" aria-hidden="true"><i class="bi bi-calendar3"></i></span>
+                                    <div>
+                                        <span class="rent-request-cancel-info__label">Ngày gửi yêu cầu</span>
+                                        <span class="rent-request-cancel-info__value">03/05/2025 10:15</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-cancel-info__item">
+                                    <span class="rent-request-cancel-info__icon" aria-hidden="true"><i class="bi bi-calendar-check"></i></span>
+                                    <div>
+                                        <span class="rent-request-cancel-info__label">Ngày muốn xem phòng</span>
+                                        <span class="rent-request-cancel-info__value">05/05/2025 (Buổi chiều)</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-cancel-info__item">
+                                    <span class="rent-request-cancel-info__icon" aria-hidden="true"><i class="bi bi-chat-left-text"></i></span>
+                                    <div>
+                                        <span class="rent-request-cancel-info__label">Lời nhắn</span>
+                                        <span class="rent-request-cancel-info__value">Em là sinh viên năm 3, muốn thuê phòng từ tháng 6. Mong anh/chị sắp xếp xem phòng giúp em.</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-cancel-info__item">
+                                    <span class="rent-request-cancel-info__icon" aria-hidden="true"><i class="bi bi-person"></i></span>
+                                    <div>
+                                        <span class="rent-request-cancel-info__label">Người liên hệ</span>
+                                        <span class="rent-request-cancel-info__value">Nguyễn Văn A</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-cancel-info__item">
+                                    <span class="rent-request-cancel-info__icon" aria-hidden="true"><i class="bi bi-telephone"></i></span>
+                                    <div>
+                                        <span class="rent-request-cancel-info__label">Số điện thoại</span>
+                                        <span class="rent-request-cancel-info__value">0901 234 567</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="tenant-card rent-request-detail-card h-100">
+                            <h2 class="rent-request-detail-card__title">Trạng thái &amp; lịch sử cập nhật</h2>
+                            <ol class="rent-request-timeline list-unstyled mb-0">
+                                <li class="rent-request-timeline__item is-done">
+                                    <span class="rent-request-timeline__dot" aria-hidden="true"></span>
+                                    <div class="rent-request-timeline__content">
+                                        <p class="rent-request-timeline__title mb-0">Bạn đã gửi yêu cầu</p>
+                                        <p class="rent-request-timeline__time mb-0">03/05/2025 10:15</p>
+                                        <span class="rent-request-timeline__badge rent-request-timeline__badge--done">Hoàn thành</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-timeline__item is-done">
+                                    <span class="rent-request-timeline__dot" aria-hidden="true"></span>
+                                    <div class="rent-request-timeline__content">
+                                        <p class="rent-request-timeline__title mb-0">Chủ trọ đang xem xét</p>
+                                        <p class="rent-request-timeline__time mb-0">03/05/2025 11:02</p>
+                                        <span class="rent-request-timeline__badge rent-request-timeline__badge--done">Hoàn thành</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-timeline__item is-current">
+                                    <span class="rent-request-timeline__dot" aria-hidden="true"></span>
+                                    <div class="rent-request-timeline__content">
+                                        <p class="rent-request-timeline__title mb-0">Đã phản hồi</p>
+                                        <p class="rent-request-timeline__time mb-0">03/05/2025 14:30</p>
+                                        <span class="rent-request-timeline__badge rent-request-timeline__badge--current">Hiện tại</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-timeline__item">
+                                    <span class="rent-request-timeline__dot" aria-hidden="true"></span>
+                                    <div class="rent-request-timeline__content">
+                                        <p class="rent-request-timeline__title mb-0">Đã xem phòng</p>
+                                        <span class="rent-request-timeline__badge rent-request-timeline__badge--pending">Chưa thực hiện</span>
+                                    </div>
+                                </li>
+                                <li class="rent-request-timeline__item">
+                                    <span class="rent-request-timeline__dot" aria-hidden="true"></span>
+                                    <div class="rent-request-timeline__content">
+                                        <p class="rent-request-timeline__title mb-0">Đã thuê phòng</p>
+                                        <span class="rent-request-timeline__badge rent-request-timeline__badge--pending">Chưa thực hiện</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tenant-card rent-request-detail-feedback mb-4">
+                    <div class="rent-request-detail-feedback__header">
+                        <h2 class="rent-request-detail-feedback__title">
+                            <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+                            Phản hồi từ chủ trọ / Lý do từ chối
+                        </h2>
+                        <span class="rent-request-detail-feedback__time">Phản hồi lúc 14:30 - 03/05/2025</span>
+                    </div>
+                    <p class="rent-request-detail-feedback__subject">Không thể sắp xếp xem phòng</p>
+                    <p class="rent-request-detail-feedback__text mb-0">
+                        Chào bạn, hiện tại chủ nhà không thể sắp xếp xem phòng vào khung giờ bạn đề xuất.
+                        Bạn vui lòng chọn thời gian khác hoặc liên hệ trực tiếp để trao đổi thêm. Cảm ơn bạn.
+                    </p>
+                </div>
+
+                <div class="rent-request-detail-actions">
+                    <a class="btn-rent-request-detail-back" asp-controller="YeuCauThue" asp-action="DanhSach">
+                        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                        Quay lại
+                    </a>
+                    <a class="btn-rent-request-detail-cancel" asp-controller="YeuCauThue" asp-action="HuyYeuCau">
+                        <i class="bi bi-trash" aria-hidden="true"></i>
+                        Hủy yêu cầu
+                    </a>
+                </div>
+            </div>
+
+            <div class="tenant-aside-stack">
+                @await Html.PartialAsync("_TenantSidebar")
+                @await Html.PartialAsync("_TenantSupport")
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,90 @@
+@model QLNhaTro.Models.ChuTro.CaiDat.ChuTroCaiDatViewModel
+@{
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Cài đặt";
+    ViewData["ActiveLandlordMenu"] = "CaiDat";
+}
+
+<section class="landlord-form-page landlord-settings-page">
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">Cài đặt</h1>
+        <p class="landlord-page-subtitle mb-0">Cập nhật thông tin tài khoản và mật khẩu của bạn.</p>
+    </header>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success">@successMessage</div>
+    }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <div class="row g-3 g-xl-4">
+        <div class="col-lg-6">
+            <div class="landlord-card landlord-settings-card h-100">
+                <h2 class="landlord-panel__title">
+                    <i class="bi bi-person-badge" aria-hidden="true"></i>
+                    Thông tin tài khoản
+                </h2>
+                <form class="landlord-form" asp-action="CapNhatThongTin" asp-controller="ChuTro" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label class="landlord-form__label" asp-for="ThongTin.HoTen">Họ tên</label>
+                        <input class="form-control" asp-for="ThongTin.HoTen" />
+                        <span class="text-danger" asp-validation-for="ThongTin.HoTen"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="landlord-form__label" asp-for="ThongTin.Email">Email</label>
+                        <input class="form-control" asp-for="ThongTin.Email" />
+                        <span class="text-danger" asp-validation-for="ThongTin.Email"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="landlord-form__label" asp-for="ThongTin.SoDienThoai">Số điện thoại</label>
+                        <input class="form-control" asp-for="ThongTin.SoDienThoai" />
+                        <span class="text-danger" asp-validation-for="ThongTin.SoDienThoai"></span>
+                    </div>
+                    <button type="submit" class="btn btn-landlord-primary">
+                        <i class="bi bi-check-lg" aria-hidden="true"></i>
+                        Lưu thay đổi
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="landlord-card landlord-settings-card h-100">
+                <h2 class="landlord-panel__title">
+                    <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                    Đổi mật khẩu
+                </h2>
+                <form class="landlord-form" asp-action="DoiMatKhau" asp-controller="ChuTro" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label class="landlord-form__label" asp-for="DoiMatKhau.MatKhauHienTai">Mật khẩu hiện tại</label>
+                        <input class="form-control" asp-for="DoiMatKhau.MatKhauHienTai" type="password"  />
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauHienTai"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="landlord-form__label" asp-for="DoiMatKhau.MatKhauMoi">Mật khẩu mới</label>
+                        <input class="form-control" asp-for="DoiMatKhau.MatKhauMoi" type="password"  />
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.MatKhauMoi"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="landlord-form__label" asp-for="DoiMatKhau.XacNhanMatKhauMoi">Xác nhận mật khẩu mới</label>
+                        <input class="form-control" asp-for="DoiMatKhau.XacNhanMatKhauMoi" type="password"  />
+                        <span class="text-danger" asp-validation-for="DoiMatKhau.XacNhanMatKhauMoi"></span>
+                    </div>
+                    <button type="submit" class="btn btn-landlord-outline">
+                        <i class="bi bi-key" aria-hidden="true"></i>
+                        Đổi mật khẩu
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

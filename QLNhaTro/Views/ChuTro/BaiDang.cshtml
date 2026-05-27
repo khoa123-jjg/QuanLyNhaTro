@@ -1,0 +1,168 @@
+@model QLNhaTro.Models.BaiDang.BaiDangListPageViewModel
+@using QLNhaTro.Helpers.Constants
+@{
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Danh sách bài đăng";
+    ViewData["ActiveLandlordMenu"] = "BaiDang";
+    var tongSo = Model.DanhSachBaiDang.Count;
+
+    string TaoBadgeTrangThai(string trangThai) => trangThai switch
+    {
+        BaiDangStatus.Nhap => """<span class="landlord-badge landlord-badge--info post-status-badge">Nháp</span>""",
+        BaiDangStatus.ChoDuyet => """<span class="landlord-badge landlord-badge--warning post-status-badge">Chờ duyệt</span>""",
+        BaiDangStatus.DaDuyet => """<span class="landlord-badge landlord-badge--success post-status-badge">Đã duyệt</span>""",
+        BaiDangStatus.BiTuChoi => """<span class="landlord-badge landlord-badge--danger post-status-badge">Bị từ chối</span>""",
+        _ => $"""<span class="landlord-badge landlord-badge--secondary post-status-badge">{BaiDangStatus.GetDisplayName(trangThai)}</span>"""
+    };
+}
+
+<section class="landlord-page landlord-post-list-page">
+    <div class="post-page-header d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
+        <div class="post-page-header__intro">
+            <h1 class="landlord-page-title mb-2">Danh sách bài đăng</h1>
+            <p class="landlord-page-subtitle mb-0">Quản lý bài đăng cho thuê của bạn.</p>
+        </div>
+        <a class="btn btn-landlord-accent post-page-header__cta flex-shrink-0" asp-controller="ChuTro" asp-action="ThemSuaBaiDang">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Tạo bài đăng mới
+        </a>
+    </div>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success mb-4" role="status">@successMessage</div>
+    }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger mb-4" role="alert">@errorMessage</div>
+    }
+
+    <div class="card landlord-card post-filter-card mb-4">
+        <div class="card-body">
+            <form method="get"
+                  asp-controller="ChuTro"
+                  asp-action="BaiDang"
+                  class="post-filter-grid"
+                  id="baiDangFilterForm">
+                <div class="post-filter-grid__field post-filter-grid__field--search">
+                    <label class="landlord-form__label" for="tuKhoa">Tìm kiếm</label>
+                    <div class="landlord-input-icon">
+                        <i class="bi bi-search landlord-input-icon__icon" aria-hidden="true"></i>
+                        <input class="form-control post-filter-control"
+                               type="search"
+                               id="tuKhoa"
+                               name="tuKhoa"
+                               value="@Model.TuKhoa"
+                               placeholder="Tìm kiếm bài đăng theo tiêu đề..." />
+                    </div>
+                </div>
+                <div class="post-filter-grid__field">
+                    <label class="landlord-form__label" for="nhaTroId">Nhà trọ</label>
+                    <select class="form-select post-filter-control" id="nhaTroId" name="nhaTroId" asp-for="NhaTroId" asp-items="Model.DanhSachNhaTro">
+                        <option value="">Tất cả nhà trọ</option>
+                    </select>
+                </div>
+                <div class="post-filter-grid__field">
+                    <label class="landlord-form__label" for="trangThaiDuyet">Trạng thái duyệt</label>
+                    <select class="form-select post-filter-control" id="trangThaiDuyet" name="trangThaiDuyet" asp-for="TrangThaiDuyet" asp-items="Model.DanhSachTrangThai">
+                    </select>
+                </div>
+                <div class="post-filter-grid__field post-filter-grid__field--action">
+                    <label class="landlord-form__label post-filter-grid__label-hidden" aria-hidden="true">&nbsp;</label>
+                    <button type="submit" class="btn btn-landlord-primary post-filter-submit w-100">
+                        <i class="bi bi-funnel" aria-hidden="true"></i>
+                        Lọc
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card landlord-card post-table-card">
+        <div class="landlord-table-wrap">
+            <table class="table landlord-data-table post-data-table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" class="landlord-data-table__col-stt post-col-stt">STT</th>
+                        <th scope="col" class="post-col-post">Bài đăng</th>
+                        <th scope="col" class="post-col-hostel">Nhà trọ</th>
+                        <th scope="col" class="post-col-status">Trạng thái duyệt</th>
+                        <th scope="col" class="post-col-date">Ngày tạo</th>
+                        <th scope="col" class="post-col-actions">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (tongSo == 0)
+                    {
+                        <tr>
+                            <td colspan="6" class="p-0 border-0">
+                                <div class="landlord-empty-state p-4 p-md-5 text-center">
+                                    <p class="landlord-empty-state__text mb-3">
+                                        Chưa có bài đăng nào. Hãy tạo bài đăng đầu tiên cho phòng trọ của bạn.
+                                    </p>
+                                    <a class="btn btn-landlord-accent btn-sm" asp-controller="ChuTro" asp-action="ThemSuaBaiDang">
+                                        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                        Tạo bài đăng mới
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        var stt = 0;
+                        foreach (var item in Model.DanhSachBaiDang)
+                        {
+                            stt++;
+                            var coTheSua = item.TrangThaiDuyet == BaiDangStatus.Nhap;
+                            var dongPhu = $"{FormatHelper.FormatDienTich(item.DienTich)} · {item.MaPhong}";
+                            if (item.SoNguoiToiDa is > 0)
+                            {
+                                dongPhu += $" · {FormatHelper.FormatSoNguoi(item.SoNguoiToiDa)}";
+                            }
+                            <tr>
+                                <td class="post-col-stt">@stt</td>
+                                <td class="post-col-post">
+                                    <div class="landlord-post-cell post-post-cell">
+                                        <img class="post-thumbnail"
+                                             src="@(item.AnhDaiDien ?? "/images/phong-mau.jpg")"
+                                             alt="" />
+                                        <div class="post-post-cell__body min-width-0">
+                                            <div class="landlord-post-cell__title text-safe">@item.TieuDe</div>
+                                            <div class="landlord-post-cell__meta text-safe">@dongPhu</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="post-col-hostel">
+                                    <div class="landlord-post-hostel__name text-safe">@item.TenNhaTro</div>
+                                </td>
+                                <td class="post-col-status">
+                                    @Html.Raw(TaoBadgeTrangThai(item.TrangThaiDuyet))
+                                </td>
+                                <td class="post-col-date">@FormatHelper.FormatNgay(item.NgayTao)</td>
+                                <td class="post-col-actions">
+                                    <div class="post-action-buttons">
+                                        @if (coTheSua)
+                                        {
+                                            <a class="post-icon-btn post-icon-btn--edit"
+                                               asp-action="ThemSuaBaiDang"
+                                               asp-route-id="@item.Id"
+                                               title="Sửa bài đăng"
+                                               aria-label="Sửa bài đăng">
+                                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="post-action-empty" aria-hidden="true">—</span>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
