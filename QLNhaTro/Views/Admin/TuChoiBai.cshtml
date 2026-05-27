@@ -1,3 +1,4 @@
+@model QLNhaTro.Models.Admin.BaiDuyet.AdminTuChoiBaiViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Từ chối bài";
@@ -6,7 +7,7 @@
 
 <section class="admin-page admin-form-page admin-post-reject">
     <header class="admin-page-header admin-page-header--with-back">
-        <a class="admin-back-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" aria-label="Quay lại">
+        <a class="admin-back-btn" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" asp-route-id="@Model.Id" aria-label="Quay lại">
             <i class="bi bi-arrow-left" aria-hidden="true"></i>
         </a>
         <div>
@@ -25,28 +26,28 @@
                     <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-card-text"></i></span>
                     <div>
                         <p class="admin-info-row__label mb-0">Tiêu đề</p>
-                        <p class="admin-info-row__value mb-0">Phòng trọ mới đường Lê Duẩn</p>
+                        <p class="admin-info-row__value mb-0">@Model.TieuDe</p>
                     </div>
                 </div>
                 <div class="admin-info-row">
                     <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-person"></i></span>
                     <div>
                         <p class="admin-info-row__label mb-0">Chủ trọ</p>
-                        <p class="admin-info-row__value mb-0">Nguyễn Văn A</p>
+                        <p class="admin-info-row__value mb-0">@Model.TenChuTro</p>
                     </div>
                 </div>
                 <div class="admin-info-row">
                     <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-building"></i></span>
                     <div>
                         <p class="admin-info-row__label mb-0">Nhà trọ</p>
-                        <p class="admin-info-row__value mb-0">Nhà trọ An Bình</p>
+                        <p class="admin-info-row__value mb-0">@Model.TenNhaTro</p>
                     </div>
                 </div>
                 <div class="admin-info-row">
                     <span class="admin-info-row__icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span>
                     <div>
                         <p class="admin-info-row__label mb-0">Ngày gửi</p>
-                        <p class="admin-info-row__value mb-0">12/05/2025 10:20</p>
+                        <p class="admin-info-row__value mb-0">@(Model.NgayGuiDuyet?.ToString("dd/MM/yyyy HH:mm") ?? "-")</p>
                     </div>
                 </div>
                 <div class="admin-info-row">
@@ -54,24 +55,27 @@
                     <div>
                         <p class="admin-info-row__label mb-0">Trạng thái hiện tại</p>
                         <p class="admin-info-row__value mb-0">
-                            <span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> Chờ duyệt</span>
+                            <span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> @Model.TrangThaiText</span>
                         </p>
                     </div>
                 </div>
             </div>
 
-            <form class="admin-form admin-post-review-form" action="#" method="post" novalidate>
+            <form asp-controller="Admin" asp-action="TuChoiBai" method="post" class="admin-form admin-post-review-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+
                 <div class="mb-4">
-                    <label class="admin-form__label" for="lyDoTuChoi">
+                    <label class="admin-form__label" asp-for="LyDoTuChoi">
                         Lý do từ chối <span class="admin-required">*</span>
                     </label>
-                    <textarea class="form-control" id="lyDoTuChoi" rows="5" placeholder="Nhập lý do từ chối bài đăng..."></textarea>
-                    <p class="admin-char-counter mb-0">0/255</p>
+                    <textarea class="form-control" asp-for="LyDoTuChoi" rows="5" placeholder="Nhập lý do từ chối bài đăng..."></textarea>
+                    <span class="text-danger" asp-validation-for="LyDoTuChoi"></span>
                 </div>
 
                 <div class="admin-page-actions admin-post-review-form__actions">
-                    <a class="btn btn-admin-outline" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet">Hủy</a>
-                    <button type="button" class="btn btn-admin-danger">
+                    <a class="btn btn-admin-outline" asp-controller="Admin" asp-action="ChiTietBaiChoDuyet" asp-route-id="@Model.Id">Hủy</a>
+                    <button type="submit" class="btn btn-admin-danger">
                         <i class="bi bi-x-lg" aria-hidden="true"></i>
                         Xác nhận từ chối
                     </button>
@@ -80,3 +84,7 @@
         </div>
     </article>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

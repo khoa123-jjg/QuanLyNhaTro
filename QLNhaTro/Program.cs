@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using QLNhaTro.Data;
 using QLNhaTro.Repositories.Admin;
@@ -32,6 +32,7 @@ namespace QLNhaTro
             builder.Services.AddScoped<IBaiDangRepository, BaiDangRepository>();
             builder.Services.AddScoped<IChuTroTaiKhoanRepository, ChuTroTaiKhoanRepository>();
             builder.Services.AddScoped<IAdminTaiKhoanRepository, AdminTaiKhoanRepository>();
+            builder.Services.AddScoped<IAdminBaiDuyetRepository, AdminBaiDuyetRepository>();
             builder.Services.AddScoped<ITienNghiRepository, TienNghiRepository>();
             builder.Services.AddScoped<IAdminDiaChiRepository, AdminDiaChiRepository>();
             builder.Services.AddScoped<INguoiThueHoSoRepository, NguoiThueHoSoRepository>();

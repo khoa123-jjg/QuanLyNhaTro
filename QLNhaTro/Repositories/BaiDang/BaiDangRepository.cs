@@ -17,26 +17,28 @@ public class BaiDangRepository : IBaiDangRepository
     }
 
     public async Task<BaiDangListPageViewModel> GetDanhSachBaiDangAsync(
+        //Trả về danh sách nhà trọ nếu có điều kiện tìm kiếm
         string userId,
         string? tuKhoa,
         int? nhaTroId,
         string? trangThaiDuyet)
     {
+        //Gán điều kiện tìm kiếm
         var page = new BaiDangListPageViewModel
         {
             TuKhoa = tuKhoa,
             NhaTroId = nhaTroId,
             TrangThaiDuyet = trangThaiDuyet
         };
-
+        // Ep kiểu id người dùng
         if (!TryParseNguoiDungId(userId, out var nguoiDungId))
         {
             return page;
         }
-
+        // Lấy danh sách để dổ và dropdown (nhà trọ, trạng thái)
         page.DanhSachNhaTro = await LayDanhSachNhaTroAsync(nguoiDungId);
         page.DanhSachTrangThai = TaoDanhSachTrangThai();
-
+        // Truy vấn theo điều kiện nếu có
         var query = _context.BaiDangs
             .AsNoTracking()
             .Where(b => b.PhongTro.NhaTro.ChuNhaTro.NguoiDungId == nguoiDungId);
@@ -60,7 +62,7 @@ public class BaiDangRepository : IBaiDangRepository
             var trangThai = trangThaiDuyet.Trim();
             query = query.Where(b => b.TrangThaiDuyet == trangThai);
         }
-
+        // Tạo 1 danh sách các bài đăng từ điều kiện phía trên
         page.DanhSachBaiDang = await query
             .OrderByDescending(b => b.NgayTao)
             .Select(b => new BaiDangListItemViewModel
@@ -87,7 +89,7 @@ public class BaiDangRepository : IBaiDangRepository
 
         return page;
     }
-
+    // Các dữ liệu cần cho giao diện tạo bài đăng
     public async Task<BaiDangCreateUpdateViewModel> GetCreateModelAsync(string userId, int? nhaTroId = null)
     {
         if (!TryParseNguoiDungId(userId, out var nguoiDungId))
@@ -102,7 +104,7 @@ public class BaiDangRepository : IBaiDangRepository
             DanhSachPhong = await LayDanhSachPhongAsync(nguoiDungId, nhaTroId)
         };
     }
-
+    // Các dữ liệu cần  cho giao diện update, đã có id phòng trọ
     public async Task<BaiDangCreateUpdateViewModel?> GetUpdateModelAsync(string userId, int baiDangId)
     {
         if (!TryParseNguoiDungId(userId, out var nguoiDungId))
@@ -142,8 +144,8 @@ public class BaiDangRepository : IBaiDangRepository
             DanhSachNhaTro = await LayDanhSachNhaTroAsync(nguoiDungId),
             DanhSachPhong = await LayDanhSachPhongAsync(nguoiDungId, row.NhaTroId)
         };
+        // Cả 2 tạo mới và update đều trả về modle BaiDangCreateUpdateViewModel
     }
-
     public async Task<PhongDangBaiViewModel?> GetThongTinPhongAsync(string userId, int phongTroId)
     {
         if (!TryParseNguoiDungId(userId, out var nguoiDungId) || phongTroId <= 0)
@@ -171,7 +173,7 @@ public class BaiDangRepository : IBaiDangRepository
         {
             return null;
         }
-
+        // tạo đường dẫn ảnh đưa vè thư mục gốc
         row.AnhDaiDien = TaoDuongDanAnh(row.AnhDaiDien);
         return row;
     }
@@ -184,7 +186,7 @@ public class BaiDangRepository : IBaiDangRepository
 
     public Task<int?> LuuNhapVaTraVeIdAsync(string userId, BaiDangCreateUpdateViewModel model) =>
         LuuNhapNoiDungAsync(userId, model);
-
+    // lấy dữ liệu trả về giao diện cuối cùng của đăng bài
     public async Task<GuiBaiChoDuyetViewModel?> GetGuiBaiChoDuyetAsync(string userId, int baiDangId)
     {
         if (!TryParseNguoiDungId(userId, out var nguoiDungId))
@@ -252,7 +254,7 @@ public class BaiDangRepository : IBaiDangRepository
             TienNghi = row.TienNghi
         };
     }
-
+    // Xác nhận gửi duyệt, chuyển trạng thái về chờ duyệt, và lưu
     public async Task<bool> XacNhanGuiChoDuyetAsync(string userId, int baiDangId)
     {
         if (!TryParseNguoiDungId(userId, out var nguoiDungId))
@@ -276,7 +278,7 @@ public class BaiDangRepository : IBaiDangRepository
         await _context.SaveChangesAsync();
         return true;
     }
-
+    // Chưa gửi duyệt, lưu bài đươi trang thái nháp
     private async Task<int?> LuuNhapNoiDungAsync(string userId, BaiDangCreateUpdateViewModel model)
     {
         if (!TryParseNguoiDungId(userId, out var nguoiDungId))
@@ -301,7 +303,7 @@ public class BaiDangRepository : IBaiDangRepository
 
         var tieuDe = model.TieuDe.Trim();
         var noiDung = model.NoiDung.Trim();
-
+        // Nếu có id tức là người dùng đã lưu và đang cập nhập nến phải thực hiện truy vấn
         if (model.Id is > 0)
         {
             var baiDang = await _context.BaiDangs
@@ -323,7 +325,7 @@ public class BaiDangRepository : IBaiDangRepository
             await _context.SaveChangesAsync();
             return baiDang.Id;
         }
-
+        // nếu chưa lưu đi thẳng đến tạo mới
         var moi = new BaiDangEntity
         {
             PhongTroId = model.PhongTroId.Value,
@@ -437,6 +439,7 @@ public class BaiDangRepository : IBaiDangRepository
         }
 
         var path = duongDanAnh.Trim();
+        // Kiểm tra có dấu / ở đầu không hay là đường dẫn online
         return path.StartsWith('/') || path.StartsWith("http", StringComparison.OrdinalIgnoreCase)
             ? path
             : "/" + path.TrimStart('/');
