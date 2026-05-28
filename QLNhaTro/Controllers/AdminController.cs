@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QLNhaTro.Models.Admin.BaiDuyet;
+using QLNhaTro.Models.Admin.Dashboard;
 using QLNhaTro.Models.Admin.DiaChi;
 using QLNhaTro.Models.Admin.HoSo;
 using QLNhaTro.Models.Admin.NguoiDung;
@@ -22,25 +23,32 @@ public class AdminController : Controller
     private readonly IAdminTaiKhoanRepository _adminTaiKhoanRepository;
     private readonly IAdminNguoiDungRepository _adminNguoiDungRepository;
     private readonly IAdminBaiDuyetRepository _adminBaiDuyetRepository;
+    private readonly IAdminDashboardRepository _adminDashboardRepository;
 
     public AdminController(
         ITienNghiRepository tienNghiRepository,
         IAdminDiaChiRepository adminDiaChiRepository,
         IAdminTaiKhoanRepository adminTaiKhoanRepository,
         IAdminNguoiDungRepository adminNguoiDungRepository,
-        IAdminBaiDuyetRepository adminBaiDuyetRepository)
+        IAdminBaiDuyetRepository adminBaiDuyetRepository,
+        IAdminDashboardRepository adminDashboardRepository)
     {
         _tienNghiRepository = tienNghiRepository;
         _adminDiaChiRepository = adminDiaChiRepository;
         _adminTaiKhoanRepository = adminTaiKhoanRepository;
         _adminNguoiDungRepository = adminNguoiDungRepository;
         _adminBaiDuyetRepository = adminBaiDuyetRepository;
+        _adminDashboardRepository = adminDashboardRepository;
     }
 
     [HttpGet]
-    public IActionResult Dashboard()
+    public async Task<IActionResult> Dashboard()
     {
-        return View();
+        ViewData["Title"] = "Dashboard Admin";
+        ViewData["ActiveAdminMenu"] = "Dashboard";
+
+        var model = await _adminDashboardRepository.GetDashboardAsync();
+        return View(model);
     }
 
     [HttpGet]
