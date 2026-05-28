@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using QLNhaTro.Models.Admin.BaiDuyet;
 using QLNhaTro.Models.Admin.DiaChi;
 using QLNhaTro.Models.Admin.HoSo;
+using QLNhaTro.Models.Admin.NguoiDung;
 using QLNhaTro.Models.Admin.TienNghi;
 using QLNhaTro.Repositories.Admin;
 using QLNhaTro.Repositories.DiaChi;
@@ -19,17 +20,20 @@ public class AdminController : Controller
     private readonly ITienNghiRepository _tienNghiRepository;
     private readonly IAdminDiaChiRepository _adminDiaChiRepository;
     private readonly IAdminTaiKhoanRepository _adminTaiKhoanRepository;
+    private readonly IAdminNguoiDungRepository _adminNguoiDungRepository;
     private readonly IAdminBaiDuyetRepository _adminBaiDuyetRepository;
 
     public AdminController(
         ITienNghiRepository tienNghiRepository,
         IAdminDiaChiRepository adminDiaChiRepository,
         IAdminTaiKhoanRepository adminTaiKhoanRepository,
+        IAdminNguoiDungRepository adminNguoiDungRepository,
         IAdminBaiDuyetRepository adminBaiDuyetRepository)
     {
         _tienNghiRepository = tienNghiRepository;
         _adminDiaChiRepository = adminDiaChiRepository;
         _adminTaiKhoanRepository = adminTaiKhoanRepository;
+        _adminNguoiDungRepository = adminNguoiDungRepository;
         _adminBaiDuyetRepository = adminBaiDuyetRepository;
     }
 
@@ -40,21 +44,59 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    public IActionResult NguoiDung()
+    public async Task<IActionResult> NguoiDung(string? tuKhoa, string? vaiTro, string? trangThai)
     {
-        return View();
+        ViewData["Title"] = "Quản lý người dùng";
+        ViewData["ActiveAdminMenu"] = "NguoiDung";
+
+        var model = await _adminNguoiDungRepository.GetDanhSachNguoiDungAsync(tuKhoa, vaiTro, trangThai);
+        return View(model);
     }
 
     [HttpGet]
-    public IActionResult ChiTietNguoiDung()
+    public async Task<IActionResult> ChiTietNguoiDung(int id)
     {
-        return View();
+        ViewData["Title"] = "Chi tiết người dùng";
+        ViewData["ActiveAdminMenu"] = "NguoiDung";
+
+        var model = await _adminNguoiDungRepository.GetChiTietNguoiDungAsync(id);
+        if (model is null)
+        {
+            TempData["Error"] = "Không tìm thấy người dùng.";
+            return RedirectToAction(nameof(NguoiDung));
+        }
+
+        return View(model);
     }
 
-    [HttpGet]
-    public IActionResult KhoaMoKhoaTaiKhoan()
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> KhoaMoKhoaNguoiDung(int id)
     {
-        return View();
+        var adminUserIdText = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(adminUserIdText, out var adminId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var result = await _adminNguoiDungRepository.KhoaMoKhoaNguoiDungAsync(id, adminId);
+        TempData[result.Success ? "Success" : "Error"] = result.Message;
+        return RedirectToAction(nameof(NguoiDung));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> XoaNguoiDung(int id)
+    {
+        var adminUserIdText = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(adminUserIdText, out var adminId))
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var result = await _adminNguoiDungRepository.XoaNguoiDungAsync(id, adminId);
+        TempData[result.Success ? "Success" : "Error"] = result.Message;
+        return RedirectToAction(nameof(NguoiDung));
     }
 
     [HttpGet]
