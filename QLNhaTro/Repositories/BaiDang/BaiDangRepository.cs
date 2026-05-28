@@ -62,30 +62,72 @@ public class BaiDangRepository : IBaiDangRepository
             var trangThai = trangThaiDuyet.Trim();
             query = query.Where(b => b.TrangThaiDuyet == trangThai);
         }
-        // Tạo 1 danh sách các bài đăng từ điều kiện phía trên
-        page.DanhSachBaiDang = await query
+        var rows = await query
             .OrderByDescending(b => b.NgayTao)
-            .Select(b => new BaiDangListItemViewModel
+            .Select(b => new
             {
-                Id = b.Id,
-                TieuDe = b.TieuDe,
+                b.Id,
+                b.TieuDe,
+                b.PhongTroId,
                 TenNhaTro = b.PhongTro.NhaTro.TenNhaTro,
                 MaPhong = b.PhongTro.MaPhong,
-                AnhDaiDien = b.PhongTro.HinhAnh != null
-                    ? b.PhongTro.HinhAnh.DuongDanAnh
-                    : null,
                 GiaThueThang = b.PhongTro.GiaThueThang,
                 DienTich = b.PhongTro.DienTich,
                 SoNguoiToiDa = b.PhongTro.SoNguoiToiDa,
-                TrangThaiDuyet = b.TrangThaiDuyet,
-                NgayTao = b.NgayTao
+                b.TrangThaiDuyet,
+                b.NgayTao
             })
             .ToListAsync();
 
-        foreach (var item in page.DanhSachBaiDang)
+        if (rows.Count == 0)
         {
-            item.AnhDaiDien = TaoDuongDanAnh(item.AnhDaiDien);
+            return page;
         }
+
+        var phongTroIds = rows
+            .Select(x => x.PhongTroId)
+            .Distinct()
+            .ToList();
+
+        var anhTheoPhong = await _context.HinhAnhs
+            .AsNoTracking()
+            .Where(h => phongTroIds.Contains(h.PhongTroId))
+            .OrderByDescending(h => h.LaAnhDaiDien)
+            .ThenBy(h => h.ThuTuHienThi)
+            .Select(h => new
+            {
+                h.PhongTroId,
+                h.DuongDanAnh
+            })
+            .ToListAsync();
+
+        var anhDaiDienTheoPhong = anhTheoPhong
+            .GroupBy(h => h.PhongTroId)
+            .ToDictionary(
+                g => g.Key,
+                g => g.First().DuongDanAnh
+            );
+
+        page.DanhSachBaiDang = rows
+            .Select(row =>
+            {
+                anhDaiDienTheoPhong.TryGetValue(row.PhongTroId, out var duongDanAnh);
+
+                return new BaiDangListItemViewModel
+                {
+                    Id = row.Id,
+                    TieuDe = row.TieuDe,
+                    TenNhaTro = row.TenNhaTro,
+                    MaPhong = row.MaPhong,
+                    AnhDaiDien = TaoDuongDanAnh(duongDanAnh),
+                    GiaThueThang = row.GiaThueThang,
+                    DienTich = row.DienTich,
+                    SoNguoiToiDa = row.SoNguoiToiDa,
+                    TrangThaiDuyet = row.TrangThaiDuyet,
+                    NgayTao = row.NgayTao
+                };
+            })
+            .ToList();
 
         return page;
     }
@@ -165,7 +207,12 @@ public class BaiDangRepository : IBaiDangRepository
                 GiaThueThang = p.GiaThueThang,
                 DienTich = p.DienTich,
                 SoNguoiToiDa = p.SoNguoiToiDa,
-                AnhDaiDien = p.HinhAnh != null ? p.HinhAnh.DuongDanAnh : null
+                AnhDaiDien = _context.HinhAnhs
+                    .Where(h => h.PhongTroId == p.Id)
+                    .OrderByDescending(h => h.LaAnhDaiDien)
+                    .ThenBy(h => h.ThuTuHienThi)
+                    .Select(h => h.DuongDanAnh)
+                    .FirstOrDefault()
             })
             .FirstOrDefaultAsync();
 
@@ -369,7 +416,12 @@ public class BaiDangRepository : IBaiDangRepository
                 GiaThueThang = p.GiaThueThang,
                 DienTich = p.DienTich,
                 SoNguoiToiDa = p.SoNguoiToiDa,
-                AnhDaiDien = p.HinhAnh != null ? p.HinhAnh.DuongDanAnh : null
+                AnhDaiDien = _context.HinhAnhs
+                    .Where(h => h.PhongTroId == p.Id)
+                    .OrderByDescending(h => h.LaAnhDaiDien)
+                    .ThenBy(h => h.ThuTuHienThi)
+                    .Select(h => h.DuongDanAnh)
+                    .FirstOrDefault()
             })
             .ToListAsync();
 
