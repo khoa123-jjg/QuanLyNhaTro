@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using QLNhaTro.Repositories.PhongTro;
 
 namespace QLNhaTro.Controllers;
@@ -31,8 +31,10 @@ public class PhongTroController : Controller
         return View(model);
     }
 
-    public IActionResult BanDo()
+    [HttpGet]
+    public async Task<IActionResult> BanDo(int? id)
     {
-        return View();
+        var model = await _phongTroRepository.GetBanDoPhongAsync(id);
+        return View(model);
     }
 }
