@@ -18,4 +18,6 @@ public interface IPhongTroRepository
     /// Lấy chi tiết phòng từ tin đăng đã duyệt.
     /// </summary>
     Task<PhongTroDetailViewModel?> GetChiTietPhongAsync(int id);
+
+    Task<PhongTroMapPageViewModel> GetBanDoPhongAsync(int? phongTroId = null);
 }

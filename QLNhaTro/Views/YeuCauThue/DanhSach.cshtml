@@ -1,3 +1,4 @@
+@model QLNhaTro.Models.YeuCauThue.YeuCauThueListPageViewModel
 @{
     ViewData["Title"] = "Yêu cầu thuê của tôi";
     ViewData["ActiveTenantMenu"] = "YeuCauCuaToi";
@@ -6,226 +7,51 @@
 
 <section class="tenant-request-list-page">
     <div class="container py-4 py-lg-5">
-        <nav aria-label="breadcrumb" class="tenant-breadcrumb mb-3">
-            <ol class="breadcrumb mb-0 tenant-breadcrumb__list">
-                <li class="breadcrumb-item">
-                    <a asp-controller="Home" asp-action="Index" aria-label="Trang chủ">
-                        <i class="bi bi-house-door-fill tenant-breadcrumb__home-icon" aria-hidden="true"></i>
-                    </a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Yêu cầu của tôi</li>
-            </ol>
-        </nav>
-
         <header class="tenant-page-header mb-4">
             <h1 class="tenant-page-header__title">Danh sách yêu cầu thuê của tôi</h1>
             <p class="tenant-page-header__subtitle">Xem các yêu cầu đã gửi và trạng thái xử lý.</p>
         </header>
 
-        <div class="tenant-page-layout tenant-page-layout--request-list">
-            <div class="tenant-page-layout__main">
-                <div class="tenant-card rent-request-filter-card mb-4">
-                    <div class="row g-3 align-items-end">
-                        <div class="col-lg-8">
-                            <label class="rent-request-filter__label visually-hidden" for="timKiem">Tìm kiếm</label>
-                            <div class="rent-request-filter__search">
-                                <i class="bi bi-search rent-request-filter__search-icon" aria-hidden="true"></i>
-                                <input class="form-control rent-request-filter__input"
-                                       id="timKiem"
-                                       type="search"
-                                       placeholder="Tìm theo mã yêu cầu, tên phòng, địa chỉ..." />
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="rent-request-filter__label" for="trangThai">Trạng thái</label>
-                            <select class="form-select rent-request-filter__select" id="trangThai">
-                                <option selected>Tất cả trạng thái</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tenant-card rent-request-table-card">
-                    <div class="table-responsive rent-request-table-wrap">
-                        <table class="table rent-request-table mb-0">
-                            <thead>
+        <div class="tenant-card rent-request-table-card">
+            <div class="table-responsive rent-request-table-wrap">
+                <table class="table rent-request-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Thông tin phòng</th>
+                            <th scope="col">Ngày gửi</th>
+                            <th scope="col">Ngày muốn xem phòng</th>
+                            <th scope="col">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.YeuCaus.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-4">Bạn chưa gửi yêu cầu thuê nào.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model.YeuCaus)
+                            {
                                 <tr>
-                                    <th scope="col">Mã yêu cầu</th>
-                                    <th scope="col">Thông tin phòng</th>
-                                    <th scope="col">Ngày gửi</th>
-                                    <th scope="col">Ngày muốn xem phòng</th>
-                                    <th scope="col">Trạng thái</th>
-                                    <th scope="col" class="text-end">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="rent-request-table__code">YC25050123</td>
                                     <td>
                                         <div class="rent-request-room-cell">
-                                            <img class="rent-request-room-cell__thumb"
-                                                 src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=120&h=90&fit=crop"
-                                                 alt="" />
+                                            <img class="rent-request-room-cell__thumb" src="@(item.AnhDaiDien ?? "/images/phong-mau.jpg")" alt="@item.TieuDePhong" />
                                             <div>
-                                                <p class="rent-request-room-cell__name mb-0">Phòng trọ cao cấp gần biển</p>
-                                                <p class="rent-request-room-cell__address mb-0">An Hải Bắc, Sơn Trà</p>
+                                                <p class="rent-request-room-cell__name mb-0">@item.TieuDePhong</p>
+                                                <p class="rent-request-room-cell__address mb-0">@item.TenNhaTro - @item.DiaChi</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="rent-request-table__date">02/05/2025<br /><span class="rent-request-table__time">10:30</span></td>
-                                    <td class="rent-request-table__date">05/05/2025<br /><span class="rent-request-table__time">09:00</span></td>
-                                    <td>
-                                        <span class="rent-request-status rent-request-status--moi">
-                                            <span class="rent-request-status__dot" aria-hidden="true"></span>
-                                            Mới
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="rent-request-table__actions">
-                                            <a class="btn-rent-request-action btn-rent-request-action--view" asp-controller="YeuCauThue" asp-action="ChiTiet">Xem chi tiết</a>
-                                            <a class="btn-rent-request-action btn-rent-request-action--cancel" asp-controller="YeuCauThue" asp-action="HuyYeuCau">Hủy yêu cầu</a>
-                                        </div>
-                                    </td>
+                                    <td class="rent-request-table__date">@(item.NgayGui?.ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                                    <td class="rent-request-table__date">@(item.NgayMuonXemPhong?.ToString("dd/MM/yyyy") ?? "-")</td>
+                                    <td><span class="rent-request-status rent-request-status--processing"><span class="rent-request-status__dot" aria-hidden="true"></span>@item.TrangThaiText</span></td>
                                 </tr>
-                                <tr>
-                                    <td class="rent-request-table__code">YC25050098</td>
-                                    <td>
-                                        <div class="rent-request-room-cell">
-                                            <img class="rent-request-room-cell__thumb"
-                                                 src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=120&h=90&fit=crop"
-                                                 alt="" />
-                                            <div>
-                                                <p class="rent-request-room-cell__name mb-0">Phòng full nội thất gần ĐH Duy Tân</p>
-                                                <p class="rent-request-room-cell__address mb-0">Hòa Khánh Nam, Liên Chiểu</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="rent-request-table__date">30/04/2025<br /><span class="rent-request-table__time">14:15</span></td>
-                                    <td class="rent-request-table__date">02/05/2025<br /><span class="rent-request-table__time">10:00</span></td>
-                                    <td>
-                                        <span class="rent-request-status rent-request-status--processing">
-                                            <span class="rent-request-status__dot" aria-hidden="true"></span>
-                                            Đang xử lý
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="rent-request-table__actions">
-                                            <a class="btn-rent-request-action btn-rent-request-action--view" asp-controller="YeuCauThue" asp-action="ChiTiet">Xem chi tiết</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="rent-request-table__code">YC25050075</td>
-                                    <td>
-                                        <div class="rent-request-room-cell">
-                                            <img class="rent-request-room-cell__thumb"
-                                                 src="https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=120&h=90&fit=crop"
-                                                 alt="" />
-                                            <div>
-                                                <p class="rent-request-room-cell__name mb-0">Phòng ban công thoáng mát</p>
-                                                <p class="rent-request-room-cell__address mb-0">Chính Gián, Thanh Khê</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="rent-request-table__date">28/04/2025<br /><span class="rent-request-table__time">09:20</span></td>
-                                    <td class="rent-request-table__date">29/04/2025<br /><span class="rent-request-table__time">15:00</span></td>
-                                    <td>
-                                        <span class="rent-request-status rent-request-status--approved">
-                                            <span class="rent-request-status__dot" aria-hidden="true"></span>
-                                            Đã đồng ý
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="rent-request-table__actions">
-                                            <a class="btn-rent-request-action btn-rent-request-action--view" asp-controller="YeuCauThue" asp-action="ChiTiet">Xem chi tiết</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="rent-request-table__code">YC25050062</td>
-                                    <td>
-                                        <div class="rent-request-room-cell">
-                                            <img class="rent-request-room-cell__thumb"
-                                                 src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=120&h=90&fit=crop"
-                                                 alt="" />
-                                            <div>
-                                                <p class="rent-request-room-cell__name mb-0">Phòng mới xây, giờ giấc tự do</p>
-                                                <p class="rent-request-room-cell__address mb-0">Khuê Mỹ, Ngũ Hành Sơn</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="rent-request-table__date">25/04/2025<br /><span class="rent-request-table__time">16:45</span></td>
-                                    <td class="rent-request-table__date">26/04/2025<br /><span class="rent-request-table__time">09:30</span></td>
-                                    <td>
-                                        <span class="rent-request-status rent-request-status--rejected">
-                                            <span class="rent-request-status__dot" aria-hidden="true"></span>
-                                            Đã từ chối
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="rent-request-table__actions">
-                                            <a class="btn-rent-request-action btn-rent-request-action--view" asp-controller="YeuCauThue" asp-action="ChiTiet">Xem chi tiết</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="rent-request-table__code">YC25050041</td>
-                                    <td>
-                                        <div class="rent-request-room-cell">
-                                            <img class="rent-request-room-cell__thumb"
-                                                 src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=120&h=90&fit=crop"
-                                                 alt="" />
-                                            <div>
-                                                <p class="rent-request-room-cell__name mb-0">Phòng gác lửng tiện nghi</p>
-                                                <p class="rent-request-room-cell__address mb-0">Hòa Minh, Liên Chiểu</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="rent-request-table__date">22/04/2025<br /><span class="rent-request-table__time">11:05</span></td>
-                                    <td class="rent-request-table__date">23/04/2025<br /><span class="rent-request-table__time">10:30</span></td>
-                                    <td>
-                                        <span class="rent-request-status rent-request-status--cancelled">
-                                            <span class="rent-request-status__dot" aria-hidden="true"></span>
-                                            Đã hủy
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="rent-request-table__actions">
-                                            <a class="btn-rent-request-action btn-rent-request-action--view" asp-controller="YeuCauThue" asp-action="ChiTiet">Xem chi tiết</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="rent-request-table-footer">
-                        <p class="rent-request-table-footer__info mb-0">Hiển thị 1 - 5 trong tổng số 12 yêu cầu</p>
-                        <nav class="phong-pagination rent-request-pagination mb-0" aria-label="Phân trang yêu cầu thuê">
-                            <ul class="pagination mb-0">
-                                <li class="page-item disabled">
-                                    <span class="page-link phong-pagination__arrow" aria-hidden="true">&lsaquo;</span>
-                                </li>
-                                <li class="page-item active" aria-current="page">
-                                    <span class="page-link">1</span>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link phong-pagination__arrow" href="#" aria-label="Trang sau">&rsaquo;</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tenant-aside-stack">
-                @await Html.PartialAsync("_NguoiThueSidebar")
-                @await Html.PartialAsync("_NguoiThueSupport")
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

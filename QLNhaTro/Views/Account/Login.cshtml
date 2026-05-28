@@ -47,9 +47,7 @@
                             <div class="auth-input-wrap">
                                 <i class="bi bi-lock" aria-hidden="true"></i>
                                 <input asp-for="MatKhau" type="password" class="form-control auth-input auth-input--password" placeholder="Nhập mật khẩu" />
-                                <button type="button" class="auth-toggle" aria-label="Hiện hoặc ẩn mật khẩu">
-                                    <i class="bi bi-eye" aria-hidden="true"></i>
-                                </button>
+       
                             </div>
                             <span asp-validation-for="MatKhau" class="text-danger"></span>
                         </div>
@@ -59,7 +57,6 @@
                                 <input class="form-check-input" asp-for="GhiNhoDangNhap" />
                                 <label class="form-check-label" asp-for="GhiNhoDangNhap">Ghi nhớ đăng nhập</label>
                             </div>
-                            <a class="auth-forgot" href="#">Quên mật khẩu?</a>
                         </div>
 
                         <button type="submit" class="btn auth-submit">Đăng nhập</button>
