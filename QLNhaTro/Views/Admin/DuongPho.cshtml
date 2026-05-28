@@ -1,0 +1,119 @@
+@model QLNhaTro.Models.Admin.DiaChi.DuongPhoPageViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý đường phố";
+    ViewData["ActiveAdminMenu"] = "DuongPho";
+}
+
+<section class="admin-page admin-list-page admin-street-page">
+    <header class="admin-page-header">
+        <h1 class="admin-page-title">Quản lý đường phố</h1>
+        <p class="admin-page-subtitle mb-0">Thêm, sửa, ẩn đường phố</p>
+    </header>
+
+    <div class="admin-split-layout admin-split-layout--side-form">
+        <div class="admin-split-layout__main">
+            <div class="admin-card admin-filter-card mb-4">
+                <form class="admin-filter-bar admin-filter-bar--street" method="get">
+                    <div class="admin-filter-bar__field admin-filter-bar__field--search">
+                        <label class="admin-form__label" for="searchDuongPho">Tìm kiếm</label>
+                        <div class="admin-input-icon">
+                            <i class="bi bi-search admin-input-icon__icon" aria-hidden="true"></i>
+                            <input class="form-control" id="searchDuongPho" name="tuKhoa" type="search" value="@Model.TuKhoa" placeholder="Tìm kiếm tên đường..." />
+                        </div>
+                    </div>
+                    <div class="admin-filter-bar__field">
+                        <label class="admin-form__label" for="xaFilter">Phường/Xã</label>
+                        <select class="form-select admin-filter-select" id="xaFilter" name="xaId">
+                            <option value="">Phường/Xã: Tất cả</option>
+                            @foreach (var item in Model.DanhSachXa)
+                            {
+                                <option value="@item.Value" selected="@(item.Value == Model.XaId?.ToString())">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="admin-filter-bar__action">
+                        <span class="admin-form__label admin-filter-bar__action-label" aria-hidden="true">&nbsp;</span>
+                        <button type="submit" class="btn btn-admin-primary">
+                            <i class="bi bi-funnel" aria-hidden="true"></i>
+                            Lọc
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <article class="admin-card admin-table-card">
+                <div class="admin-table-wrap">
+                    <table class="table admin-data-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="admin-data-table__col-stt">STT</th>
+                                <th scope="col">Tên đường</th>
+                                <th scope="col">Phường/Xã</th>
+                                <th scope="col">Quận/Huyện</th>
+                                <th scope="col" class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.DanhSachDuongPho.Count; i++)
+                            {
+                                var item = Model.DanhSachDuongPho[i];
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>@item.TenDuong</td>
+                                    <td>@item.TenXa</td>
+                                    <td>@item.TenQuanHuyen</td>
+                                    <td class="text-end">
+                                        <div class="admin-table-actions">
+                                            <a class="admin-action-btn" asp-action="DuongPho" asp-route-id="@item.Id" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+                                            <form asp-action="XoaDuongPho" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa đường phố này?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa"><i class="bi bi-trash3" aria-hidden="true"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="admin-pagination-bar admin-pagination-bar--bordered" aria-label="Phân trang đường phố">
+                    <p class="admin-pagination-bar__summary mb-0">Hiển thị 1 - @Model.DanhSachDuongPho.Count của @Model.DanhSachDuongPho.Count đường</p>
+                </nav>
+            </article>
+        </div>
+
+        <aside class="admin-card admin-side-form-card">
+            <div class="admin-card__header">
+                <h2 class="admin-card__title mb-0">Thêm / Sửa đường phố</h2>
+            </div>
+            <div class="admin-card__body">
+                <form class="admin-form admin-side-form" asp-action="LuuDuongPho" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Form.Id" />
+                    <div class="mb-3">
+                        <label class="admin-form__label" asp-for="Form.TenDuong">Tên đường <span class="admin-required">*</span></label>
+                        <input class="form-control" asp-for="Form.TenDuong" />
+                        <span class="text-danger" asp-validation-for="Form.TenDuong"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="admin-form__label" asp-for="Form.XaId">Phường/Xã <span class="admin-required">*</span></label>
+                        <select class="form-select" asp-for="Form.XaId" asp-items="Model.DanhSachXa">
+                            <option value="">-- Chọn phường/xã --</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="Form.XaId"></span>
+                    </div>
+                    <div class="admin-side-form-card__actions">
+                        <button type="submit" class="btn btn-admin-primary w-100">
+                            <i class="bi bi-save" aria-hidden="true"></i>
+                            Lưu
+                        </button>
+                        <a class="btn btn-admin-outline w-100" asp-action="DuongPho">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>

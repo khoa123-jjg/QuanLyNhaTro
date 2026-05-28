@@ -1,0 +1,58 @@
+@model QLNhaTro.Models.YeuCauThue.YeuCauThueListPageViewModel
+@{
+    ViewData["Title"] = "Yêu cầu thuê của tôi";
+    ViewData["ActiveTenantMenu"] = "YeuCauCuaToi";
+    ViewData["ActiveNav"] = "my-requests";
+}
+
+<section class="tenant-request-list-page">
+    <div class="container py-4 py-lg-5">
+        <header class="tenant-page-header mb-4">
+            <h1 class="tenant-page-header__title">Danh sách yêu cầu thuê của tôi</h1>
+            <p class="tenant-page-header__subtitle">Xem các yêu cầu đã gửi và trạng thái xử lý.</p>
+        </header>
+
+        <div class="tenant-card rent-request-table-card">
+            <div class="table-responsive rent-request-table-wrap">
+                <table class="table rent-request-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Thông tin phòng</th>
+                            <th scope="col">Ngày gửi</th>
+                            <th scope="col">Ngày muốn xem phòng</th>
+                            <th scope="col">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.YeuCaus.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-4">Bạn chưa gửi yêu cầu thuê nào.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model.YeuCaus)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="rent-request-room-cell">
+                                            <img class="rent-request-room-cell__thumb" src="@(item.AnhDaiDien ?? "/images/phong-mau.jpg")" alt="@item.TieuDePhong" />
+                                            <div>
+                                                <p class="rent-request-room-cell__name mb-0">@item.TieuDePhong</p>
+                                                <p class="rent-request-room-cell__address mb-0">@item.TenNhaTro - @item.DiaChi</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="rent-request-table__date">@(item.NgayGui?.ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                                    <td class="rent-request-table__date">@(item.NgayMuonXemPhong?.ToString("dd/MM/yyyy") ?? "-")</td>
+                                    <td><span class="rent-request-status rent-request-status--processing"><span class="rent-request-status__dot" aria-hidden="true"></span>@item.TrangThaiText</span></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

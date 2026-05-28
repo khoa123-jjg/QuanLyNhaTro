@@ -1,0 +1,136 @@
+@{
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Chi tiết yêu cầu thuê";
+    ViewData["ActiveLandlordMenu"] = "YeuCauThue";
+}
+
+<section class="landlord-form-page landlord-rent-request-detail">
+    <header class="landlord-rent-request-detail__header mb-4">
+        <a class="landlord-back-link" asp-controller="ChuTro" asp-action="YeuCauThue">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            Quay lại
+        </a>
+        <h1 class="landlord-page-title mt-3 mb-2">Chi tiết yêu cầu thuê</h1>
+        <p class="landlord-page-subtitle mb-0">Xem đầy đủ thông tin yêu cầu trước khi phản hồi người thuê.</p>
+    </header>
+
+    <div class="row g-3 g-xl-4">
+        <div class="col-lg-8">
+            <div class="landlord-card landlord-info-card mb-3">
+                <h2 class="landlord-panel__title">
+                    <i class="bi bi-person-circle" aria-hidden="true"></i>
+                    Thông tin người thuê
+                </h2>
+                <div class="landlord-tenant-profile">
+                    <img class="landlord-tenant-profile__avatar"
+                         src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face"
+                         alt="" />
+                    <ul class="landlord-info-list list-unstyled mb-0">
+                        <li><span>Họ tên</span><strong>Nguyễn Văn B</strong></li>
+                        <li><span>Số điện thoại</span><strong>0905 111 222</strong></li>
+                        <li><span>Email</span><strong>nguyenvanb@gmail.com</strong></li>
+                        <li><span>Giới tính</span><strong>Nam</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="landlord-card landlord-info-card mb-3">
+                <h2 class="landlord-panel__title">
+                    <i class="bi bi-house-door" aria-hidden="true"></i>
+                    Thông tin phòng quan tâm
+                </h2>
+                <div class="landlord-room-interest landlord-room-interest--large mb-3">
+                    <img class="landlord-room-interest__thumb"
+                         src="https://images.unsplash.com/photo-1560448204-e02f11c45772?w=200&h=140&fit=crop"
+                         alt="" />
+                    <div>
+                        <p class="landlord-room-interest__code mb-1">Phòng P101</p>
+                        <p class="landlord-room-interest__price mb-1">2.800.000 đ/tháng</p>
+                        <p class="landlord-room-interest__meta mb-0">Nhà trọ An Bình · 18 m² · 2 người</p>
+                    </div>
+                </div>
+                <ul class="landlord-info-list list-unstyled mb-0">
+                    <li><span>Địa chỉ</span><strong>67 Hòa Minh, Liên Chiểu, Đà Nẵng</strong></li>
+                    <li><span>Loại phòng</span><strong>Phòng có ban công</strong></li>
+                    <li><span>Trạng thái phòng</span><strong>Trống</strong></li>
+                </ul>
+            </div>
+
+            <div class="landlord-card landlord-info-card mb-3">
+                <h2 class="landlord-panel__title">
+                    <i class="bi bi-chat-left-text" aria-hidden="true"></i>
+                    Lời nhắn của người thuê
+                </h2>
+                <p class="landlord-message-box mb-0">
+                    Em là sinh viên năm 2, muốn thuê phòng từ đầu tháng 6. Em thích phòng có ban công và wifi ổn định.
+                    Mong anh/chị sắp xếp cho em xem phòng vào cuối tuần này. Em có thể đặt cọc ngay nếu phòng phù hợp.
+                </p>
+            </div>
+
+            <div class="landlord-card landlord-info-card">
+                <h2 class="landlord-panel__title">
+                    <i class="bi bi-info-circle" aria-hidden="true"></i>
+                    Thông tin khác
+                </h2>
+                <ul class="landlord-info-list list-unstyled mb-0">
+                    <li><span>Ngày gửi yêu cầu</span><strong>18/05/2025 09:12</strong></li>
+                    <li><span>Ngày xem mong muốn</span><strong>20/05/2025</strong></li>
+                    <li><span>Kênh tiếp nhận</span><strong>Website</strong></li>
+                    <li><span>Mã yêu cầu</span><strong>YC-2025-00128</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="landlord-card landlord-status-card sticky-lg-top">
+                <h2 class="landlord-panel__title">Trạng thái hiện tại</h2>
+                <span class="landlord-badge landlord-badge--info landlord-status-card__badge">
+                    <i class="bi bi-circle-fill" aria-hidden="true"></i>
+                    Mới
+                </span>
+                <p class="landlord-status-card__hint mb-0">
+                    Yêu cầu vừa được gửi. Vui lòng xem thông tin và phản hồi trong thời gian sớm nhất.
+                </p>
+                <hr class="landlord-status-card__divider" />
+                <ul class="landlord-status-timeline list-unstyled mb-0">
+                    <li class="landlord-status-timeline__item landlord-status-timeline__item--active">
+                        <span class="landlord-status-timeline__dot" aria-hidden="true"></span>
+                        <div>
+                            <strong>Nhận yêu cầu</strong>
+                            <small>18/05/2025 09:12</small>
+                        </div>
+                    </li>
+                    <li class="landlord-status-timeline__item">
+                        <span class="landlord-status-timeline__dot" aria-hidden="true"></span>
+                        <div>
+                            <strong>Đang xử lý</strong>
+                            <small>Chưa cập nhật</small>
+                        </div>
+                    </li>
+                    <li class="landlord-status-timeline__item">
+                        <span class="landlord-status-timeline__dot" aria-hidden="true"></span>
+                        <div>
+                            <strong>Hoàn tất</strong>
+                            <small>Chưa cập nhật</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="landlord-form-actions landlord-rent-request-detail__actions">
+        <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="YeuCauThue">
+            <i class="bi bi-list-ul" aria-hidden="true"></i>
+            Quay lại danh sách
+        </a>
+        <button type="button" class="btn btn-landlord-outline">
+            <i class="bi bi-chat-dots" aria-hidden="true"></i>
+            Trả lời tin nhắn
+        </button>
+        <a class="btn btn-landlord-primary" asp-controller="ChuTro" asp-action="XuLyYeuCauThue">
+            <i class="bi bi-gear" aria-hidden="true"></i>
+            Xử lý yêu cầu
+        </a>
+    </div>
+</section>

@@ -1,0 +1,161 @@
+@model QLNhaTro.Models.Admin.Dashboard.AdminDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Dashboard Admin";
+    ViewData["ActiveAdminMenu"] = "Dashboard";
+}
+
+<section class="admin-page admin-dashboard">
+    <header class="admin-page-header">
+        <h1 class="admin-page-title">Dashboard Admin</h1>
+        <p class="admin-page-subtitle mb-0">
+            Thống kê tổng quan người dùng, bài chờ duyệt, nhà trọ
+        </p>
+    </header>
+
+    <div class="admin-stats-row">
+        <article class="admin-card admin-stat-card">
+            <span class="admin-stat-card__icon admin-stat-card__icon--blue" aria-hidden="true">
+                <i class="bi bi-people-fill"></i>
+            </span>
+            <div>
+                <p class="admin-stat-card__label mb-0">Tổng người dùng</p>
+                <p class="admin-stat-card__value mb-0">@Model.TongNguoiDung.ToString("N0")</p>
+                <p class="admin-stat-card__delta mb-0">+@Model.NguoiDungMoiTrong7Ngay.ToString("N0") trong 7 ngày</p>
+            </div>
+        </article>
+        <article class="admin-card admin-stat-card">
+            <span class="admin-stat-card__icon admin-stat-card__icon--orange" aria-hidden="true">
+                <i class="bi bi-file-earmark-check-fill"></i>
+            </span>
+            <div>
+                <p class="admin-stat-card__label mb-0">Bài chờ duyệt</p>
+                <p class="admin-stat-card__value mb-0">@Model.BaiChoDuyet.ToString("N0")</p>
+                <p class="admin-stat-card__delta mb-0">+@Model.BaiChoDuyetMoiTrong7Ngay.ToString("N0") trong 7 ngày</p>
+            </div>
+        </article>
+        <article class="admin-card admin-stat-card">
+            <span class="admin-stat-card__icon admin-stat-card__icon--green" aria-hidden="true">
+                <i class="bi bi-building-fill"></i>
+            </span>
+            <div>
+                <p class="admin-stat-card__label mb-0">Nhà trọ</p>
+                <p class="admin-stat-card__value mb-0">@Model.TongNhaTro.ToString("N0")</p>
+                <p class="admin-stat-card__delta mb-0">+@Model.NhaTroMoiTrong7Ngay.ToString("N0") trong 7 ngày</p>
+            </div>
+        </article>
+        <article class="admin-card admin-stat-card">
+            <span class="admin-stat-card__icon admin-stat-card__icon--purple" aria-hidden="true">
+                <i class="bi bi-stars"></i>
+            </span>
+            <div>
+                <p class="admin-stat-card__label mb-0">Tiện nghi</p>
+                <p class="admin-stat-card__value mb-0">@Model.TongTienNghi.ToString("N0")</p>
+                <p class="admin-stat-card__delta mb-0">+@Model.TienNghiMoiTrong7Ngay.ToString("N0") trong 7 ngày</p>
+            </div>
+        </article>
+    </div>
+
+    <article class="admin-card admin-dashboard__table-card mb-4">
+        <div class="admin-panel__head">
+            <h2 class="admin-panel__title mb-0">Bài đăng chờ duyệt gần đây</h2>
+            <a class="btn btn-sm btn-admin-outline" asp-controller="Admin" asp-action="BaiChoDuyet">Xem tất cả</a>
+        </div>
+        <div class="admin-card__body pt-0">
+            <div class="admin-table-wrap">
+                <table class="table admin-data-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Tiêu đề</th>
+                            <th scope="col">Người đăng</th>
+                            <th scope="col">Nhà trọ</th>
+                            <th scope="col">Mã phòng</th>
+                            <th scope="col">Ngày gửi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.BaiChoDuyetGanDay.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-4">Hiện chưa có bài đăng nào đang chờ duyệt.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model.BaiChoDuyetGanDay)
+                            {
+                                <tr>
+                                    <td>@item.Stt</td>
+                                    <td>
+                                        <div class="admin-table-post">
+                                            <img class="admin-table-post__thumb"
+                                                 src="@(item.AnhDaiDien ?? "/images/phong-mau.jpg")"
+                                                 alt="@item.TieuDe" />
+                                            <a asp-controller="Admin"
+                                               asp-action="ChiTietBaiChoDuyet"
+                                               asp-route-id="@item.Id">@item.TieuDe</a>
+                                        </div>
+                                    </td>
+                                    <td>@item.TenNguoiDang</td>
+                                    <td>@item.TenNhaTro</td>
+                                    <td>@item.MaPhong</td>
+                                    <td>@(item.NgayGuiDuyet?.ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+
+    <h2 class="admin-section-title">Thao tác nhanh</h2>
+    <div class="admin-quick-actions">
+        <a class="admin-card admin-quick-action" asp-controller="Admin" asp-action="BaiChoDuyet">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--orange" aria-hidden="true">
+                    <i class="bi bi-file-earmark-check"></i>
+                </span>
+                <span class="admin-quick-action__text">Xem bài chờ duyệt</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a class="admin-card admin-quick-action" asp-controller="Admin" asp-action="NguoiDung">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--blue" aria-hidden="true">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span class="admin-quick-action__text">Quản lý người dùng</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a class="admin-card admin-quick-action" asp-controller="Admin" asp-action="BaiChoDuyet">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--green" aria-hidden="true">
+                    <i class="bi bi-building"></i>
+                </span>
+                <span class="admin-quick-action__text">Quản lý nhà trọ</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a class="admin-card admin-quick-action" asp-controller="Admin" asp-action="TienNghi">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--purple" aria-hidden="true">
+                    <i class="bi bi-stars"></i>
+                </span>
+                <span class="admin-quick-action__text">Quản lý tiện nghi</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a class="admin-card admin-quick-action" asp-controller="Admin" asp-action="HoSo">
+            <span class="admin-quick-action__left">
+                <span class="admin-quick-action__icon admin-quick-action__icon--blue" aria-hidden="true">
+                    <i class="bi bi-person-circle"></i>
+                </span>
+                <span class="admin-quick-action__text">Hồ sơ admin</span>
+            </span>
+            <i class="bi bi-chevron-right admin-quick-action__arrow" aria-hidden="true"></i>
+        </a>
+    </div>
+</section>

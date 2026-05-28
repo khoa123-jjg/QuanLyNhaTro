@@ -1,0 +1,122 @@
+@model QLNhaTro.Models.Admin.NguoiDung.AdminNguoiDungEditViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chỉnh sửa người dùng";
+    ViewData["ActiveAdminMenu"] = "NguoiDung";
+}
+
+<section class="admin-page admin-form-page admin-user-edit">
+    <header class="admin-page-header admin-page-header--with-back">
+        <a class="admin-back-btn" asp-controller="Admin" asp-action="ChiTietNguoiDung" asp-route-id="@Model.Id" aria-label="Quay lại">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        </a>
+        <div>
+            <h1 class="admin-page-title">Chỉnh sửa thông tin người dùng</h1>
+            <a class="admin-back-link" asp-controller="Admin" asp-action="ChiTietNguoiDung" asp-route-id="@Model.Id">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Quay lại chi tiết người dùng
+            </a>
+        </div>
+    </header>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success">@successMessage</div>
+    }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <article class="admin-card">
+        <div class="admin-card__header">
+            <h2 class="admin-card__title mb-0">Thông tin tài khoản (Vai trò: @Model.VaiTroText)</h2>
+        </div>
+        <div class="admin-card__body">
+            <form class="admin-form" asp-controller="Admin" asp-action="ChinhSuaNguoiDung" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="VaiTro" />
+                <input type="hidden" asp-for="VaiTroText" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="admin-form__label" asp-for="HoTen">Họ tên <span class="admin-required">*</span></label>
+                            <input class="form-control" asp-for="HoTen" />
+                            <span class="text-danger" asp-validation-for="HoTen"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="admin-form__label" asp-for="Email">Email <span class="admin-required">*</span></label>
+                            <input class="form-control" asp-for="Email" />
+                            <span class="text-danger" asp-validation-for="Email"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="admin-form__label" asp-for="SoDienThoai">Số điện thoại</label>
+                            <input class="form-control" asp-for="SoDienThoai" />
+                            <span class="text-danger" asp-validation-for="SoDienThoai"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="admin-form__label" asp-for="TrangThai">Trạng thái hệ thống <span class="admin-required">*</span></label>
+                            <select class="form-select" asp-for="TrangThai" asp-items="Model.DanhSachTrangThai"></select>
+                            <span class="text-danger" asp-validation-for="TrangThai"></span>
+                        </div>
+                    </div>
+
+                    @if (Model.VaiTro == "NGUOI_THUE")
+                    {
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="admin-form__label" asp-for="NgheNghiep">Nghề nghiệp</label>
+                                <input class="form-control" asp-for="NgheNghiep" placeholder="Nhập nghề nghiệp..." />
+                                <span class="text-danger" asp-validation-for="NgheNghiep"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="admin-form__label" asp-for="NhuCauThue">Nhu cầu thuê</label>
+                                <input class="form-control" asp-for="NhuCauThue" placeholder="Nhập nhu cầu thuê..." />
+                                <span class="text-danger" asp-validation-for="NhuCauThue"></span>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.VaiTro == "CHU_TRO")
+                    {
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="admin-form__label" asp-for="TrangThaiHoSo">Trạng thái hồ sơ chủ trọ <span class="admin-required">*</span></label>
+                                <select class="form-select" asp-for="TrangThaiHoSo" asp-items="Model.DanhSachTrangThaiHoSo"></select>
+                                <span class="text-danger" asp-validation-for="TrangThaiHoSo"></span>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-12">
+                        <div class="mb-4">
+                            <label class="admin-form__label" asp-for="GhiChu">Ghi chú</label>
+                            <textarea class="form-control" asp-for="GhiChu" rows="3" placeholder="Nhập ghi chú..."></textarea>
+                            <span class="text-danger" asp-validation-for="GhiChu"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-page-actions border-0 p-0 pt-3">
+                    <button type="submit" class="btn btn-admin-primary">
+                        <i class="bi bi-save" aria-hidden="true"></i> Lưu thay đổi
+                    </button>
+                    <a class="btn btn-admin-outline" asp-controller="Admin" asp-action="ChiTietNguoiDung" asp-route-id="@Model.Id">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </article>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

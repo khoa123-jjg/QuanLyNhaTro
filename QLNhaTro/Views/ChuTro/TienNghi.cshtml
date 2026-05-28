@@ -1,0 +1,88 @@
+@model QuanLyNhaTro.Models.TienNghi.TienNghiPhongPageViewModel
+@{
+    Layout = "~/Views/Shared/_ChuTroLayout.cshtml";
+    ViewData["Title"] = "Gắn tiện nghi cho phòng";
+    ViewData["ActiveLandlordMenu"] = "PhongCuThe";
+    var daChonCount = Model.DanhSachTienNghi.Count(t => t.DaChon);
+}
+
+<section class="landlord-amenity-page">
+    <header class="landlord-form-page__header mb-4">
+        <h1 class="landlord-page-title">Gắn tiện nghi cho phòng</h1>
+        <p class="landlord-page-subtitle mb-0">
+            Chọn các tiện nghi áp dụng cho phòng @Model.MaPhong.
+        </p>
+    </header>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success mb-4" role="status">@successMessage</div>
+    }
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger mb-4" role="alert">@errorMessage</div>
+    }
+
+    <div class="landlord-card landlord-selected-roomtype mb-4">
+        <div class="landlord-selected-roomtype__icon" aria-hidden="true">
+            <i class="bi bi-door-closed"></i>
+        </div>
+        <div class="landlord-selected-roomtype__body">
+            <p class="landlord-selected-roomtype__label mb-1">Phòng đang chọn</p>
+            <h2 class="landlord-selected-roomtype__name mb-2">@Model.MaPhong@if (!string.IsNullOrWhiteSpace(Model.TenPhong)) { <text> — @Model.TenPhong</text> }</h2>
+            <ul class="landlord-selected-roomtype__meta list-unstyled mb-0">
+                <li><i class="bi bi-building" aria-hidden="true"></i> @Model.TenNhaTro</li>
+                @if (!string.IsNullOrEmpty(Model.TangHienThi))
+                {
+                    <li><i class="bi bi-layers" aria-hidden="true"></i> @Model.TangHienThi</li>
+                }
+                <li><i class="bi bi-circle-fill" aria-hidden="true"></i> @Model.TrangThaiHienThi</li>
+            </ul>
+        </div>
+    </div>
+
+    <form method="post"
+          asp-controller="ChuTro"
+          asp-action="LuuTienNghiPhong"
+          class="landlord-card landlord-amenity-panel">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="phongTroId" value="@Model.PhongTroId" />
+
+        <h2 class="landlord-panel__title">
+            Danh sách tiện nghi
+            <span class="landlord-amenity-panel__count">@daChonCount</span>
+        </h2>
+
+        @if (Model.DanhSachTienNghi.Count == 0)
+        {
+            <p class="text-muted mb-0">Chưa có tiện nghi nào đang hiển thị.</p>
+        }
+        else
+        {
+            <ul class="landlord-amenity-list list-unstyled mb-0">
+                @foreach (var item in Model.DanhSachTienNghi)
+                {
+                    <li class="landlord-amenity-list__item">
+                        <label class="landlord-amenity-check">
+                            <input type="checkbox" name="tienNghiIds" value="@item.Id" @(item.DaChon ? "checked" : null) />
+                            <span class="landlord-amenity-check__box" aria-hidden="true"></span>
+                            <i class="bi bi-check-circle landlord-amenity-check__icon" aria-hidden="true"></i>
+                            <span>@item.TenTienNghi</span>
+                        </label>
+                    </li>
+                }
+            </ul>
+        }
+
+        <div class="landlord-form-actions mt-4 mb-0">
+            <a class="btn btn-landlord-outline" asp-controller="ChuTro" asp-action="PhongCuThe">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                Quay lại
+            </a>
+            <button type="submit" class="btn btn-landlord-primary">
+                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                Lưu tiện nghi
+            </button>
+        </div>
+    </form>
+</section>

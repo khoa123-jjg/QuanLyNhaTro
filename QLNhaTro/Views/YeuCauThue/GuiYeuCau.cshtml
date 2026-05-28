@@ -1,0 +1,87 @@
+@model QLNhaTro.Models.YeuCauThue.GuiYeuCauThueViewModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "Gửi yêu cầu thuê";
+    ViewData["ActiveTenantMenu"] = "GuiYeuCau";
+}
+
+<section class="tenant-request-page">
+    <div class="container py-4 py-lg-5">
+        <header class="tenant-page-header mb-4">
+            <h1 class="tenant-page-header__title">Gửi yêu cầu thuê</h1>
+            <p class="tenant-page-header__subtitle">Nhập thông tin liên hệ, ngày xem phòng và lời nhắn cho chủ trọ.</p>
+        </header>
+
+        <div class="tenant-page-layout tenant-page-layout--request">
+            <div class="tenant-page-layout__main">
+                <div class="row g-4 rent-request-cards">
+                    <div class="col-lg-6">
+                        <div class="tenant-card rent-request-room-card">
+                            <h2 class="rent-request-card__title">Thông tin phòng đã chọn</h2>
+                            <div class="rent-request-room__media">
+                                <img class="rent-request-room__image" src="@(Model.AnhDaiDien ?? "/images/phong-mau.jpg")" alt="@Model.TieuDePhong" />
+                            </div>
+                            <h3 class="rent-request-room__name">@Model.TieuDePhong</h3>
+                            <p class="rent-request-room__address"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i> @Model.DiaChi</p>
+                            <p class="rent-request-room__price">@Model.GiaThue.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) đ/tháng</p>
+                            <div class="room-info-grid rent-request-room__grid">
+                                <div class="room-info-grid__item">
+                                    <span class="room-info-grid__label">Diện tích</span>
+                                    <span class="room-info-grid__value">@Model.DienTich.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) m²</span>
+                                </div>
+                                <div class="room-info-grid__item">
+                                    <span class="room-info-grid__label">Nhà trọ</span>
+                                    <span class="room-info-grid__value">@Model.TenNhaTro</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="tenant-card rent-request-form-card">
+                            <h2 class="rent-request-card__title">Thông tin liên hệ &amp; yêu cầu</h2>
+
+                            <form class="rent-request-form" asp-controller="YeuCauThue" asp-action="GuiYeuCau" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" asp-for="PhongTroId" />
+
+                                <div class="rent-request-field mb-3">
+                                    <label class="rent-request-field__label" asp-for="HoTenLienHe"></label>
+                                    <input class="form-control rent-request-field__input" asp-for="HoTenLienHe" />
+                                    <span class="text-danger" asp-validation-for="HoTenLienHe"></span>
+                                </div>
+
+                                <div class="rent-request-field mb-3">
+                                    <label class="rent-request-field__label" asp-for="SoDienThoaiLienHe"></label>
+                                    <input class="form-control rent-request-field__input" asp-for="SoDienThoaiLienHe" />
+                                    <span class="text-danger" asp-validation-for="SoDienThoaiLienHe"></span>
+                                </div>
+
+                                <div class="rent-request-field mb-3">
+                                    <label class="rent-request-field__label" asp-for="NgayMuonXemPhong"></label>
+                                    <input asp-for="NgayMuonXemPhong" type="date" class="form-control rent-request-field__input" />
+                                    <span class="text-danger" asp-validation-for="NgayMuonXemPhong"></span>
+                                </div>
+
+                                <div class="rent-request-field mb-3">
+                                    <label class="rent-request-field__label" asp-for="LoiNhan"></label>
+                                    <textarea class="form-control rent-request-field__textarea" asp-for="LoiNhan" rows="4"></textarea>
+                                    <span class="text-danger" asp-validation-for="LoiNhan"></span>
+                                </div>
+
+                                <button type="submit" class="btn-rent-request-submit">
+                                    <i class="bi bi-send-fill" aria-hidden="true"></i>
+                                    Gửi yêu cầu
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

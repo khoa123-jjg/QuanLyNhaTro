@@ -1,0 +1,37 @@
+@{
+    // ActiveTenantMenu: "HoSo" | "GuiYeuCau" | "YeuCauCuaToi" | "support"
+    var activeMenu = ViewData["ActiveTenantMenu"]?.ToString() ?? "";
+}
+
+<aside class="tenant-sidebar" aria-label="Khu vực người thuê">
+    <div class="tenant-card tenant-sidebar__card">
+        <h2 class="tenant-card__title">Khu vực người thuê</h2>
+
+        <nav class="tenant-sidebar__nav" aria-label="Menu người thuê">
+            <a class="tenant-sidebar__link @(activeMenu == "HoSo" ? "is-active" : "")"
+               asp-controller="NguoiThue" asp-action="HoSo">
+                <i class="bi bi-person tenant-sidebar__icon" aria-hidden="true"></i>
+                <span>Hồ sơ cá nhân</span>
+            </a>
+            <a class="tenant-sidebar__link @(activeMenu == "YeuCauCuaToi" ? "is-active" : "")"
+               asp-controller="YeuCauThue" asp-action="DanhSach">
+                <i class="bi bi-calendar-check tenant-sidebar__icon" aria-hidden="true"></i>
+                <span>Yêu cầu thuê của tôi</span>
+            </a>
+            <a class="tenant-sidebar__link @(activeMenu == "support" ? "is-active" : "")"
+               href="#">
+                <i class="bi bi-headset tenant-sidebar__icon" aria-hidden="true"></i>
+                <span>Hỗ trợ</span>
+            </a>
+        </nav>
+
+        <div class="tenant-sidebar__divider" role="separator"></div>
+
+        <form asp-controller="Account" asp-action="Logout" method="post" class="tenant-sidebar__logout-form">
+            <button type="submit" class="tenant-sidebar__logout">
+                <i class="bi bi-box-arrow-right tenant-sidebar__icon" aria-hidden="true"></i>
+                <span>Đăng xuất</span>
+            </button>
+        </form>
+    </div>
+</aside>

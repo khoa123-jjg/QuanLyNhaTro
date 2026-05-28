@@ -1,0 +1,80 @@
+@model QLNhaTro.Models.PhongTro.PhongTroMapPageViewModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Bản đồ phòng trọ";
+    var phongTrosJson = JsonSerializer.Serialize(Model.PhongTros, new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    });
+    var focusPhongTroId = Model.FocusPhongTroId;
+}
+
+<section class="room-map-page">
+    <div class="container py-4 py-lg-5">
+        <h1 class="mb-4">Bản đồ phòng trọ</h1>
+        <div id="banDoPhongTro" class="public-map"></div>
+        <div id="roomMapEmpty" class="room-detail-map-empty d-none">Hiện chưa có phòng trọ có dữ liệu bản đồ.</div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const phongTros = @Html.Raw(phongTrosJson);
+        const focusPhongTroId = @(focusPhongTroId.HasValue ? focusPhongTroId.Value.ToString() : "null");
+        const mapElement = document.getElementById("banDoPhongTro");
+        const emptyElement = document.getElementById("roomMapEmpty");
+        if (!mapElement || typeof L === "undefined") {
+            return;
+        }
+
+        const map = L.map("banDoPhongTro").setView([16.047079, 108.206230], 12);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(map);
+
+        const validRooms = phongTros.filter(x => Number(x.viDo) && Number(x.kinhDo));
+        const bounds = [];
+
+        if (validRooms.length === 0) {
+            emptyElement.classList.remove("d-none");
+            setTimeout(function () {
+                map.invalidateSize();
+            }, 200);
+            return;
+        }
+
+        validRooms.forEach(x => {
+            const lat = Number(x.viDo);
+            const lng = Number(x.kinhDo);
+            const marker = L.marker([lat, lng]).addTo(map);
+
+            marker.bindPopup(`
+                <div class="map-popup">
+                    <strong>${x.tieuDe}</strong>
+                    <div>${x.tenNhaTro}</div>
+                    <div>${Number(x.giaThue).toLocaleString("vi-VN")} đ/tháng</div>
+                    <div>${x.dienTich} m²</div>
+                    <div>${x.diaChi}</div>
+                    <a href="/PhongTro/ChiTiet/${x.id}">Xem chi tiết</a>
+                </div>
+            `);
+
+            bounds.push([lat, lng]);
+
+            if (focusPhongTroId && Number(x.id) === Number(focusPhongTroId)) {
+                map.setView([lat, lng], 16);
+                marker.openPopup();
+            }
+        });
+
+        if (!focusPhongTroId && bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [40, 40] });
+        }
+
+        setTimeout(function () {
+            map.invalidateSize();
+        }, 200);
+    });
+</script>

@@ -1,0 +1,100 @@
+@model QLNhaTro.Models.Admin.BaiDuyet.AdminBaiChoDuyetListPageViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý bài chờ duyệt";
+    ViewData["ActiveAdminMenu"] = "BaiChoDuyet";
+}
+
+<section class="admin-page admin-list-page admin-post-pending-list">
+    <header class="admin-page-header">
+        <h1 class="admin-page-title">Quản lý bài chờ duyệt</h1>
+        <p class="admin-page-subtitle mb-0">Danh sách bài ở trạng thái chờ duyệt</p>
+    </header>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success">@successMessage</div>
+    }
+
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <div class="admin-card admin-filter-card mb-4">
+        <form class="admin-filter-bar admin-filter-bar--post" asp-controller="Admin" asp-action="BaiChoDuyet" method="get">
+            <div class="admin-filter-bar__field admin-filter-bar__field--search">
+                <label class="admin-form__label" for="TuKhoa">Tìm kiếm</label>
+                <div class="admin-input-icon">
+                    <i class="bi bi-search admin-input-icon__icon" aria-hidden="true"></i>
+                    <input class="form-control" id="TuKhoa" name="tuKhoa" value="@Model.TuKhoa" type="search" placeholder="Tìm kiếm theo tiêu đề, chủ trọ, nhà trọ..." />
+                </div>
+            </div>
+            <div class="admin-filter-bar__field">
+                <label class="admin-form__label" for="NhaTroId">Nhà trọ</label>
+                <select class="form-select admin-filter-select" id="NhaTroId" name="nhaTroId">
+                    <option value="">Nhà trọ: Tất cả</option>
+                    @foreach (var item in Model.DanhSachNhaTro)
+                    {
+                        <option value="@item.Value" selected="@(item.Value == Model.NhaTroId?.ToString())">@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="admin-filter-bar__field admin-filter-bar__field--actions">
+                <button type="submit" class="btn btn-admin-primary">Lọc</button>
+            </div>
+        </form>
+    </div>
+
+    <article class="admin-card admin-table-card">
+        @if (Model.BaiDangChoDuyet.Count == 0)
+        {
+            <div class="p-4">Hiện chưa có bài đăng nào đang chờ duyệt.</div>
+        }
+        else
+        {
+            <div class="admin-table-wrap">
+                <table class="table admin-data-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="admin-data-table__col-stt">STT</th>
+                            <th scope="col">Tiêu đề</th>
+                            <th scope="col">Chủ trọ</th>
+                            <th scope="col">Nhà trọ</th>
+                            <th scope="col">Ngày gửi</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col" class="text-end">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BaiDangChoDuyet)
+                        {
+                            <tr>
+                                <td>@item.Stt</td>
+                                <td>
+                                    <div class="admin-table-post">
+                                        <img class="admin-table-post__thumb" src="@(item.AnhDaiDien ?? "/images/phong-mau.jpg")" alt="" />
+                                        <span>@item.TieuDe</span>
+                                    </div>
+                                </td>
+                                <td>@item.TenChuTro</td>
+                                <td>@item.TenNhaTro</td>
+                                <td class="admin-data-table__date">@(item.NgayGuiDuyet?.ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                                <td><span class="admin-badge admin-badge--warning"><i class="bi bi-clock-fill" aria-hidden="true"></i> @item.TrangThaiText</span></td>
+                                <td class="text-end">
+                                    <a asp-controller="Admin"
+                                       asp-action="ChiTietBaiChoDuyet"
+                                       asp-route-id="@item.Id"
+                                       class="admin-action-btn"
+                                       aria-label="Xem chi tiết">
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </article>
+</section>

@@ -1,0 +1,100 @@
+@model QLNhaTro.Models.Admin.NguoiDung.AdminNguoiDungDetailViewModel
+@using QLNhaTro.Helpers.Constants
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chi tiết người dùng";
+    ViewData["ActiveAdminMenu"] = "NguoiDung";
+}
+
+<section class="admin-page admin-detail-page admin-user-detail">
+    <header class="admin-page-header admin-page-header--with-back">
+        <a class="admin-back-btn" asp-controller="Admin" asp-action="NguoiDung" aria-label="Quay lại">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        </a>
+        <div>
+            <h1 class="admin-page-title">Chi tiết người dùng</h1>
+            <a class="admin-back-link" asp-controller="Admin" asp-action="NguoiDung">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Quay lại danh sách người dùng
+            </a>
+        </div>
+    </header>
+
+    <article class="admin-card admin-user-detail-card admin-user-detail-card--no-avatar">
+        <dl class="admin-user-detail-card__info admin-user-detail-card__info--full">
+            <div class="admin-user-detail-card__row">
+                <dt>Họ tên</dt>
+                <dd>@Model.HoTen</dd>
+            </div>
+            <div class="admin-user-detail-card__row">
+                <dt>Email</dt>
+                <dd>@Model.Email</dd>
+            </div>
+            <div class="admin-user-detail-card__row">
+                <dt>Số điện thoại</dt>
+                <dd>@(Model.SoDienThoai ?? "-")</dd>
+            </div>
+            <div class="admin-user-detail-card__row">
+                <dt>Vai trò</dt>
+                <dd>@Model.VaiTroText</dd>
+            </div>
+            <div class="admin-user-detail-card__row">
+                <dt>Trạng thái</dt>
+                <dd>
+                    @if (NguoiDungStatus.IsActive(Model.TrangThai))
+                    {
+                        <span class="admin-badge admin-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> @Model.TrangThaiText</span>
+                    }
+                    else
+                    {
+                        <span class="admin-badge admin-badge--danger"><i class="bi bi-lock-fill" aria-hidden="true"></i> @Model.TrangThaiText</span>
+                    }
+                </dd>
+            </div>
+            <div class="admin-user-detail-card__row">
+                <dt>Ngày tạo</dt>
+                <dd>@Model.NgayTao?.ToString("dd/MM/yyyy HH:mm")</dd>
+            </div>
+            @if (Model.VaiTro.Contains("NGUOI_THUE"))
+            {
+                <div class="admin-user-detail-card__row">
+                    <dt>Nghề nghiệp</dt>
+                    <dd>@(string.IsNullOrWhiteSpace(Model.NgheNghiep) ? "-" : Model.NgheNghiep)</dd>
+                </div>
+                <div class="admin-user-detail-card__row">
+                    <dt>Nhu cầu thuê</dt>
+                    <dd>@(string.IsNullOrWhiteSpace(Model.NhuCauThue) ? "-" : Model.NhuCauThue)</dd>
+                </div>
+            }
+            @if (Model.VaiTro.Contains("CHU_TRO"))
+            {
+                <div class="admin-user-detail-card__row">
+                    <dt>Trạng thái hồ sơ chủ trọ</dt>
+                    <dd>
+                        @if (Model.TrangThaiHoSo == "HOAT_DONG")
+                        {
+                            <span class="admin-badge admin-badge--success"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Hoạt động</span>
+                        }
+                        else
+                        {
+                            <span class="admin-badge admin-badge--danger"><i class="bi bi-lock-fill" aria-hidden="true"></i> Bị khóa</span>
+                        }
+                    </dd>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.GhiChu))
+            {
+                <div class="admin-user-detail-card__row admin-user-detail-card__row--note">
+                    <dt>Ghi chú</dt>
+                    <dd>@Model.GhiChu</dd>
+                </div>
+            }
+        </dl>
+
+        <div class="admin-page-actions admin-page-actions--end admin-user-detail-card__actions">
+            <a class="btn btn-admin-primary" asp-controller="Admin" asp-action="ChinhSuaNguoiDung" asp-route-id="@Model.Id">
+                <i class="bi bi-pencil-square" aria-hidden="true"></i> Chỉnh sửa
+            </a>
+            <a class="btn btn-admin-outline" asp-controller="Admin" asp-action="NguoiDung">Quay lại</a>
+        </div>
+    </article>
+</section>

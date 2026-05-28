@@ -1,0 +1,129 @@
+@model QLNhaTro.Models.Admin.TienNghi.TienNghiPageViewModel
+@using QLNhaTro.Helpers.Constants
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý tiện nghi";
+    ViewData["ActiveAdminMenu"] = "TienNghi";
+}
+
+<section class="admin-page admin-list-page admin-amenity-page">
+    <header class="admin-page-header admin-page-header--toolbar">
+        <div>
+            <h1 class="admin-page-title">Quản lý tiện nghi</h1>
+            <p class="admin-page-subtitle mb-0">Thêm, sửa, ẩn tiện nghi</p>
+        </div>
+    </header>
+
+    <div class="admin-split-layout admin-split-layout--amenity">
+        <article class="admin-card admin-table-card admin-amenity-table-card">
+            <div class="admin-table-wrap">
+                <table class="table admin-data-table mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="admin-data-table__col-stt">STT</th>
+                            <th scope="col">Tên tiện nghi</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col" class="text-end">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DanhSachTienNghi.Any())
+                        {
+                            var stt = 1;
+                            foreach (var item in Model.DanhSachTienNghi)
+                            {
+                                <tr>
+                                    <td>@stt</td>
+                                    <td>@item.TenTienNghi</td>
+                                    <td>
+                                        @if (item.DangHienThi)
+                                        {
+                                            <span class="admin-badge admin-badge--success">@item.TenTrangThai</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="admin-badge admin-badge--warning">@item.TenTrangThai</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="admin-table-actions">
+                                            <a asp-controller="Admin" asp-action="TienNghi" asp-route-id="@item.Id" class="admin-action-btn" aria-label="Sửa"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
+
+                                            <form asp-controller="Admin" asp-action="DoiTrangThaiTienNghi" asp-route-id="@item.Id" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="admin-action-btn" aria-label="Ẩn/Hiện">
+                                                    <i class="bi @(item.DangHienThi ? "bi-toggle-on" : "bi-toggle-off")" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+
+                                            <form asp-controller="Admin" asp-action="XoaTienNghi" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa tiện nghi này?');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="admin-action-btn admin-action-btn--danger" aria-label="Xóa">
+                                                    <i class="bi bi-trash3" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                stt++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-4">Chưa có tiện nghi nào.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <nav class="admin-pagination-bar admin-pagination-bar--bordered" aria-label="Phân trang tiện nghi">
+                <p class="admin-pagination-bar__summary mb-0">Hiển thị 1 - @Model.DanhSachTienNghi.Count của @Model.TongSoTienNghi tiện nghi</p>
+                <ul class="admin-pagination mb-0">
+                    <li><span class="admin-pagination__link is-active">1</span></li>
+                </ul>
+            </nav>
+        </article>
+
+        <aside class="admin-card admin-side-form-card">
+            <div class="admin-card__header">
+                <h2 class="admin-card__title mb-0">Thêm / Sửa tiện nghi</h2>
+            </div>
+            <div class="admin-card__body">
+                <form asp-controller="Admin" asp-action="LuuTienNghi" method="post" class="admin-form admin-amenity-form" novalidate>
+                    @Html.AntiForgeryToken()
+                    <input asp-for="Form.Id" type="hidden" />
+
+                    <div class="mb-3">
+                        <label asp-for="Form.TenTienNghi" class="admin-form__label">
+                            Tên tiện nghi <span class="admin-required">*</span>
+                        </label>
+                        <input asp-for="Form.TenTienNghi" class="form-control" />
+                        <span asp-validation-for="Form.TenTienNghi" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Form.TrangThai" class="admin-form__label">
+                            Trạng thái <span class="admin-required">*</span>
+                        </label>
+                        <select asp-for="Form.TrangThai" class="form-select">
+                            <option value="@TienNghiStatus.HienThi">Hiển thị</option>
+                            <option value="@TienNghiStatus.An">Ẩn</option>
+                        </select>
+                        <span asp-validation-for="Form.TrangThai" class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-side-form-card__actions">
+                        <button type="submit" class="btn btn-admin-primary w-100">
+                            <i class="bi bi-save" aria-hidden="true"></i>
+                            Lưu
+                        </button>
+                        <a asp-controller="Admin" asp-action="TienNghi" class="btn btn-admin-outline w-100">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+</section>
