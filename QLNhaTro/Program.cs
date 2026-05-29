@@ -31,8 +31,11 @@ namespace QLNhaTro
             builder.Services.AddScoped<INhaTroRepository, NhaTroRepository>();
             builder.Services.AddScoped<IBaiDangRepository, BaiDangRepository>();
             builder.Services.AddScoped<IChuTroTaiKhoanRepository, ChuTroTaiKhoanRepository>();
+            builder.Services.AddScoped<IChuTroYeuCauThueRepository, ChuTroYeuCauThueRepository>();
             builder.Services.AddScoped<IAdminTaiKhoanRepository, AdminTaiKhoanRepository>();
+            builder.Services.AddScoped<IAdminNguoiDungRepository, AdminNguoiDungRepository>();
             builder.Services.AddScoped<IAdminBaiDuyetRepository, AdminBaiDuyetRepository>();
+            builder.Services.AddScoped<IAdminDashboardRepository, AdminDashboardRepository>();
             builder.Services.AddScoped<ITienNghiRepository, TienNghiRepository>();
             builder.Services.AddScoped<IAdminDiaChiRepository, AdminDiaChiRepository>();
             builder.Services.AddScoped<INguoiThueHoSoRepository, NguoiThueHoSoRepository>();

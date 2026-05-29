@@ -55,7 +55,12 @@ public class AdminBaiDuyetRepository : IAdminBaiDuyetRepository
                 TenNhaTro = b.PhongTro.NhaTro.TenNhaTro,
                 NgayGuiDuyet = b.NgayTao,
                 TrangThaiDuyet = b.TrangThaiDuyet,
-                AnhDaiDien = b.PhongTro.HinhAnh != null ? b.PhongTro.HinhAnh.DuongDanAnh : null
+                AnhDaiDien = _context.HinhAnhs
+                    .Where(h => h.PhongTroId == b.PhongTroId)
+                    .OrderByDescending(h => h.LaAnhDaiDien)
+                    .ThenBy(h => h.ThuTuHienThi)
+                    .Select(h => h.DuongDanAnh)
+                    .FirstOrDefault()
             })
             .ToListAsync();
 
@@ -75,44 +80,29 @@ public class AdminBaiDuyetRepository : IAdminBaiDuyetRepository
             .Where(b => b.Id == id && b.TrangThaiDuyet == BaiDangStatus.ChoDuyet)
             .Select(b => new
             {
-                b.Id,
-                b.TieuDe,
-                b.NoiDung,
-                TenChuTro = b.PhongTro.NhaTro.ChuNhaTro.NguoiDung.HoTen,
-                TenNhaTro = b.PhongTro.NhaTro.TenNhaTro,
-                b.PhongTro.MaPhong,
-                b.PhongTro.TenPhong,
-                DiaChi = b.PhongTro.NhaTro.DiaChiChiTiet,
-                b.PhongTro.DienTich,
-                b.PhongTro.GiaThueThang,
-                b.PhongTro.TienCoc,
-                b.PhongTro.SoNguoiToiDa,
-                NgayGuiDuyet = b.NgayTao,
-                b.TrangThaiDuyet,
-                DuongDanAnh = b.PhongTro.HinhAnh != null ? b.PhongTro.HinhAnh.DuongDanAnh : null,
-                DanhSachTienNghi = b.PhongTro.TienNghis
-                    .OrderBy(x => x.TenTienNghi)
-                    .Select(x => x.TenTienNghi)
-                    .ToList()
-            })
-            .Select(b => new AdminChiTietBaiChoDuyetViewModel
-            {
-                Id = b.Id,
-                TieuDe = b.TieuDe,
-                NoiDung = b.NoiDung,
-                TenChuTro = b.TenChuTro,
-                TenNhaTro = b.TenNhaTro,
-                MaPhong = b.MaPhong,
-                TenPhong = b.TenPhong,
-                DiaChi = b.DiaChi,
-                DienTich = b.DienTich,
-                GiaThueThang = b.GiaThueThang,
-                TienCoc = b.TienCoc,
-                SoNguoiToiDa = b.SoNguoiToiDa,
-                NgayGuiDuyet = b.NgayGuiDuyet,
-                TrangThaiDuyet = b.TrangThaiDuyet,
-                DanhSachAnh = b.DuongDanAnh == null ? new List<string>() : new List<string> { b.DuongDanAnh! },
-                DanhSachTienNghi = b.DanhSachTienNghi
+                b.PhongTroId,
+                Model = new AdminChiTietBaiChoDuyetViewModel
+                {
+                    Id = b.Id,
+                    TieuDe = b.TieuDe,
+                    NoiDung = b.NoiDung,
+                    TenChuTro = b.PhongTro.NhaTro.ChuNhaTro.NguoiDung.HoTen,
+                    TenNhaTro = b.PhongTro.NhaTro.TenNhaTro,
+                    MaPhong = b.PhongTro.MaPhong,
+                    TenPhong = b.PhongTro.TenPhong,
+                    DiaChi = b.PhongTro.NhaTro.DiaChiChiTiet,
+                    DienTich = b.PhongTro.DienTich,
+                    GiaThueThang = b.PhongTro.GiaThueThang,
+                    TienCoc = b.PhongTro.TienCoc,
+                    SoNguoiToiDa = b.PhongTro.SoNguoiToiDa,
+                    NgayGuiDuyet = b.NgayTao,
+                    TrangThaiDuyet = b.TrangThaiDuyet,
+                    DanhSachAnh = new List<string>(),
+                    DanhSachTienNghi = b.PhongTro.TienNghis
+                        .OrderBy(x => x.TenTienNghi)
+                        .Select(x => x.TenTienNghi)
+                        .ToList()
+                }
             })
             .FirstOrDefaultAsync();
 
@@ -121,7 +111,16 @@ public class AdminBaiDuyetRepository : IAdminBaiDuyetRepository
             return null;
         }
 
-        return row;
+        row.Model.DanhSachAnh = await _context.HinhAnhs
+            .AsNoTracking()
+            .Where(h => h.PhongTroId == row.PhongTroId)
+            .Where(h => h.DuongDanAnh != null && h.DuongDanAnh != "")
+            .OrderByDescending(h => h.LaAnhDaiDien)
+            .ThenBy(h => h.ThuTuHienThi)
+            .Select(h => h.DuongDanAnh!)
+            .ToListAsync();
+
+        return row.Model;
     }
 
     public async Task<AdminTuChoiBaiViewModel?> GetTuChoiViewModelAsync(int id)

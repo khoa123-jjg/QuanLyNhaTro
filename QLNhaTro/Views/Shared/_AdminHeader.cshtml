@@ -25,25 +25,14 @@
             </a>
         </div>
 
-        <nav class="admin-header__nav d-none d-xl-flex" aria-label="Điều hướng chính">
-            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
-            <a asp-controller="PhongTro" asp-action="Index">Tìm phòng</a>
-            <a href="#">Yêu cầu của tôi</a>
-        </nav>
-
         <div class="admin-header__right">
-            <button type="button" class="admin-header__notify" aria-label="Thông báo (3)">
-                <i class="bi bi-bell" aria-hidden="true"></i>
-                <span class="admin-header__notify-badge">3</span>
-            </button>
-
-            <button type="button" class="admin-header__user" aria-label="Tài khoản admin">
-                <img class="admin-header__avatar"
-                     src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
-                     alt="" />
-                <span class="admin-header__user-name">Admin System</span>
+            <a class="admin-header__user" asp-controller="Admin" asp-action="HoSo" aria-label="Hồ sơ admin">
+                <span class="admin-header__user-icon" aria-hidden="true">
+                    <i class="bi bi-person-fill"></i>
+                </span>
+                <span class="admin-header__user-name">@(User.Identity?.Name ?? "Admin System")</span>
                 <i class="bi bi-chevron-down admin-header__user-chevron" aria-hidden="true"></i>
-            </button>
+            </a>
         </div>
     </div>
 </header>

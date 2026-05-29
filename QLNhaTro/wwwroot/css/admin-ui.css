@@ -41,11 +41,11 @@ body.admin-site {
 }
 
 .admin-header__inner {
+    min-height: 88px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    min-height: 4.5rem;
+    gap: 24px;
     padding: 0.65rem 1.25rem;
 }
 
@@ -53,7 +53,8 @@ body.admin-site {
 .admin-header__right {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 14px;
+    min-width: 0;
 }
 
 .admin-header__menu-btn {
@@ -91,68 +92,46 @@ body.admin-site {
     color: var(--admin-muted);
 }
 
-.admin-header__nav {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin: 0 auto;
-}
-
-.admin-header__nav a {
-    color: var(--admin-muted);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.92rem;
-}
-
-.admin-header__nav a:hover {
-    color: var(--admin-primary);
-}
-
-.admin-header__notify {
-    position: relative;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: 1px solid var(--admin-border);
-    border-radius: 0.65rem;
-    background: #fff;
-    color: var(--admin-text);
-    font-size: 1.1rem;
-}
-
-.admin-header__notify-badge {
-    position: absolute;
-    top: -0.2rem;
-    right: -0.2rem;
-    min-width: 1.1rem;
-    height: 1.1rem;
-    padding: 0 0.25rem;
-    border-radius: 999px;
-    background: var(--admin-danger);
-    color: #fff;
-    font-size: 0.68rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.admin-header__right {
+    margin-left: auto;
+    justify-content: flex-end;
 }
 
 .admin-header__user {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
-    border: 1px solid var(--admin-border);
+    gap: 10px;
+    min-height: 48px;
+    padding: 6px 14px;
+    border: 1px solid #e5eaf3;
     border-radius: 999px;
     background: #fff;
-    padding: 0.25rem 0.75rem 0.25rem 0.25rem;
     color: var(--admin-text);
+    text-decoration: none;
+}
+
+.admin-header__user:hover {
+    color: #0066d9;
+    border-color: #b7d7ff;
+    background: #f8fbff;
+    text-decoration: none;
+}
+
+.admin-header__user-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f2ff;
+    color: #0066d9;
+    font-size: 18px;
+    flex: 0 0 auto;
 }
 
 .admin-header__avatar {
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    object-fit: cover;
+    display: none;
 }
 
 .admin-header__user-name {
@@ -457,6 +436,11 @@ body.admin-site {
     display: flex;
     align-items: center;
     gap: 0.65rem;
+}
+
+.admin-table-user__name {
+    font-weight: 700;
+    color: #0f172a;
 }
 
 .admin-table-user__avatar {
@@ -1248,22 +1232,69 @@ body.admin-site {
     border: 4px solid var(--admin-primary-soft);
 }
 
+.admin-user-detail-card--no-avatar {
+    padding: 0;
+    overflow: hidden;
+}
+
+.admin-user-detail-card--no-avatar .admin-user-detail-card__profile,
+.admin-user-detail-card--no-avatar .admin-user-detail-card__avatar {
+    display: none;
+}
+
 .admin-user-detail-card__info {
     margin: 0;
 }
 
-.admin-user-detail-card__row {
-    display: grid;
-    grid-template-columns: minmax(8rem, 11rem) 1fr;
-    gap: 0.5rem 1rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #f1f5f9;
+.admin-user-detail-card__info--full {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 36px 20px;
 }
 
-@media (max-width: 575.98px) {
+.admin-user-detail-card__row {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    align-items: center;
+    gap: 28px;
+    padding: 16px 0;
+    border-bottom: 1px solid #edf1f7;
+}
+
+.admin-user-detail-card__row dt {
+    margin: 0;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.admin-user-detail-card__row dd {
+    margin: 0;
+    color: #0f172a;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.admin-user-detail-card__actions {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px 36px 28px;
+    border-top: 1px solid #edf1f7;
+}
+
+@media (max-width: 768px) {
+    .admin-user-detail-card__info--full,
+    .admin-user-detail-card__actions {
+        max-width: none;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
     .admin-user-detail-card__row {
         grid-template-columns: 1fr;
-        gap: 0.25rem;
+        gap: 6px;
+        align-items: start;
     }
 }
 

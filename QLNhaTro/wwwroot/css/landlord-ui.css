@@ -377,9 +377,80 @@ body {
 .landlord-room-thumb--orange { background: linear-gradient(135deg, #fb923c, #f97316); }
 .landlord-room-thumb--red { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
-.landlord-room-list-table .landlord-room-list-table__note {
-    max-width: 14rem;
+.landlord-room-list-page .landlord-room-list-card {
+    overflow: hidden;
+}
+
+.landlord-room-list-page .landlord-room-list-table {
+    min-width: 1280px;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th,
+.landlord-room-list-page .landlord-room-list-table tbody td {
     white-space: nowrap;
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(1),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(1) {
+    width: 72px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(2),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(2) {
+    width: 110px;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(3),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(3) {
+    width: 160px;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(4),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(4) {
+    width: 190px;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(5),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(5) {
+    width: 90px;
+    text-align: center;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(6),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(6) {
+    width: 115px;
+    text-align: right;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(7),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(7) {
+    width: 135px;
+    text-align: right;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(8),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(8) {
+    width: 120px;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(9),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(9) {
+    width: 180px;
+}
+
+.landlord-room-list-page .landlord-room-list-table thead th:nth-child(10),
+.landlord-room-list-page .landlord-room-list-table tbody td:nth-child(10) {
+    width: 120px;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+}
+
+.landlord-room-list-page .landlord-room-list-table .landlord-room-list-table__note {
+    max-width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -2097,7 +2168,7 @@ body {
 }
 
 /* =============================================================================
-   Post pages (BaiDang / ThemSuaBaiDang / GuiBaiChoDuyet) — layout polish
+   Post pages (BaiDang / ThemSuaBaiDang / GuiBaiChoDuyet) G�� layout polish
    ============================================================================= */
 
 .text-safe,
@@ -2522,4 +2593,59 @@ body {
     .submit-review-actions__submit {
         width: 100%;
     }
+}
+
+.rent-request-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.rent-request-status__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    flex: 0 0 auto;
+}
+
+.rent-request-status--moi {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.rent-request-status--moi .rent-request-status__dot {
+    background: #0284c7;
+}
+
+.rent-request-status--approved {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.rent-request-status--approved .rent-request-status__dot {
+    background: #16a34a;
+}
+
+.rent-request-status--rejected {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.rent-request-status--rejected .rent-request-status__dot {
+    background: #dc2626;
+}
+
+.rent-request-status--cancelled,
+.rent-request-status--unknown {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.rent-request-status--cancelled .rent-request-status__dot,
+.rent-request-status--unknown .rent-request-status__dot {
+    background: #64748b;
 }

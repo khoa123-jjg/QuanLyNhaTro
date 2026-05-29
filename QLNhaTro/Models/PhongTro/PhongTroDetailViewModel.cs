@@ -2,7 +2,7 @@ namespace QLNhaTro.Models.PhongTro;
 
 public class PhongTroDetailViewModel
 {
-    public int Id { get; set; }
+    public int PhongTroId { get; set; }
 
     public string TieuDe { get; set; } = string.Empty;
 
@@ -21,4 +21,8 @@ public class PhongTroDetailViewModel
     public string TenNhaTro { get; set; } = string.Empty;
 
     public string SoDienThoaiLienHe { get; set; } = string.Empty;
+
+    public decimal? ViDo { get; set; }
+
+    public decimal? KinhDo { get; set; }
 }
