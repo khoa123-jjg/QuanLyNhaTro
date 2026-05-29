@@ -38,9 +38,12 @@ public class PhongTroRepository : IPhongTroRepository
                 b.PhongTro.MoTa,
                 b.PhongTro.SoNguoiToiDa,
                 b.PhongTro.MaPhong,
-                TenNhaTro = b.PhongTro.NhaTro.TenNhaTro,
+                SoNha = b.PhongTro.NhaTro.SoNha,
+                DiaChiChiTiet = b.PhongTro.NhaTro.DiaChiChiTiet,
+                TenDuong = b.PhongTro.NhaTro.DuongPho != null ? b.PhongTro.NhaTro.DuongPho.TenDuong : null,
                 TenQuanhuyen = b.PhongTro.NhaTro.DuongPho != null ? b.PhongTro.NhaTro.DuongPho.Xa.Quanhuyen.TenQuanhuyen : null,
                 TenXa = b.PhongTro.NhaTro.DuongPho != null ? b.PhongTro.NhaTro.DuongPho.Xa.TenXahuyen : null,
+                TenNhaTro = b.PhongTro.NhaTro.TenNhaTro,
                 DuongDanAnh = _context.HinhAnhs.Where(h => h.PhongTroId == b.PhongTroId)
                     .OrderByDescending(h => h.LaAnhDaiDien)
                     .ThenBy(h => h.ThuTuHienThi)
@@ -50,13 +53,33 @@ public class PhongTroRepository : IPhongTroRepository
             })
             .ToListAsync();
 
-        return rows.Select(r => ToCard(r.PhongTroId, r.TieuDe, r.GiaThueThang, r.DienTich, r.MoTa, r.SoNguoiToiDa, r.MaPhong, r.TenNhaTro, r.TenQuanhuyen, r.TenXa, r.DuongDanAnh, r.TienNghi)).ToList();
+        return rows.Select(r => ToCard(r.PhongTroId, r.TieuDe, r.GiaThueThang, r.DienTich, r.MoTa, r.SoNguoiToiDa, r.MaPhong, r.SoNha, r.TenDuong, r.TenXa, r.TenQuanhuyen, r.DiaChiChiTiet, r.TenNhaTro, r.DuongDanAnh, r.TienNghi)).ToList();
     }
 
     public async Task<PhongTroSearchViewModel> SearchPhongAsync(string? khuVuc, string? mucGia, string? dienTich)
     {
         var query = TaoTruyVanBaiDangHienThi();
-        if (!string.IsNullOrWhiteSpace(khuVuc) && KhuVucSlugMap.TryGetValue(khuVuc.Trim(), out var tenQuan)) query = query.Where(b => b.PhongTro.NhaTro.DuongPho != null && b.PhongTro.NhaTro.DuongPho.Xa.Quanhuyen.TenQuanhuyen == tenQuan);
+
+        if (!string.IsNullOrWhiteSpace(khuVuc))
+        {
+            var khuVucLoc = khuVuc.Trim();
+            if (KhuVucSlugMap.TryGetValue(khuVucLoc, out var tenQuan))
+            {
+                query = query.Where(b => b.PhongTro.NhaTro.DuongPho != null && b.PhongTro.NhaTro.DuongPho.Xa.Quanhuyen.TenQuanhuyen == tenQuan);
+            }
+            else
+            {
+                query = query.Where(b =>
+                    (b.PhongTro.NhaTro.DiaChiChiTiet != null && b.PhongTro.NhaTro.DiaChiChiTiet.Contains(khuVucLoc))
+                    || (b.PhongTro.NhaTro.SoNha != null && b.PhongTro.NhaTro.SoNha.Contains(khuVucLoc))
+                    || (b.PhongTro.NhaTro.DuongPho != null && (
+                        b.PhongTro.NhaTro.DuongPho.TenDuong.Contains(khuVucLoc)
+                        || b.PhongTro.NhaTro.DuongPho.Xa.TenXahuyen.Contains(khuVucLoc)
+                        || b.PhongTro.NhaTro.DuongPho.Xa.Quanhuyen.TenQuanhuyen.Contains(khuVucLoc)))
+                    || b.PhongTro.NhaTro.TenNhaTro.Contains(khuVucLoc));
+            }
+        }
+
         if (!string.IsNullOrWhiteSpace(mucGia)) query = ApDungLocMucGia(query, mucGia.Trim());
         if (!string.IsNullOrWhiteSpace(dienTich)) query = ApDungLocDienTich(query, dienTich.Trim());
 
@@ -71,9 +94,12 @@ public class PhongTroRepository : IPhongTroRepository
                 b.PhongTro.MoTa,
                 b.PhongTro.SoNguoiToiDa,
                 b.PhongTro.MaPhong,
-                TenNhaTro = b.PhongTro.NhaTro.TenNhaTro,
-                TenQuanhuyen = b.PhongTro.NhaTro.DuongPho != null ? b.PhongTro.NhaTro.DuongPho.Xa.Quanhuyen.TenQuanhuyen : null,
+                SoNha = b.PhongTro.NhaTro.SoNha,
+                DiaChiChiTiet = b.PhongTro.NhaTro.DiaChiChiTiet,
+                TenDuong = b.PhongTro.NhaTro.DuongPho != null ? b.PhongTro.NhaTro.DuongPho.TenDuong : null,
                 TenXa = b.PhongTro.NhaTro.DuongPho != null ? b.PhongTro.NhaTro.DuongPho.Xa.TenXahuyen : null,
+                TenQuanhuyen = b.PhongTro.NhaTro.DuongPho != null ? b.PhongTro.NhaTro.DuongPho.Xa.Quanhuyen.TenQuanhuyen : null,
+                TenNhaTro = b.PhongTro.NhaTro.TenNhaTro,
                 DuongDanAnh = _context.HinhAnhs.Where(h => h.PhongTroId == b.PhongTroId)
                     .OrderByDescending(h => h.LaAnhDaiDien)
                     .ThenBy(h => h.ThuTuHienThi)
@@ -88,7 +114,7 @@ public class PhongTroRepository : IPhongTroRepository
             KhuVuc = khuVuc,
             MucGia = mucGia,
             DienTich = dienTich,
-            DanhSachPhong = rows.Select(r => ToCard(r.PhongTroId, r.TieuDe, r.GiaThueThang, r.DienTich, r.MoTa, r.SoNguoiToiDa, r.MaPhong, r.TenNhaTro, r.TenQuanhuyen, r.TenXa, r.DuongDanAnh, r.TienNghi)).ToList()
+            DanhSachPhong = rows.Select(r => ToCard(r.PhongTroId, r.TieuDe, r.GiaThueThang, r.DienTich, r.MoTa, r.SoNguoiToiDa, r.MaPhong, r.SoNha, r.TenDuong, r.TenXa, r.TenQuanhuyen, r.DiaChiChiTiet, r.TenNhaTro, r.DuongDanAnh, r.TienNghi)).ToList()
         };
     }
 
@@ -219,21 +245,26 @@ public class PhongTroRepository : IPhongTroRepository
         _ => query
     };
 
-    private static PhongTroCardViewModel ToCard(int phongTroId, string tieuDe, decimal giaThueThang, decimal dienTich, string? moTa, int? soNguoiToiDa, string maPhong, string tenNhaTro, string? tenQuanhuyen, string? tenXa, string? duongDanAnh, List<string> tienNghi) => new()
+    private static PhongTroCardViewModel ToCard(int phongTroId, string tieuDe, decimal giaThueThang, decimal dienTich, string? moTa, int? soNguoiToiDa, string maPhong, string? soNha, string? tenDuong, string? tenXa, string? tenQuanhuyen, string? diaChiChiTiet, string tenNhaTro, string? duongDanAnh, List<string> tienNghi) => new()
     {
         Id = phongTroId,
         TieuDe = tieuDe,
-        KhuVuc = TaoKhuVuc(tenXa, tenQuanhuyen, tenNhaTro),
+        KhuVuc = TaoDiaChiCard(soNha, tenDuong, tenXa, tenQuanhuyen, diaChiChiTiet, tenNhaTro),
         GiaThue = giaThueThang,
         DienTich = dienTich,
         ThongTinPhu = TaoThongTinPhu(tienNghi, moTa, soNguoiToiDa, maPhong),
         AnhDaiDien = TaoDuongDanAnh(duongDanAnh)
     };
 
-    private static string TaoKhuVuc(string? tenXa, string? tenQuanhuyen, string tenNhaTro)
+    private static string TaoDiaChiCard(string? soNha, string? tenDuong, string? tenXa, string? tenQuanhuyen, string? diaChiChiTiet, string tenNhaTro)
     {
-        if (!string.IsNullOrWhiteSpace(tenXa) && !string.IsNullOrWhiteSpace(tenQuanhuyen)) return $"{tenXa.Trim()}, {tenQuanhuyen.Trim()}";
-        if (!string.IsNullOrWhiteSpace(tenQuanhuyen)) return tenQuanhuyen.Trim();
+        var parts = new List<string>();
+        if (!string.IsNullOrWhiteSpace(soNha)) parts.Add(soNha.Trim());
+        if (!string.IsNullOrWhiteSpace(tenDuong)) parts.Add(tenDuong.Trim());
+        if (!string.IsNullOrWhiteSpace(tenXa)) parts.Add(tenXa.Trim());
+        if (!string.IsNullOrWhiteSpace(tenQuanhuyen)) parts.Add(tenQuanhuyen.Trim());
+        if (parts.Count > 0) return string.Join(", ", parts);
+        if (!string.IsNullOrWhiteSpace(diaChiChiTiet)) return diaChiChiTiet.Trim();
         return tenNhaTro.Trim();
     }
 
