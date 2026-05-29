@@ -499,7 +499,32 @@ public class ChuTroController : Controller
         ViewData["ActiveLandlordMenu"] = "BaiDang";
         return View(model);
     }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> XacNhanGuiBaiChoDuyet(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
 
+        if (id <= 0)
+        {
+            TempData["Error"] = "Bài đăng không hợp lệ.";
+            return RedirectToAction(nameof(BaiDang));
+        }
+
+        var thanhCong = await _baiDangRepository.XacNhanGuiChoDuyetAsync(userId, id);
+        if (!thanhCong)
+        {
+            TempData["Error"] = "Không thể gửi bài đăng. Chỉ bài ở trạng thái Nháp mới được gửi chờ duyệt.";
+            return RedirectToAction(nameof(BaiDang));
+        }
+
+        TempData["Success"] = "Đã gửi bài đăng chờ admin duyệt.";
+        return RedirectToAction(nameof(BaiDang));
+    }
     private async Task TaiLaiFormBaiDangAsync(string userId, BaiDangCreateUpdateViewModel model)
     {
         if (model.Id is > 0)

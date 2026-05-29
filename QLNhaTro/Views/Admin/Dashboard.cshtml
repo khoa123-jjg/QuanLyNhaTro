@@ -93,8 +93,11 @@
                                                  src="@(item.AnhDaiDien ?? "/images/phong-mau.jpg")"
                                                  alt="@item.TieuDe" />
                                             <a asp-controller="Admin"
-                                               asp-action="ChiTietBaiChoDuyet"
-                                               asp-route-id="@item.Id">@item.TieuDe</a>
+                                                   asp-action="ChiTietBaiChoDuyet"
+                                                   asp-route-id="@item.Id"
+                                                   style="text-decoration: none; color: #000;">
+                                                @item.TieuDe
+                                            </a>
                                         </div>
                                     </td>
                                     <td>@item.TenNguoiDang</td>
