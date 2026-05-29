@@ -93,7 +93,7 @@ public class AccountController : Controller
 
         if (roleSet.Contains(VaiTroChuTro))
         {
-            return RedirectToAction("TongQuan", "ChuTro");
+            return RedirectToAction("PhongCuThe", "ChuTro");
         }
 
         if (roleSet.Contains(VaiTroNguoiThue))

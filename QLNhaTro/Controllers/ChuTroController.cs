@@ -48,7 +48,10 @@ public class ChuTroController : Controller
     }
 
     [HttpGet]
-    public IActionResult TongQuan() => View();
+    public IActionResult TongQuan()
+    {
+        return RedirectToAction(nameof(PhongCuThe));
+    }
 
     [HttpGet]
     public async Task<IActionResult> NhaTro()
@@ -367,6 +370,7 @@ public class ChuTroController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId)) return Challenge();
         var model = await _phongTroManagementRepository.GetDanhSachPhongAsync(userId, tuKhoa, nhaTroId, tang, trangThai);
+        ViewData["ActiveLandlordMenu"] = "PhongCuThe";
         return View(model);
     }
 

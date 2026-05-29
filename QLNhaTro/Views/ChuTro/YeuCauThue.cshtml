@@ -14,37 +14,6 @@
         </div>
     </header>
 
-    <div class="landlord-card landlord-filter-card mb-4">
-        <form class="landlord-filter-bar landlord-filter-bar--rent-request" asp-controller="ChuTro" asp-action="YeuCauThue" method="get">
-            <div class="landlord-filter-bar__field">
-                <label class="landlord-form__label" for="trangThaiYeuCau">Trạng thái</label>
-                <select class="form-select" id="trangThaiYeuCau" name="trangThai">
-                    @foreach (var option in Model.DanhSachTrangThai)
-                    {
-                        <option value="@option.Value" selected="@(option.Value == Model.TrangThai)">@option.Text</option>
-                    }
-                </select>
-            </div>
-            <div class="landlord-filter-bar__field">
-                <label class="landlord-form__label" for="nhaTroYeuCau">Nhà trọ</label>
-                <select class="form-select" id="nhaTroYeuCau" name="nhaTroId">
-                    <option value="">Tất cả nhà trọ</option>
-                    @foreach (var option in Model.DanhSachNhaTro)
-                    {
-                        <option value="@option.Value" selected="@(option.Value == Model.NhaTroId?.ToString())">@option.Text</option>
-                    }
-                </select>
-            </div>
-            <div class="landlord-filter-bar__field">
-                <label class="landlord-form__label" for="sapXepYeuCau">Sắp xếp</label>
-                <select class="form-select" id="sapXepYeuCau" name="sapXep">
-                    <option value="moi-nhat" selected="@(string.IsNullOrWhiteSpace(Model.SapXep) || Model.SapXep == "moi-nhat")">Mới nhất</option>
-                    <option value="cu-nhat" selected="@(Model.SapXep == "cu-nhat")">Cũ nhất</option>
-                </select>
-            </div>
-        </form>
-    </div>
-
     <div class="landlord-card landlord-table-card">
         <div class="landlord-table-wrap">
             <table class="table landlord-data-table mb-0">
