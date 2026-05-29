@@ -8,7 +8,6 @@ GO
 USE PhongTroDaNang;
 GO
 
-/* Xoa trigger truoc khi xoa bang */
 IF OBJECT_ID('dbo.TR_DAT_THUE_Check_Phong', 'TR') IS NOT NULL DROP TRIGGER dbo.TR_DAT_THUE_Check_Phong;
 IF OBJECT_ID('dbo.TR_BDLP_Check_NhaTro',    'TR') IS NOT NULL DROP TRIGGER dbo.TR_BDLP_Check_NhaTro;
 IF OBJECT_ID('dbo.TR_DIA_CHI_Check_DVHC',   'TR') IS NOT NULL DROP TRIGGER dbo.TR_DIA_CHI_Check_DVHC;
@@ -211,15 +210,6 @@ GO
 CREATE UNIQUE INDEX UX_HINH_ANH_OneCover ON dbo.HINH_ANH(PhongTroId) WHERE LaAnhDaiDien = 1;
 GO
 
-/* ============================================================
-   4. NHÓM BÀI ĐĂNG / KIỂM DUYỆT
-   ============================================================
-   [v4 - ĐẠT 3NF] NguoiDungId đã được xóa khỏi bảng này.
-   Để biết ai tạo bài đăng, JOIN qua 2 bảng trung gian:
-     BAI_DANG.NhaTroId
-       → NHA_TRO.ChuNhaTroId
-       → CHU_NHA_TRO.NguoiDungId
-   ============================================================ */
 
 CREATE TABLE dbo.BAI_DANG (
     Id              INT IDENTITY(1,1) PRIMARY KEY,
@@ -375,7 +365,7 @@ INSERT INTO dbo.DUONG_PHO (XAId, TenDuong, TrangThai)
 SELECT Id, N'Nguyễn Văn Linh', 'HIEN_THI' FROM dbo.XA WHERE TenXAHUYEN = N'Phường Khuê Mỹ';
 
 INSERT INTO dbo.NGUOI_DUNG (HoTen, Email, SoDienThoai, MatKhauHash, TrangThai)
-VALUES (N'Admin System', N'admin@phongtrodanang.vn', N'0901234567', N'PLACEHOLDER_PASSWORD_HASH', 'HOAT_DONG');
+VALUES (N'Admin System', N'admin@phongtrodanang.vn', N'0901234567', N'W6umxdt10FEFTVzlK4jx6w==.peEe9AEDsR6wACISSUGR/LRtoyyYAc18DvnO/dYnLMw=', 'HOAT_DONG');
 
 INSERT INTO dbo.NGUOI_DUNG_VAI_TRO (NguoiDungId, VaiTroId)
 SELECT nd.Id, vt.Id

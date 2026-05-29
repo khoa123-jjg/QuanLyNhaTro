@@ -26,10 +26,12 @@
         </div>
 
         <div class="landlord-header__right">
-
-            <button type="button" class="landlord-header__user" aria-label="Tài khoản">
-                <span class="landlord-header__user-name">@(User.Identity?.Name ?? "Nguyễn Văn A")</span>
-            </button>
+            <a class="landlord-header__user" style="text-decoration: none " asp-controller="ChuTro" asp-action="CaiDat" aria-label="Hồ sơ chủ trọ">
+                <span class="landlord-header__user-icon" aria-hidden="true">
+                    <i class="bi bi-person-fill"></i>
+                </span>
+                <span class="landlord-header__user-name">@(User.Identity?.Name ?? "Chủ trọ")</span>
+            </a>
         </div>
     </div>
 </header>
