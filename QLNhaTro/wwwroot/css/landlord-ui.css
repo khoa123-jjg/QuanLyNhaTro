@@ -2097,7 +2097,7 @@ body {
 }
 
 /* =============================================================================
-   Post pages (BaiDang / ThemSuaBaiDang / GuiBaiChoDuyet) â€” layout polish
+   Post pages (BaiDang / ThemSuaBaiDang / GuiBaiChoDuyet) GÇö layout polish
    ============================================================================= */
 
 .text-safe,
@@ -2522,4 +2522,59 @@ body {
     .submit-review-actions__submit {
         width: 100%;
     }
+}
+
+.rent-request-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.rent-request-status__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    flex: 0 0 auto;
+}
+
+.rent-request-status--moi {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.rent-request-status--moi .rent-request-status__dot {
+    background: #0284c7;
+}
+
+.rent-request-status--approved {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.rent-request-status--approved .rent-request-status__dot {
+    background: #16a34a;
+}
+
+.rent-request-status--rejected {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.rent-request-status--rejected .rent-request-status__dot {
+    background: #dc2626;
+}
+
+.rent-request-status--cancelled,
+.rent-request-status--unknown {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.rent-request-status--cancelled .rent-request-status__dot,
+.rent-request-status--unknown .rent-request-status__dot {
+    background: #64748b;
 }
