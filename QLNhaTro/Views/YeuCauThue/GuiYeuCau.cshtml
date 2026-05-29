@@ -47,28 +47,37 @@
 
                                 <div class="rent-request-field mb-3">
                                     <label class="rent-request-field__label" asp-for="HoTenLienHe"></label>
-                                    <input class="form-control rent-request-field__input" asp-for="HoTenLienHe" />
+                                    <input class="form-control rent-request-field__input"
+                                           asp-for="HoTenLienHe"
+                                           style="padding-left: 15px !important;" />
                                     <span class="text-danger" asp-validation-for="HoTenLienHe"></span>
                                 </div>
 
                                 <div class="rent-request-field mb-3">
                                     <label class="rent-request-field__label" asp-for="SoDienThoaiLienHe"></label>
-                                    <input class="form-control rent-request-field__input" asp-for="SoDienThoaiLienHe" />
+                                    <input class="form-control rent-request-field__input"
+                                           asp-for="SoDienThoaiLienHe"
+                                           style="padding-left: 15px !important;" />
                                     <span class="text-danger" asp-validation-for="SoDienThoaiLienHe"></span>
                                 </div>
 
                                 <div class="rent-request-field mb-3">
                                     <label class="rent-request-field__label" asp-for="NgayMuonXemPhong"></label>
-                                    <input asp-for="NgayMuonXemPhong" type="date" class="form-control rent-request-field__input" />
+                                    <input asp-for="NgayMuonXemPhong"
+                                           type="date"
+                                           class="form-control rent-request-field__input"
+                                           style="padding-left: 15px !important;" />
                                     <span class="text-danger" asp-validation-for="NgayMuonXemPhong"></span>
                                 </div>
 
                                 <div class="rent-request-field mb-3">
                                     <label class="rent-request-field__label" asp-for="LoiNhan"></label>
-                                    <textarea class="form-control rent-request-field__textarea" asp-for="LoiNhan" rows="4"></textarea>
+                                    <textarea class="form-control rent-request-field__textarea"
+                                              asp-for="LoiNhan"
+                                              rows="4"
+                                              style="padding-left: 15px !important;"></textarea>
                                     <span class="text-danger" asp-validation-for="LoiNhan"></span>
                                 </div>
-
                                 <button type="submit" class="btn-rent-request-submit">
                                     <i class="bi bi-send-fill" aria-hidden="true"></i>
                                     Gửi yêu cầu

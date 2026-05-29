@@ -28,6 +28,7 @@
     <Folder Include="wwwroot\images\" />
     <Folder Include="Repositories\BaiDang\" />
     <Folder Include="Validation\" />
+    <Folder Include="wwwroot\uploads\phong-tro\" />
   </ItemGroup>
 
   <ItemGroup>
