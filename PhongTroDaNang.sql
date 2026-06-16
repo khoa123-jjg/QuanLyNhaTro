@@ -366,10 +366,204 @@ SELECT Id, N'Nguyễn Văn Linh', 'HIEN_THI' FROM dbo.XA WHERE TenXAHUYEN = N'Ph
 
 INSERT INTO dbo.NGUOI_DUNG (HoTen, Email, SoDienThoai, MatKhauHash, TrangThai)
 VALUES (N'Admin System', N'admin@phongtrodanang.vn', N'0901234567', N'W6umxdt10FEFTVzlK4jx6w==.peEe9AEDsR6wACISSUGR/LRtoyyYAc18DvnO/dYnLMw=', 'HOAT_DONG');
-
+GO
 INSERT INTO dbo.NGUOI_DUNG_VAI_TRO (NguoiDungId, VaiTroId)
 SELECT nd.Id, vt.Id
 FROM dbo.NGUOI_DUNG nd
 JOIN dbo.VAI_TRO vt ON vt.TenVaiTro = 'ADMIN'
 WHERE nd.Email = N'admin@phongtrodanang.vn';
 GO
+INSERT INTO dbo.NGUOI_DUNG (HoTen, Email, SoDienThoai, MatKhauHash, TrangThai)
+VALUES (N'Phạm Nhật Khoa', N'khoapham.12082006@gmail.com', N'0343043259', N'W6umxdt10FEFTVzlK4jx6w==.peEe9AEDsR6wACISSUGR/LRtoyyYAc18DvnO/dYnLMw=', 'HOAT_DONG');
+GO
+INSERT INTO dbo.NGUOI_DUNG_VAI_TRO (NguoiDungId, VaiTroId)
+SELECT nd.Id, vt.Id
+FROM dbo.NGUOI_DUNG nd
+JOIN dbo.VAI_TRO vt ON vt.TenVaiTro = 'CHU_TRO'
+WHERE nd.Email = N'khoapham.12082006@gmail.com';
+INSERT INTO dbo.CHU_NHA_TRO (NguoiDungId,TrangThaiHoSo)
+VALUES (2, 'HOAT_DONG');
+GO
+INSERT INTO dbo.NGUOI_DUNG (HoTen, Email, SoDienThoai, MatKhauHash, TrangThai)
+VALUES (N'Phạm Nhật Khoa', N'nam577527@gmail.com', N'0343043258', N'W6umxdt10FEFTVzlK4jx6w==.peEe9AEDsR6wACISSUGR/LRtoyyYAc18DvnO/dYnLMw=', 'HOAT_DONG');
+GO
+INSERT INTO dbo.NGUOI_DUNG_VAI_TRO (NguoiDungId, VaiTroId)
+SELECT nd.Id, vt.Id
+FROM dbo.NGUOI_DUNG nd
+JOIN dbo.VAI_TRO vt ON vt.TenVaiTro = 'NGUOI_THUE'
+WHERE nd.Email = N'nam577527@gmail.com';
+INSERT INTO dbo.NGUOI_THUE (NguoiDungId)
+VALUES (3);
+GO
+INSERT INTO dbo.NHA_TRO( ChuNhaTroId,DuongPhoId,TenNhaTro,MoTa,SoNha,DiaChiChiTiet,ViDo,KinhDo,TrangThai)
+VALUES
+(
+    1,
+    5,
+    N'Nhà trọ An Bình',
+    N'Dãy phòng mới xây đang hoàn thiện, dự kiến cuối tháng 6/2026 nhận phòng',
+    N'45',
+    N'Trong hẽm ở cuối đường',
+    16.0560910,
+    108.1998825,
+    'HOAT_DONG'
+),
+(
+    1,
+    9,
+    N'Nhà trọ Thanh Hải',
+    N'Mặt phố, đường bê tông, wifi, điện nước đầy đủ',
+    N'12',
+    N'Đối diện đường chính',
+    16.0527917,
+    108.1940460,
+    'HOAT_DONG'
+),
+(
+    1,
+    7,
+    N'Nhà trọ Thái Vũ',
+    N'Mặt phố, đường nhựa, view hồ, tiện kinh doanh buôn bán',
+    N'45',
+    N'1467 Đường Nguyễn Văn Linh',
+    16.0517586,
+    108.1983590,
+    'HOAT_DONG'
+),
+(
+    1,
+    5,
+    N'Nhà trọ Hải An',
+    N'Nhà trọ đối diện mặt đường, phù hợp mở kinh doanh buôn bán',
+    N'12',
+    N'123 đường Trưng Vương',
+    16.0519669,
+    108.2096672,
+    'HOAT_DONG'
+);
+GO
+INSERT INTO dbo.PHONG_TRO
+(
+    NhaTroId,
+    MaPhong,
+    TenPhong,
+    Tang,
+    DienTich,
+    GiaThueThang,
+    TienCoc,
+    SoNguoiToiDa,
+    MoTa,
+    TrangThai,
+    GhiChu
+)
+VALUES
+(1, 'P101', N'Tầng trệt', 1, 20.00, 2500000.00, 2500000.00, 3, N'Phòng trệt mát mẻ, lối đi riêng, có kệ bếp nhỏ.', 'TRONG', N'Khách cũ vừa dọn đi ngày 25/5'),
+(1, 'P102', N'Có gác lửng', 1, 25.50, 3000000.00, 3000000.00, 3, N'Phòng rộng, gác đúc bê tông kiên cố, sạch sẽ.', 'TRONG', NULL),
+(1, 'P201', N'Ban công thoáng', 2, 22.00, 2800000.00, 2800000.00, 1, N'Phòng tầng 1, có ban công phơi đồ riêng, cửa sổ lớn.', 'TRONG', N'Hợp đồng 1 năm'),
+(1, 'P202', N'Phòng tiêu chuẩn', 2, 20.00, 2600000.00, 2000000.00, 1, N'Phòng cơ bản, đã lắp sẵn quạt trần và rèm cửa.', 'TRONG', NULL),
+(3, 'P101', N'Phòng lớn ở ghép', 1, 30.00, 3500000.00, 3500000.00, 4, N'Phòng rộng thích hợp cho nhóm sinh viên 3-4 người.', 'TRONG', NULL),
+(2, 'CH-101', N'Căn hộ Studio 101 Full nội thất', 1, 35.00, 5500000.00, 5500000.00, 2, N'Full nội thất: giường, tủ, máy lạnh, tủ lạnh, máy giặt.', 'TRONG', N'Khách nước ngoài thuê'),
+(2, 'CH-102', N'Căn hộ Studio 102', 1, 32.00, 5000000.00, 5000000.00, 2, N'Có máy lạnh, tủ quần áo âm tường, bếp điện từ.', 'TRONG', N'Sẵn sàng dọn vào ngay'),
+(2, 'CH-201', N'Căn hộ 201 - View đường phố', 2, 38.00, 6000000.00, 6000000.00, 2, N'Căn góc 2 cửa sổ, view cực đẹp, đầy đủ tiện nghi.', 'TRONG', NULL),
+(2, 'CH-301', N'Căn hộ Penthouse mini 301', 2, 45.00, 7000000.00, 7000000.00, 2, N'Căn hộ cao cấp nhất tòa nhà, 1 phòng ngủ riêng biệt.', 'TRONG', NULL),
+(2, 'CH-302', N'Căn hộ 302 - Tiêu chuẩn', 3, 32.00, 5000000.00, 5000000.00, 2, N'Nội thất cơ bản cao cấp, khóa vân tay an toàn.', 'TRONG', NULL),
+(4, 'P101', N'Phòng ban công', 1, 23.00, 2500000.00, 2500000.00, 2, N'Có wifi, nhà vệ sinh khép kín, có máy giặt.', 'TRONG', NULL);
+GO
+INSERT INTO dbo.HINH_ANH
+(
+    PhongTroId,
+    DuongDanAnh,
+    LaAnhDaiDien,
+    ThuTuHienThi
+)
+VALUES
+(1,  N'/uploads/phong-tro/1/adeb2afe-19cb-4373-96d0-ac827a7398b4.webp', 1, 1),
+(2,  N'/uploads/phong-tro/2/400c8be6-be52-4826-a2ec-de45de1de1f0.webp', 1, 1),
+(2,  N'/uploads/phong-tro/2/af210eee-8e2b-4250-8bb8-bd6e62e476a0.webp', 0, 2),
+(10, N'/uploads/phong-tro/10/70447fa2-93e8-4ee5-baa1-72d1605c68c0.webp', 1, 1),
+(9,  N'/uploads/phong-tro/9/ac704aa4-3f3a-40be-82ab-d9d6b31364ba.webp', 1, 1),
+(8,  N'/uploads/phong-tro/8/1f6b0588-030f-4b03-9139-a2587bc1ea0f.webp', 1, 1),
+(7,  N'/uploads/phong-tro/7/077f7306-cce0-41fb-ac39-3e8fcd25d81c.webp', 1, 1),
+(7,  N'/uploads/phong-tro/7/3883f450-3d96-43f9-ab4a-8709f77c9839.webp', 0, 2),
+(6,  N'/uploads/phong-tro/6/fa38452e-c40d-45b1-a8ad-84c56e0bb1ae.webp', 1, 1),
+(11, N'/uploads/phong-tro/11/0dae5561-1da7-4a50-8841-a98bd99b2d2d.webp', 1, 1);
+GO
+INSERT INTO dbo.BAI_DANG
+(
+    PhongTroId,
+    TieuDe,
+    NoiDung,
+    TrangThaiDuyet,
+    LyDoTuChoi,
+    NguoiDuyetId,
+    NgayGuiDuyet,
+    NgayDuyet,
+    NgayCapNhat
+)
+VALUES
+(
+    1,
+    N'Cho thuê nhà trọ',
+    N'Phòng mới 100%, sạch đẹp, thoáng mát - Khu vực an ninh, thuận tiện đi lại.',
+    'DA_DUYET',
+    NULL,
+    1,
+    NULL,
+    '2026-05-29 13:07:45',
+    '2026-05-29 13:07:45'
+),
+(
+    2,
+    N'Cho thuê nhà trọ',
+    N'Thuê phòng có nội thất, điều hoà, wc riêng, ban công thoáng mát.',
+    'DA_DUYET',
+    NULL,
+    1,
+    NULL,
+    '2026-05-29 13:07:38',
+    '2026-05-29 13:07:38'
+),
+(
+    6,
+    N'Phòng trọ giá rẻ',
+    N'aa',
+    'TU_CHOI',
+    N'Ảnh không rõ',
+    1,
+    NULL,
+    '2026-05-29 17:13:00',
+    '2026-05-29 17:13:00'
+),
+(
+    11,
+    N'Phòng trọ giá rẻ',
+    N'Nhà trọ mới xây, nhận phòng vào tháng 6',
+    'DA_DUYET',
+    NULL,
+    1,
+    NULL,
+    '2026-05-29 17:12:36',
+    '2026-05-29 17:12:36'
+),
+(
+    6,
+    N'Cho thuê nhà trọ',
+    N'.',
+    'DA_DUYET',
+    NULL,
+    1,
+    NULL,
+    '2026-06-15 16:38:57',
+    '2026-06-15 16:38:57'
+),
+(
+    2,
+    N'Phòng trọ giá rẻ',
+    N'Phòng tiện ích',
+    'NHAP',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    '2026-06-15 16:49:41'
+);
